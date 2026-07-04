@@ -1,0 +1,22 @@
+# Virtual Environment
+.venv/
+
+# Environment Variables
+.env
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
+# Uploads
+app/uploads/
+
+# Vector Database
+app/vectorstore/
+
+# IDE
+.vscode/
+.idea/
