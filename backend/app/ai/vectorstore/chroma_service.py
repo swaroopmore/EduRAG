@@ -17,19 +17,21 @@ class ChromaService:
 
         self.db.add_documents(documents)
 
-    def similarity_search(
-    self,
-    query,
-    user_id,
-    subject_id,
-    k=5,
-):
+    def search(
+        self,
+        query,
+        user_id,
+        subject_id,
+        k=5,
+    ):
 
         return self.db.similarity_search(
-        query=query,
-        k=k,
-        filter={
-            "user_id": str(user_id),
-            "subject_id": str(subject_id),
-        },
-    )
+            query=query,
+            k=k,
+            filter={
+                "$and": [
+                    {"user_id": str(user_id)},
+                    {"subject_id": str(subject_id)},
+                ]
+            },
+        )

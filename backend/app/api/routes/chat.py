@@ -15,7 +15,7 @@ router = APIRouter(
     "/ask",
     response_model=ChatResponse,
 )
-def ask_question(
+def ask(
     request: ChatRequest,
     current_user: User = Depends(get_current_user),
 ):
