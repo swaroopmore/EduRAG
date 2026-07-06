@@ -6,7 +6,7 @@ from app.api.routes import documents
 from app.api.routes import chat
 from app.api.routes import test_ai
 from app.api.routes import test_retriever
-from app.api.routes import chat
+
 
 api_router = APIRouter()
 
