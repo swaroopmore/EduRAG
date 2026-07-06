@@ -31,4 +31,5 @@ class ChatRepository:
         self.db.add(chat)
         self.db.commit()
         self.db.refresh(chat)
+
         return chat

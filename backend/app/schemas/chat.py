@@ -1,5 +1,8 @@
-from pydantic import BaseModel
 from uuid import UUID
+
+from pydantic import BaseModel
+
+from app.schemas.citations import Citation
 
 
 class ChatRequest(BaseModel):
@@ -9,4 +12,4 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     answer: str
-    sources: list[str]
+    citations: list[Citation]

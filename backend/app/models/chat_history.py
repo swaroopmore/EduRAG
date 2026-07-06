@@ -8,6 +8,7 @@ from app.models.base.uuid import UUIDMixin
 
 
 class ChatHistory(UUIDMixin, TimestampMixin, Base):
+
     __tablename__ = "chat_history"
 
     user_id: Mapped[str] = mapped_column(
@@ -40,7 +41,7 @@ class ChatHistory(UUIDMixin, TimestampMixin, Base):
         nullable=False,
     )
 
-    sources: Mapped[list] = mapped_column(
+    citations: Mapped[list] = mapped_column(
         JSONB,
         nullable=False,
         default=list,

@@ -25,9 +25,6 @@ class ChatService:
         subject_id,
     ):
 
-        # -----------------------------
-        # Get Conversation History
-        # -----------------------------
         history = self.memory.get_history(user_id)
 
         history_text = "\n".join(
@@ -35,14 +32,8 @@ class ChatService:
             for msg in history
         )
 
-        # -----------------------------
-        # Normalize Question
-        # -----------------------------
         normalized = normalize_question(question)
 
-        # -----------------------------
-        # Cache Lookup
-        # -----------------------------
         cached = self.repository.get_cached_answer(
             user_id=user_id,
             subject_id=subject_id,
@@ -55,14 +46,11 @@ class ChatService:
 
             return {
                 "answer": cached.answer,
-                "sources": cached.sources,
+                "citations": cached.citations,
             }
 
         print("❌ CACHE MISS")
 
-        # -----------------------------
-        # Retrieve Relevant Chunks
-        # -----------------------------
         docs = self.retriever.retrieve(
             question=question,
             user_id=user_id,
@@ -74,23 +62,14 @@ class ChatService:
             for doc in docs
         )
 
-        # -----------------------------
-        # Build Prompt
-        # -----------------------------
         prompt = TEACHER_PROMPT.format(
             history=history_text,
             context=context,
             question=question,
         )
 
-        # -----------------------------
-        # Gemini Response
-        # -----------------------------
         answer = self.llm.generate(prompt)
 
-        # -----------------------------
-        # Save Conversation in Memory
-        # -----------------------------
         self.memory.add_message(
             user_id,
             "user",
@@ -103,34 +82,30 @@ class ChatService:
             answer,
         )
 
-        # -----------------------------
-        # Extract Sources
-        # -----------------------------
-        sources = list(
-            {
-                doc.metadata.get("filename")
-                for doc in docs
-            }
-        )
+        citations = []
 
-        # -----------------------------
-        # Save Chat History
-        # -----------------------------
+        for doc in docs:
+
+            citations.append(
+                {
+                    "document": doc.metadata.get("filename"),
+                    "page": doc.metadata.get("page", 0) + 1,
+                    "snippet": doc.page_content[:250],
+                }
+            )
+
         chat = ChatHistory(
             user_id=user_id,
             subject_id=subject_id,
             question=question,
             normalized_question=normalized,
             answer=answer,
-            sources=sources,
+            citations=citations,
         )
 
         self.repository.create(chat)
 
-        # -----------------------------
-        # Return Response
-        # -----------------------------
         return {
             "answer": answer,
-            "sources": sources,
+            "citations": citations,
         }
