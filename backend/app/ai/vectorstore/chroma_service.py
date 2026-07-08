@@ -22,7 +22,7 @@ class ChromaService:
         query,
         user_id,
         subject_id,
-        k=5,
+        k=20,
     ):
 
         return self.db.similarity_search(

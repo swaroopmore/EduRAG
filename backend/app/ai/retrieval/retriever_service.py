@@ -1,3 +1,4 @@
+from app.ai.reranker.reranker import Reranker
 from app.ai.vectorstore.chroma_service import ChromaService
 
 
@@ -5,6 +6,7 @@ class RetrieverService:
 
     def __init__(self):
         self.vectorstore = ChromaService()
+        self.reranker = Reranker()
 
     def search(
         self,
@@ -14,9 +16,19 @@ class RetrieverService:
         k: int = 5,
     ):
 
-        return self.vectorstore.search(
+        # Stage 1: Retrieve more candidate chunks
+        docs = self.vectorstore.search(
             query=query,
             user_id=user_id,
             subject_id=subject_id,
-            k=k,
+            k=20,
         )
+
+        # Stage 2: Rerank them
+        docs = self.reranker.rerank(
+            question=query,
+            documents=docs,
+            top_k=k,
+        )
+
+        return docs
