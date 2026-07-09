@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduRAG | Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <i class="bi bi-mortarboard-fill"></i>
+            <span>EduRAG</span>
+        </div>
+
+        <nav>
+
+            <a class="active" href="#"><i class="bi bi-house"></i>Dashboard</a>
+            <a href="#"><i class="bi bi-book"></i>Subjects</a>
+            <a href="#"><i class="bi bi-file-earmark-text"></i>Documents</a>
+            <a href="#"><i class="bi bi-chat-dots"></i>AI Chat</a>
+            <a href="#"><i class="bi bi-stack"></i>Flashcards</a>
+            <a href="#"><i class="bi bi-patch-question"></i>Quiz</a>
+            <a href="#"><i class="bi bi-calendar-week"></i>Study Planner</a>
+            <a href="#"><i class="bi bi-journal-text"></i>Notes</a>
+
+        </nav>
+
+        <div class="bottom-links">
+            <a href="#"><i class="bi bi-gear"></i>Settings</a>
+            <a href="#"><i class="bi bi-box-arrow-right"></i>Logout</a>
+        </div>
+
+    </aside>
+
+    <main class="content">
+
+        <header class="topbar">
+
+            <div class="search">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Search anything...">
+            </div>
+
+            <div class="profile">
+
+                <button><i class="bi bi-sun"></i></button>
+                <button><i class="bi bi-bell"></i></button>
+
+                <div class="user">
+                    <img src="https://ui-avatars.com/api/?name=Swaroop&background=6C63FF&color=fff" alt="">
+                    <span>Swaroop More</span>
+                </div>
+
+            </div>
+
+        </header>
+
+        <section class="welcome">
+
+            <div>
+                <h1>👋 Welcome Back, Swaroop!</h1>
+                <p>Continue your AI learning journey.</p>
+            </div>
+
+            <img src="../assets/images/student.svg" alt="Robot">
+
+        </section>
+
+        <section class="stats">
+
+            <div class="card">
+                <h3>Documents</h3>
+                <h2>24</h2>
+            </div>
+
+            <div class="card">
+                <h3>AI Chats</h3>
+                <h2>56</h2>
+            </div>
+
+            <div class="card">
+                <h3>Flashcards</h3>
+                <h2>128</h2>
+            </div>
+
+            <div class="card">
+                <h3>Quizzes</h3>
+                <h2>15</h2>
+            </div>
+
+        </section>
+
+        <section class="subjects">
+
+            <div class="section-title">
+                <h2>Your Subjects</h2>
+            </div>
+
+            <div class="subject-grid">
+
+                <div class="subject-card">
+                    <h3>Operating Systems</h3>
+                    <p>8 Documents</p>
+                </div>
+
+                <div class="subject-card">
+                    <h3>DBMS</h3>
+                    <p>6 Documents</p>
+                </div>
+
+                <div class="subject-card">
+                    <h3>Computer Networks</h3>
+                    <p>5 Documents</p>
+                </div>
+
+                <div class="subject-card">
+                    <h3>Python</h3>
+                    <p>7 Documents</p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="quick-actions">
+
+            <div class="section-title">
+                <h2>Quick Actions</h2>
+            </div>
+
+            <div class="action-grid">
+
+                <button>Upload Document</button>
+                <button>Ask AI</button>
+                <button>Generate Flashcards</button>
+                <button>Generate Quiz</button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="../js/dashboard.js"></script>
+
+</body>
+</html>
