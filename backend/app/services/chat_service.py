@@ -4,6 +4,7 @@ from app.ai.llm.gemini_service import GeminiService
 from app.ai.memory.formatter import ConversationFormatter
 from app.ai.memory.memory_service import MemoryService
 from app.ai.prompts.teacher_prompt import TEACHER_PROMPT
+from app.ai.query_rewriter.query_rewriter import QueryRewriter
 from app.ai.retrieval.retriever import Retriever
 from app.models.chat_history import ChatHistory
 from app.repositories.chat_repository import ChatRepository
@@ -17,6 +18,7 @@ class ChatService:
         self.repository = ChatRepository(db)
         self.retriever = Retriever()
         self.llm = GeminiService()
+        self.query_rewriter = QueryRewriter()
 
         # Database-backed conversation memory
         self.memory = MemoryService(db)
@@ -28,9 +30,10 @@ class ChatService:
         subject_id,
     ):
 
-        # -----------------------------
-        # Fetch previous conversation
-        # -----------------------------
+        # ----------------------------------
+        # Conversation Memory
+        # ----------------------------------
+
         history = self.memory.get_recent_history(
             user_id=user_id,
             subject_id=subject_id,
@@ -39,11 +42,23 @@ class ChatService:
 
         history_text = ConversationFormatter.format(history)
 
-        normalized = normalize_question(question)
+        # ----------------------------------
+        # Query Rewriting
+        # ----------------------------------
 
-        # -----------------------------
-        # Exact cache
-        # -----------------------------
+        rewritten_question = self.query_rewriter.rewrite(
+            question=question,
+            history=history_text,
+        )
+
+        normalized = normalize_question(
+            rewritten_question
+        )
+
+        # ----------------------------------
+        # Exact Cache
+        # ----------------------------------
+
         cached = self.repository.get_cached_answer(
             user_id=user_id,
             subject_id=subject_id,
@@ -61,11 +76,12 @@ class ChatService:
 
         print("❌ CACHE MISS")
 
-        # -----------------------------
-        # Retrieve documents
-        # -----------------------------
+        # ----------------------------------
+        # Hybrid Retrieval
+        # ----------------------------------
+
         docs = self.retriever.retrieve(
-            question=question,
+            question=rewritten_question,
             user_id=user_id,
             subject_id=subject_id,
         )
@@ -75,23 +91,26 @@ class ChatService:
             for doc in docs
         )
 
-        # -----------------------------
-        # Build prompt
-        # -----------------------------
+        # ----------------------------------
+        # Teacher Prompt
+        # ----------------------------------
+
         prompt = TEACHER_PROMPT.format(
             history=history_text,
             context=context,
-            question=question,
+            question=rewritten_question,
         )
 
-        # -----------------------------
-        # Generate answer
-        # -----------------------------
+        # ----------------------------------
+        # Generate Answer
+        # ----------------------------------
+
         answer = self.llm.generate(prompt)
 
-        # -----------------------------
-        # Build citations
-        # -----------------------------
+        # ----------------------------------
+        # Build Citations
+        # ----------------------------------
+
         citations = []
 
         for doc in docs:
@@ -104,9 +123,10 @@ class ChatService:
                 }
             )
 
-        # -----------------------------
-        # Save conversation
-        # -----------------------------
+        # ----------------------------------
+        # Save Chat
+        # ----------------------------------
+
         chat = ChatHistory(
             user_id=user_id,
             subject_id=subject_id,
