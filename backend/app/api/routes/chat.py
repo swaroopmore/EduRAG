@@ -6,6 +6,7 @@ from app.schemas.chat import ChatRequest, ChatResponse
 from app.services.chat_service import ChatService
 from sqlalchemy.orm import Session
 from app.database.session import get_db
+
 router = APIRouter(
     prefix="/chat",
     tags=["AI Teacher"],
