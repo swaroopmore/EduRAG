@@ -13,7 +13,10 @@ class ChromaService:
             embedding_function=EmbeddingService().get(),
         )
 
-    def add_documents(self, documents):
+    def add_documents(
+        self,
+        documents,
+    ):
 
         self.db.add_documents(documents)
 
@@ -35,3 +38,37 @@ class ChromaService:
                 ]
             },
         )
+
+    def get_all_documents(
+        self,
+        user_id,
+        subject_id,
+    ):
+
+        result = self.db.get(
+            where={
+                "$and": [
+                    {"user_id": str(user_id)},
+                    {"subject_id": str(subject_id)},
+                ]
+            },
+            include=["metadatas", "documents"],
+        )
+
+        documents = []
+
+        for content, metadata in zip(
+            result["documents"],
+            result["metadatas"],
+        ):
+
+            metadata = metadata or {}
+
+            documents.append(
+                {
+                    "page_content": content,
+                    "metadata": metadata,
+                }
+            )
+
+        return documents

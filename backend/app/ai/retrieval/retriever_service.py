@@ -1,12 +1,11 @@
-from app.ai.reranker.reranker import Reranker
-from app.ai.vectorstore.chroma_service import ChromaService
+from app.ai.retrieval.hybrid_retriever import HybridRetriever
 
 
 class RetrieverService:
 
     def __init__(self):
-        self.vectorstore = ChromaService()
-        self.reranker = Reranker()
+
+        self.retriever = HybridRetriever()
 
     def search(
         self,
@@ -16,19 +15,9 @@ class RetrieverService:
         k: int = 5,
     ):
 
-        # Stage 1: Retrieve more candidate chunks
-        docs = self.vectorstore.search(
-            query=query,
+        return self.retriever.retrieve(
+            question=query,
             user_id=user_id,
             subject_id=subject_id,
-            k=20,
+            k=k,
         )
-
-        # Stage 2: Rerank them
-        docs = self.reranker.rerank(
-            question=query,
-            documents=docs,
-            top_k=k,
-        )
-
-        return docs

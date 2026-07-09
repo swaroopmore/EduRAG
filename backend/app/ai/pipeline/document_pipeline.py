@@ -1,6 +1,7 @@
 from app.ai.chunking.chunker import ChunkingService
 from app.ai.loaders.factory import DocumentLoaderFactory
 from app.ai.vectorstore.chroma_service import ChromaService
+from app.ai.keyword.bm25_service import BM25Service
 
 
 class DocumentPipeline:
@@ -8,6 +9,7 @@ class DocumentPipeline:
     def __init__(self):
         self.chunker = ChunkingService()
         self.vectorstore = ChromaService()
+        self.keyword = BM25Service()
 
     def process(
         self,
@@ -30,5 +32,6 @@ class DocumentPipeline:
             chunk.metadata["filename"] = document.original_filename
 
         self.vectorstore.add_documents(chunks)
+        self.keyword.build(chunks)
 
         return len(chunks)
