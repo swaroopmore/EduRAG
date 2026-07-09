@@ -13,8 +13,30 @@ class GeminiService:
             temperature=0.2,
         )
 
-    def generate(self, prompt):
+    # ----------------------------------------
+    # Normal Generation
+    # ----------------------------------------
+
+    def generate(
+        self,
+        prompt,
+    ):
 
         response = self.llm.invoke(prompt)
 
         return response.content
+
+    # ----------------------------------------
+    # Streaming Generation
+    # ----------------------------------------
+
+    def stream(
+        self,
+        prompt,
+    ):
+
+        for chunk in self.llm.stream(prompt):
+
+            if chunk.content:
+
+                yield chunk.content
