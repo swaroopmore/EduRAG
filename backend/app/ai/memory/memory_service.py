@@ -1,23 +1,27 @@
+from sqlalchemy.orm import Session
+
+from app.models.chat_history import ChatHistory
+
+
 class MemoryService:
 
-    def __init__(self):
-        self.memory = {}
+    def __init__(self, db: Session):
+        self.db = db
 
-    def get_history(self, user_id):
+    def get_recent_history(
+        self,
+        user_id,
+        subject_id,
+        limit: int = 5,
+    ):
 
-        return self.memory.get(str(user_id), [])
-
-    def add_message(self, user_id, role, content):
-
-        user_id = str(user_id)
-
-        if user_id not in self.memory:
-            self.memory[user_id] = []
-
-        self.memory[user_id].append({
-            "role": role,
-            "content": content,
-        })
-
-        # Keep only last 10 messages
-        self.memory[user_id] = self.memory[user_id][-10:]
+        return (
+            self.db.query(ChatHistory)
+            .filter(
+                ChatHistory.user_id == user_id,
+                ChatHistory.subject_id == subject_id,
+            )
+            .order_by(ChatHistory.created_at.desc())
+            .limit(limit)
+            .all()[::-1]
+        )

@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.ai.llm.gemini_service import GeminiService
+from app.ai.memory.formatter import ConversationFormatter
 from app.ai.memory.memory_service import MemoryService
 from app.ai.prompts.teacher_prompt import TEACHER_PROMPT
 from app.ai.retrieval.retriever import Retriever
@@ -16,7 +17,9 @@ class ChatService:
         self.repository = ChatRepository(db)
         self.retriever = Retriever()
         self.llm = GeminiService()
-        self.memory = MemoryService()
+
+        # Database-backed conversation memory
+        self.memory = MemoryService(db)
 
     def ask(
         self,
@@ -25,15 +28,22 @@ class ChatService:
         subject_id,
     ):
 
-        history = self.memory.get_history(user_id)
-
-        history_text = "\n".join(
-            f"{msg['role']}: {msg['content']}"
-            for msg in history
+        # -----------------------------
+        # Fetch previous conversation
+        # -----------------------------
+        history = self.memory.get_recent_history(
+            user_id=user_id,
+            subject_id=subject_id,
+            limit=5,
         )
+
+        history_text = ConversationFormatter.format(history)
 
         normalized = normalize_question(question)
 
+        # -----------------------------
+        # Exact cache
+        # -----------------------------
         cached = self.repository.get_cached_answer(
             user_id=user_id,
             subject_id=subject_id,
@@ -51,6 +61,9 @@ class ChatService:
 
         print("❌ CACHE MISS")
 
+        # -----------------------------
+        # Retrieve documents
+        # -----------------------------
         docs = self.retriever.retrieve(
             question=question,
             user_id=user_id,
@@ -62,26 +75,23 @@ class ChatService:
             for doc in docs
         )
 
+        # -----------------------------
+        # Build prompt
+        # -----------------------------
         prompt = TEACHER_PROMPT.format(
             history=history_text,
             context=context,
             question=question,
         )
 
+        # -----------------------------
+        # Generate answer
+        # -----------------------------
         answer = self.llm.generate(prompt)
 
-        self.memory.add_message(
-            user_id,
-            "user",
-            question,
-        )
-
-        self.memory.add_message(
-            user_id,
-            "assistant",
-            answer,
-        )
-
+        # -----------------------------
+        # Build citations
+        # -----------------------------
         citations = []
 
         for doc in docs:
@@ -94,6 +104,9 @@ class ChatService:
                 }
             )
 
+        # -----------------------------
+        # Save conversation
+        # -----------------------------
         chat = ChatHistory(
             user_id=user_id,
             subject_id=subject_id,
