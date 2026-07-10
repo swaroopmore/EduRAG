@@ -1,113 +1,58 @@
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "http://127.0.0.1:8000/auth/register";
 
 const form = document.getElementById("registerForm");
 
-const password = document.getElementById("password");
-const confirmPassword = document.getElementById("confirmPassword");
+form.addEventListener("submit", register);
 
-const togglePassword = document.getElementById("togglePassword");
+async function register(event) {
 
-togglePassword.addEventListener("click", () => {
+    event.preventDefault();
 
-    if (password.type === "password") {
+    const full_name = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
-        password.type = "text";
-
-        togglePassword.innerHTML =
-            '<i class="bi bi-eye-slash"></i>';
-
-    } else {
-
-        password.type = "password";
-
-        togglePassword.innerHTML =
-            '<i class="bi bi-eye"></i>';
-    }
-
-});
-
-form.addEventListener("submit", async (e) => {
-
-    e.preventDefault();
-
-    const fullName =
-        document.getElementById("fullName").value.trim();
-
-    const email =
-        document.getElementById("email").value.trim();
-
-    const passwordValue =
-        password.value.trim();
-
-    const confirmValue =
-        confirmPassword.value.trim();
-
-    if (
-        fullName === "" ||
-        email === "" ||
-        passwordValue === "" ||
-        confirmValue === ""
-    ) {
-
-        alert("Please fill all fields.");
-
-        return;
-    }
-
-    if (passwordValue !== confirmValue) {
-
+    if (password !== confirmPassword) {
         alert("Passwords do not match.");
-
         return;
     }
 
     try {
 
-        const response = await fetch(
-            API_URL + "/auth/register",
-            {
+        const response = await fetch(API_URL, {
 
-                method: "POST",
+            method: "POST",
 
-                headers: {
-                    "Content-Type": "application/json",
-                },
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-                body: JSON.stringify({
+            body: JSON.stringify({
+                full_name,
+                email,
+                password
+            })
 
-                    full_name: fullName,
-
-                    email: email,
-
-                    password: passwordValue,
-
-                }),
-
-            }
-        );
+        });
 
         const data = await response.json();
 
-        if (response.ok) {
-
-            alert("Registration Successful!");
-
-            window.location.href = "../../index.html";
-
-        } else {
-
-            alert(
-                data.detail || "Registration Failed."
-            );
-
+        if (!response.ok) {
+            alert(data.detail);
+            return;
         }
+
+        alert("Registration Successful!");
+
+        window.location.href = "login.html";
 
     } catch (error) {
 
         console.error(error);
 
-        alert("Unable to connect to backend.");
+        alert("Unable to connect to server.");
 
     }
 
-});
+}
