@@ -32,6 +32,10 @@ class DocumentPipeline:
             chunk.metadata["filename"] = document.original_filename
 
         self.vectorstore.add_documents(chunks)
-        self.keyword.build(chunks)
+        self.keyword.build(
+    user_id=str(user.id),
+    subject_id=str(document.subject_id),
+    documents=chunks,
+)
 
         return len(chunks)
