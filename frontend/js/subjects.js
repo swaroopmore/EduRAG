@@ -68,34 +68,42 @@ function renderSubjects(subjects) {
 
     subjects.forEach(subject => {
 
-        const card = document.createElement("div");
+    const card = document.createElement("div");
 
-        card.className = "subject-card";
+    card.className = "subject-card";
 
-        card.innerHTML = `
+    card.innerHTML = `
 
-            <div class="icon purple">
+        <div class="icon purple">
+            <i class="bi bi-book"></i>
+        </div>
 
-                <i class="bi bi-book"></i>
+        <h3>${subject.name}</h3>
 
-            </div>
+        <p>${subject.description ?? ""}</p>
 
-            <h3>${subject.name}</h3>
+        <small>
+            Created:
+            ${new Date(subject.created_at).toLocaleDateString()}
+        </small>
 
-            <p>${subject.description}</p>
+    `;
 
-            <small>
+    card.style.cursor = "pointer";
 
-                Created:
-                ${new Date(subject.created_at).toLocaleDateString()}
+    card.addEventListener("click", () => {
 
-            </small>
+        localStorage.setItem("subject_id", subject.id);
+        localStorage.setItem("subject_name", subject.name);
 
-        `;
-
-        container.appendChild(card);
+        window.location.href =
+            "documents.html?subject_id=" + subject.id;
 
     });
+
+    container.appendChild(card);
+
+});
 
 }
 
