@@ -10,6 +10,15 @@ from app.services.document_service import DocumentService
 
 from app.models.user import User
 from app.auth.dependencies import get_current_user
+from uuid import UUID
+
+from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.database.session import get_db
+from app.repositories.document_repository import DocumentRepository
+from app.schemas.document import DocumentResponse
+from app.services.document_service import DocumentService
 
 router = APIRouter(
     prefix="/documents",
@@ -37,3 +46,19 @@ async def upload_document(
         subject_id,
         current_user,
     )
+
+
+@router.get(
+    "/{subject_id}",
+    response_model=list[DocumentResponse],
+)
+def get_documents(
+    subject_id: UUID,
+    db: Session = Depends(get_db),
+):
+
+    service = DocumentService(
+        DocumentRepository(db)
+    )
+
+    return service.get_documents(subject_id)

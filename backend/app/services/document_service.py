@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from fastapi import UploadFile
 
 from app.ai.pipeline.document_pipeline import DocumentPipeline
@@ -44,3 +46,9 @@ class DocumentService:
         )
 
         return document
+
+    def get_documents(
+        self,
+        subject_id: UUID,
+    ):
+        return self.repository.get_documents_by_subject(subject_id)
