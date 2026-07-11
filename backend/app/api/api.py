@@ -1,15 +1,16 @@
 from fastapi import APIRouter
 
 from app.api.routes import (
-    health,
-    database,
     auth,
-    subject,
-    documents,
     chat,
+    dashboard,
+    database,
+    documents,
+    flashcards,
+    health,
+    subject,
     test_ai,
     test_retriever,
-    dashboard,
 )
 
 api_router = APIRouter()
@@ -27,21 +28,40 @@ api_router.include_router(
 )
 
 # Authentication
-api_router.include_router(auth.router)
+api_router.include_router(
+    auth.router,
+)
 
 # Dashboard
-api_router.include_router(dashboard.router)
+api_router.include_router(
+    dashboard.router,
+)
 
 # Subjects
-api_router.include_router(subject.router)
+api_router.include_router(
+    subject.router,
+)
 
 # Documents
-api_router.include_router(documents.router)
+api_router.include_router(
+    documents.router,
+)
+
+# Flashcards
+api_router.include_router(
+    flashcards.router,
+)
 
 # Chat
-api_router.include_router(chat.router)
+api_router.include_router(
+    chat.router,
+)
 
 # AI Tests
-api_router.include_router(test_ai.router)
+api_router.include_router(
+    test_ai.router,
+)
 
-api_router.include_router(test_retriever.router)
+api_router.include_router(
+    test_retriever.router,
+)

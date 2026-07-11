@@ -36,3 +36,9 @@ class User(UUIDMixin, TimestampMixin, Base):
         back_populates="user",
         cascade="all, delete-orphan",
     )
+
+    flashcards = relationship(
+    "Flashcard",
+    back_populates="user",
+    cascade="all, delete-orphan",
+)

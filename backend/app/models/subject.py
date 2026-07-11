@@ -31,3 +31,10 @@ class Subject(UUIDMixin, TimestampMixin, Base):
     back_populates="subject",
     cascade="all, delete-orphan",
 )
+
+
+    flashcards = relationship(
+    "Flashcard",
+    back_populates="subject",
+    cascade="all, delete-orphan",
+)
