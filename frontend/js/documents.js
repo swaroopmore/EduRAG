@@ -6,6 +6,7 @@ const uploadBtn = document.getElementById("uploadBtn");
 const fileInput = document.getElementById("fileInput");
 
 const params = new URLSearchParams(window.location.search);
+
 const subjectId = params.get("subject_id");
 
 console.log("Subject ID:", subjectId);
@@ -51,6 +52,8 @@ async function loadDocuments() {
 
             {
 
+                method: "GET",
+
                 headers: {
 
                     "Authorization": "Bearer " + token
@@ -63,11 +66,17 @@ async function loadDocuments() {
 
         if (!response.ok) {
 
-            throw new Error("Unable to load documents.");
+            const error = await response.text();
+
+            console.error(error);
+
+            throw new Error(error);
 
         }
 
         const documents = await response.json();
+
+        console.log("Documents:", documents);
 
         renderDocuments(documents);
 
@@ -77,30 +86,33 @@ async function loadDocuments() {
 
         console.error(error);
 
-        alert("Unable to load documents.");
+        alert(error.message);
 
     }
 
 }
 
+
 function renderDocuments(documents) {
 
-    const container = document.getElementById("documentsContainer");
+    const container =
+        document.getElementById("documentsContainer");
 
     container.innerHTML = "";
 
     let pdfCount = 0;
+
     let totalSize = 0;
 
-    documents.forEach(document => {
+    documents.forEach(doc => {
 
-        if (document.file_type.toLowerCase() === "pdf") {
+        if (doc.file_type.toLowerCase() === "pdf") {
 
             pdfCount++;
 
         }
 
-        totalSize += document.file_size;
+        totalSize += doc.file_size;
 
         const row = document.createElement("tr");
 
@@ -110,25 +122,25 @@ function renderDocuments(documents) {
 
                 <i class="bi bi-file-earmark-pdf-fill"></i>
 
-                ${document.original_filename}
+                ${doc.original_filename}
 
             </td>
 
             <td>
 
-                ${document.file_type.toUpperCase()}
+                ${doc.file_type.toUpperCase()}
 
             </td>
 
             <td>
 
-                ${(document.file_size / 1024).toFixed(1)} KB
+                ${(doc.file_size / 1024).toFixed(1)} KB
 
             </td>
 
             <td>
 
-                ${new Date(document.created_at).toLocaleDateString()}
+                ${new Date(doc.created_at).toLocaleDateString()}
 
             </td>
 
@@ -136,7 +148,7 @@ function renderDocuments(documents) {
 
                 <button class="primary">
 
-                    Chat
+                    AI Chat
 
                 </button>
 
@@ -180,6 +192,8 @@ async function uploadDocument() {
         uploadBtn.innerHTML =
             '<i class="bi bi-arrow-repeat"></i> Uploading...';
 
+        console.log("Uploading:", file.name);
+
         const response = await fetch(
 
             `${API_URL}/upload/${subjectId}`,
@@ -190,7 +204,7 @@ async function uploadDocument() {
 
                 headers: {
 
-                    "Authorization": "Bearer " + token
+                    Authorization: `Bearer ${token}`
 
                 },
 
@@ -200,9 +214,15 @@ async function uploadDocument() {
 
         );
 
+        console.log("Status Code:", response.status);
+
+        const responseText = await response.text();
+
+        console.log("Response:", responseText);
+
         if (!response.ok) {
 
-            throw new Error("Upload failed.");
+            throw new Error(responseText);
 
         }
 
@@ -216,9 +236,9 @@ async function uploadDocument() {
 
     catch (error) {
 
-        console.error(error);
+        console.error("Upload Error:", error);
 
-        alert("❌ Upload failed.");
+        alert(error.message);
 
     }
 

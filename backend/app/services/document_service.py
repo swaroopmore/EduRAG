@@ -10,10 +10,12 @@ from app.services.storage_service import StorageService
 
 class DocumentService:
 
-    def __init__(self, repository: DocumentRepository):
+    def __init__(
+        self,
+        repository: DocumentRepository,
+    ):
         self.repository = repository
         self.storage = StorageService()
-        self.pipeline = DocumentPipeline()
 
     async def upload(
         self,
@@ -35,10 +37,14 @@ class DocumentService:
             subject_id=subject_id,
         )
 
+        # Save to PostgreSQL
         document = self.repository.create(document)
 
-        # Process document (Load → Chunk → Embed → Store in ChromaDB)
-        self.pipeline.process(
+        # Create pipeline only for uploads
+        pipeline = DocumentPipeline()
+
+        # Process document
+        pipeline.process(
             uploaded["path"],
             uploaded["type"],
             document,
@@ -51,4 +57,6 @@ class DocumentService:
         self,
         subject_id: UUID,
     ):
-        return self.repository.get_documents_by_subject(subject_id)
+        return self.repository.get_documents_by_subject(
+            subject_id
+        )
