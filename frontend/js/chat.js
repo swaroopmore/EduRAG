@@ -1,211 +1,306 @@
 const API_URL = "http://127.0.0.1:8000/chat/ask";
 
-const messages = document.querySelector(".messages");
-const textarea = document.querySelector("textarea");
-const sendBtn = document.querySelector(".send-btn");
-const suggestionButtons =
-    document.querySelectorAll(".suggestions button");
+const token = localStorage.getItem("token");
 
-suggestionButtons.forEach((button) => {
+const params = new URLSearchParams(window.location.search);
 
-    button.addEventListener("click", () => {
+const subjectId =
+    params.get("subject_id");
 
-        textarea.value = button.innerText;
+const subjectName =
+    localStorage.getItem("subject_name");
 
-        textarea.focus();
+const chatMessages =
+    document.getElementById("chatMessages");
 
-    });
+const questionInput =
+    document.getElementById("questionInput");
+
+const sendBtn =
+    document.getElementById("sendBtn");
+
+const newChatBtn =
+    document.getElementById("newChatBtn");
+
+window.addEventListener("DOMContentLoaded", () => {
+
+    if (!token) {
+
+        window.location.href = "login.html";
+
+        return;
+
+    }
+
+    if (!subjectId) {
+
+        alert("No subject selected.");
+
+        window.location.href = "subjects.html";
+
+        return;
+
+    }
+
+    document.getElementById("subjectTitle").innerText =
+        "🤖 " + subjectName;
 
 });
 
-textarea.addEventListener("keydown", (event) => {
+sendBtn.addEventListener("click", () => {
+
+    sendMessage();
+
+});
+
+questionInput.addEventListener("keydown", (event) => {
 
     if (event.key === "Enter" && !event.shiftKey) {
 
         event.preventDefault();
 
-        sendBtn.click();
+        sendMessage();
 
     }
 
 });
 
-sendBtn.addEventListener("click", sendMessage);
+function sendMessage() {
 
-async function sendMessage() {
+    const question = questionInput.value.trim();
 
-    const question = textarea.value.trim();
+    if (question === "") {
 
-    if (!question) return;
-
-    addUserMessage(question);
-
-    textarea.value = "";
-
-    const typing = addTypingIndicator();
-
-    try {
-
-        const token =
-            localStorage.getItem("token") || "";
-
-        const subjectId =
-            localStorage.getItem("subject_id") || "";
-
-        const response = await fetch(API_URL, {
-
-            method: "POST",
-
-            headers: {
-
-                "Content-Type": "application/json",
-
-                "Authorization":
-                    "Bearer " + token,
-
-            },
-
-            body: JSON.stringify({
-
-                question: question,
-
-                subject_id: subjectId,
-
-            }),
-
-        });
-
-        removeTypingIndicator(typing);
-
-        if (!response.ok) {
-
-            addAIMessage(
-                "Unable to get a response from EduRAG."
-            );
-
-            return;
-
-        }
-
-        const data = await response.json();
-
-        addAIMessage(
-
-            data.answer || "No response received."
-
-        );
-
-    } catch (error) {
-
-        console.error(error);
-
-        removeTypingIndicator(typing);
-
-        addAIMessage(
-            "Unable to connect to the backend."
-        );
+        return;
 
     }
 
+    addUserMessage(question);
+
+    questionInput.value = "";
+
+    questionInput.focus();
+
+    showThinking();
+
 }
 
-function addUserMessage(text) {
+function addUserMessage(message) {
 
-    messages.insertAdjacentHTML(
-        "beforeend",
-        `
-        <div class="user-message">
+    const messageDiv = document.createElement("div");
 
-            <div class="bubble">
+    messageDiv.className = "user-message";
 
-                ${escapeHtml(text)}
+    messageDiv.innerHTML = `
 
-            </div>
+        <div class="bubble">
+
+            ${message}
 
         </div>
-        `
-    );
 
-    scrollBottom();
-
-}
-
-function addAIMessage(text) {
-
-    messages.insertAdjacentHTML(
-        "beforeend",
-        `
-        <div class="ai-message">
-
-            <div class="avatar">
-
-                <i class="bi bi-robot"></i>
-
-            </div>
-
-            <div class="bubble">
-
-                ${escapeHtml(text).replace(/\n/g, "<br>")}
-
-            </div>
-
-        </div>
-        `
-    );
-
-    scrollBottom();
-
-}
-
-function addTypingIndicator() {
-
-    const node = document.createElement("div");
-
-    node.className = "ai-message";
-
-    node.innerHTML = `
         <div class="avatar">
 
-            <i class="bi bi-robot"></i>
+            👤
+
+        </div>
+
+    `;
+
+    chatMessages.appendChild(messageDiv);
+
+    scrollToBottom();
+
+}
+
+function showThinking() {
+
+    const thinking = document.createElement("div");
+
+    thinking.className = "ai-message";
+
+    thinking.id = "thinking";
+
+    thinking.innerHTML = `
+
+        <div class="avatar">
+
+            🤖
 
         </div>
 
         <div class="bubble">
 
-            <strong>EduRAG is typing...</strong>
+            Thinking...
 
         </div>
+
     `;
 
-    messages.appendChild(node);
+    chatMessages.appendChild(thinking);
 
-    scrollBottom();
-
-    return node;
+    scrollToBottom();
 
 }
 
-function removeTypingIndicator(node) {
+function removeThinking() {
 
-    if (node) {
+    const thinking = document.getElementById("thinking");
 
-        node.remove();
+    if (thinking) {
+
+        thinking.remove();
 
     }
 
 }
 
-function scrollBottom() {
+function scrollToBottom() {
 
-    messages.scrollTop = messages.scrollHeight;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 
 }
 
-function escapeHtml(text) {
+async function sendMessage() {
 
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+    const question = questionInput.value.trim();
+
+    if (question === "") {
+
+        return;
+
+    }
+
+    addUserMessage(question);
+
+    questionInput.value = "";
+
+    questionInput.focus();
+
+    showThinking();
+
+    try {
+
+        const response = await fetch(
+
+            API_URL,
+
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type": "application/json",
+
+                    "Authorization": "Bearer " + token
+
+                },
+
+                body: JSON.stringify({
+
+                    question: question,
+
+                    subject_id: subjectId
+
+                })
+
+            }
+
+        );
+
+        if (!response.ok) {
+
+            const error = await response.text();
+
+            throw new Error(error);
+
+        }
+
+        const data = await response.json();
+
+        removeThinking();
+
+        addAIMessage(data.answer,data.citations);
+
+    }
+
+    catch (error) {
+
+        removeThinking();
+
+        console.error(error);
+
+        addAIMessage(
+
+            "❌ Unable to get response from AI."
+
+        );
+
+    }
+
+}
+
+function addAIMessage(answer, citations = []) {
+
+    const messageDiv = document.createElement("div");
+
+    messageDiv.className = "ai-message";
+
+    let citationsHTML = "";
+
+    if (citations.length > 0) {
+
+        citationsHTML = `
+
+            <div class="citations">
+
+                <h4>Sources</h4>
+
+                ${citations.map(citation => `
+
+                    <div class="citation">
+
+                        <strong>${citation.document}</strong>
+
+                        <br>
+
+                        Page ${citation.page}
+
+                        <br>
+
+                        <small>${citation.snippet}</small>
+
+                    </div>
+
+                `).join("")}
+
+            </div>
+
+        `;
+
+    }
+
+    messageDiv.innerHTML = `
+
+        <div class="avatar">
+
+            🤖
+
+        </div>
+
+        <div class="bubble">
+
+            ${answer.replace(/\n/g, "<br>")}
+
+            ${citationsHTML}
+
+        </div>
+
+    `;
+
+    chatMessages.appendChild(messageDiv);
+
+    scrollToBottom();
 
 }

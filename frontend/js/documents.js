@@ -144,19 +144,43 @@ function renderDocuments(documents) {
 
             </td>
 
-            <td>
+          <td>
 
-                <button class="primary">
+    <button
+        class="primary chat-btn"
+        data-subject="${subjectId}"
+        data-document="${doc.id}"
+    >
 
-                    AI Chat
+        AI Chat
 
-                </button>
+    </button>
 
-            </td>
+</td>
 
         `;
 
         container.appendChild(row);
+        const chatBtn = row.querySelector(".chat-btn");
+
+chatBtn.addEventListener("click", () => {
+
+    localStorage.setItem("subject_id", subjectId);
+
+    localStorage.setItem(
+        "document_id",
+        doc.id
+    );
+
+    localStorage.setItem(
+        "document_name",
+        doc.original_filename
+    );
+
+    window.location.href =
+        `chat.html?subject_id=${subjectId}&document_id=${doc.id}`;
+
+});
 
     });
 
