@@ -4,6 +4,7 @@ from app.models.document import Document
 from app.models.chat_history import ChatHistory
 from app.models.flashcard import Flashcard
 from app.models.quiz import Quiz
+from app.models.note import Note
 
 __all__ = [
     "User",
@@ -12,4 +13,5 @@ __all__ = [
     "ChatHistory",
     "Flashcard",
     "Quiz",
+    "Note",
 ]

@@ -158,6 +158,14 @@ function renderDocuments(documents) {
 
                 </button>
 
+                <button
+                    class="secondary"
+                    onclick="openNotes()">
+
+                    Notes
+
+                </button>
+
             </td>
 
         `;
@@ -279,5 +287,12 @@ function openQuiz() {
 
     window.location.href =
         `quizes.html?subject_id=${subjectId}`;
+
+}
+
+function openNotes() {
+
+    window.location.href =
+        `notes.html?subject_id=${subjectId}`;
 
 }
