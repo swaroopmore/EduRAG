@@ -101,15 +101,12 @@ function renderDocuments(documents) {
     container.innerHTML = "";
 
     let pdfCount = 0;
-
     let totalSize = 0;
 
     documents.forEach(doc => {
 
         if (doc.file_type.toLowerCase() === "pdf") {
-
             pdfCount++;
-
         }
 
         totalSize += doc.file_size;
@@ -119,74 +116,53 @@ function renderDocuments(documents) {
         row.innerHTML = `
 
             <td>
-
                 <i class="bi bi-file-earmark-pdf-fill"></i>
-
                 ${doc.original_filename}
-
             </td>
 
             <td>
-
                 ${doc.file_type.toUpperCase()}
-
             </td>
 
             <td>
-
                 ${(doc.file_size / 1024).toFixed(1)} KB
+            </td>
 
+            <td>
+                ${new Date(doc.created_at).toLocaleDateString()}
             </td>
 
             <td>
 
-                ${new Date(doc.created_at).toLocaleDateString()}
+                <button
+                    class="primary"
+                    onclick="openChat()">
+
+                    AI Chat
+
+                </button>
+
+                <button
+                    class="secondary"
+                    onclick="openFlashcards()">
+
+                    Flashcards
+
+                </button>
+
+                <button
+                    class="secondary"
+                    onclick="openQuiz()">
+
+                    Quiz
+
+                </button>
 
             </td>
-
-         <td>
-
-    <button
-        class="primary"
-        onclick="openChat()">
-
-        AI Chat
-
-    </button>
-
-    <button
-        class="secondary"
-        onclick="openFlashcards()">
-
-        Flashcards
-
-    </button>
-
-</td>
 
         `;
 
         container.appendChild(row);
-        const chatBtn = row.querySelector(".chat-btn");
-
-chatBtn.addEventListener("click", () => {
-
-    localStorage.setItem("subject_id", subjectId);
-
-    localStorage.setItem(
-        "document_id",
-        doc.id
-    );
-
-    localStorage.setItem(
-        "document_name",
-        doc.original_filename
-    );
-
-    window.location.href =
-        `chat.html?subject_id=${subjectId}&document_id=${doc.id}`;
-
-});
 
     });
 
@@ -296,5 +272,12 @@ function openFlashcards() {
     window.location.href =
 
         `flashcards.html?subject_id=${subjectId}`;
+
+}
+
+function openQuiz() {
+
+    window.location.href =
+        `quizes.html?subject_id=${subjectId}`;
 
 }
