@@ -144,15 +144,21 @@ function renderDocuments(documents) {
 
             </td>
 
-          <td>
+         <td>
 
     <button
-        class="primary chat-btn"
-        data-subject="${subjectId}"
-        data-document="${doc.id}"
-    >
+        class="primary"
+        onclick="openChat()">
 
         AI Chat
+
+    </button>
+
+    <button
+        class="secondary"
+        onclick="openFlashcards()">
+
+        Flashcards
 
     </button>
 
@@ -274,5 +280,21 @@ async function uploadDocument() {
             '<i class="bi bi-cloud-upload"></i> Upload Files';
 
     }
+
+}
+
+function openChat() {
+
+    window.location.href =
+
+        `chat.html?subject_id=${subjectId}`;
+
+}
+
+function openFlashcards() {
+
+    window.location.href =
+
+        `flashcards.html?subject_id=${subjectId}`;
 
 }
