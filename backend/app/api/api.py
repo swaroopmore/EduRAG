@@ -10,7 +10,7 @@ from app.api.routes import (
     health,
     subject,
     test_ai,
-    test_retriever,quiz,notes,
+    test_retriever,quiz,notes,study_plan,
 )
 
 api_router = APIRouter()
@@ -73,4 +73,9 @@ api_router.include_router(
 
 api_router.include_router(
     notes.router,
+)
+
+#study plan
+api_router.include_router(
+    study_plan.router,
 )

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduRAG • Study Planner</title>
+<link rel="stylesheet" href="../css/stydyplanner.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+<div class="page">
+<header class="hero">
+<div>
+<h1 id="subjectTitle">Study Planner</h1>
+<p>Create an AI-generated day-by-day study schedule from your uploaded documents.</p>
+</div>
+<button id="generateBtn" class="primary-btn"><i class="bi bi-stars"></i> Generate Study Plan</button>
+</header>
+
+<section class="stats">
+<div class="stat-card"><h3>Total Days</h3><h2 id="totalDays">0</h2></div>
+<div class="stat-card"><h3>Total Sessions</h3><h2 id="totalSessions">0</h2></div>
+<div class="stat-card"><h3>Total Study Time</h3><h2 id="totalDuration">0 hrs</h2></div>
+</section>
+
+<div class="planner-layout">
+<main>
+<div id="timelineContainer">
+<div class="empty-state">
+<i class="bi bi-calendar-week"></i>
+<h2>No Study Plan Yet</h2>
+<p>Click <strong>Generate Study Plan</strong> to build a personalized learning schedule.</p>
+</div>
+</div>
+</main>
+
+<aside class="sidebar">
+<div class="summary-card">
+<h3>Planner Summary</h3>
+<p><strong>Subject</strong></p>
+<p id="summarySubject">-</p>
+<hr>
+<p><strong>Total Days</strong></p>
+<p id="summaryDays">0</p>
+<p><strong>Total Sessions</strong></p>
+<p id="summarySessions">0</p>
+<p><strong>Total Duration</strong></p>
+<p id="summaryDuration">0 hrs</p>
+</div>
+
+<div class="tips-card">
+<h3>Study Tips</h3>
+<ul>
+<li>Follow the plan consistently.</li>
+<li>Take short breaks.</li>
+<li>Revise daily.</li>
+<li>Complete one day before the next.</li>
+</ul>
+</div>
+</aside>
+</div>
+</div>
+<script src="../js/studyplanner.js"></script>
+</body>
+</html>

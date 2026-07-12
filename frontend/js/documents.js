@@ -116,20 +116,29 @@ function renderDocuments(documents) {
         row.innerHTML = `
 
             <td>
+
                 <i class="bi bi-file-earmark-pdf-fill"></i>
+
                 ${doc.original_filename}
+
             </td>
 
             <td>
+
                 ${doc.file_type.toUpperCase()}
+
             </td>
 
             <td>
+
                 ${(doc.file_size / 1024).toFixed(1)} KB
+
             </td>
 
             <td>
+
                 ${new Date(doc.created_at).toLocaleDateString()}
+
             </td>
 
             <td>
@@ -163,6 +172,14 @@ function renderDocuments(documents) {
                     onclick="openNotes()">
 
                     Notes
+
+                </button>
+
+                <button
+                    class="secondary"
+                    onclick="openStudyPlanner()">
+
+                    Study Planner
 
                 </button>
 
@@ -294,5 +311,12 @@ function openNotes() {
 
     window.location.href =
         `notes.html?subject_id=${subjectId}`;
+
+}
+
+function openStudyPlanner() {
+
+    window.location.href =
+        `studyplanner.html?subject_id=${subjectId}`;
 
 }
