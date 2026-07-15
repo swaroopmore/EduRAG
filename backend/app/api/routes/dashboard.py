@@ -1,27 +1,47 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.database.session import get_db
 from app.auth.dependencies import get_current_user
+from app.database.session import get_db
+
 from app.models.user import User
 
+from app.repositories.dashboard_repository import DashboardRepository
+from app.schemas.dashboard import DashboardResponse
+from app.services.dashboard_service import DashboardService
+
+
 router = APIRouter(
+
     prefix="/dashboard",
-    tags=["Dashboard"],
+
+    tags=["Dashboard"]
+
 )
 
 
-@router.get("")
-def dashboard(
-    current_user: User = Depends(get_current_user),
+@router.get(
+
+    "",
+
+    response_model=DashboardResponse
+
+)
+
+def get_dashboard(
+
     db: Session = Depends(get_db),
+
+    current_user: User = Depends(get_current_user),
+
 ):
 
-    return {
-        "full_name": current_user.full_name,
-        "subjects": 0,
-        "documents": 0,
-        "ai_chats": 0,
-        "flashcards": 0,
-        "quizzes": 0,
-    }
+    repository = DashboardRepository(db)
+
+    service = DashboardService(repository)
+
+    return service.get_dashboard(
+
+        current_user.id
+
+    )

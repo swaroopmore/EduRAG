@@ -1,56 +1,213 @@
-const API_URL = "http://127.0.0.1:8000/dashboard";
+/* ============================================
+   EduRAG Dashboard
+============================================ */
 
-window.onload = loadDashboard;
+const API_BASE =
 
-async function loadDashboard() {
+    "http://127.0.0.1:8000";
 
-    const token = localStorage.getItem("token");
+const token =
 
-    if (!token) {
-        window.location.href = "login.html";
-        return;
-    }
+    localStorage.getItem(
+        "token"
+    );
+
+if (!token) {
+
+    window.location.href =
+
+        "login.html";
+
+}
+
+const userName =
+
+    localStorage.getItem(
+        "user_name"
+    ) || "Student";
+
+const profileName =
+
+    document.getElementById(
+        "profileName"
+    );
+
+const dashboardName =
+
+    document.getElementById(
+        "userName"
+    );
+
+const avatar =
+
+    document.getElementById(
+        "profileAvatar"
+    );
+
+profileName.innerText =
+
+    userName;
+
+dashboardName.innerText =
+
+    userName;
+
+avatar.innerText =
+
+    userName
+
+        .split(" ")
+
+        .map(
+
+            word =>
+
+                word[0]
+
+        )
+
+        .join("");
+
+const greetingText =
+
+    document.getElementById(
+        "greetingText"
+    );
+
+const hour =
+
+    new Date().getHours();
+
+if (hour < 12) {
+
+    greetingText.innerHTML =
+
+        "Good Morning 👋";
+
+}
+
+else if (hour < 17) {
+
+    greetingText.innerHTML =
+
+        "Good Afternoon 👋";
+
+}
+
+else {
+
+    greetingText.innerHTML =
+
+        "Good Evening 👋";
+
+}
+
+let subjects = [];
+
+let documents = [];
+
+let activities = [];
+
+init();
+
+async function init() {
+
+    console.log(
+
+        "Dashboard Loaded"
+
+    );
+    await loadStatistics();
+
+}
+
+/* ============================================
+   Load Dashboard Statistics
+============================================ */
+
+async function loadStatistics() {
 
     try {
 
-        const response = await fetch(API_URL, {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + token
+        const response = await fetch(
+
+            `${API_BASE}/subjects`,
+
+            {
+
+                headers: {
+
+                    Authorization:
+
+                        "Bearer " + token
+
+                }
+
             }
-        });
+
+        );
 
         if (!response.ok) {
-            throw new Error("Unauthorized");
+
+            throw new Error(
+
+                "Unable to load subjects."
+
+            );
+
         }
 
-        const data = await response.json();
+        subjects =
 
-        document.getElementById("welcomeName").innerText =
-            data.full_name;
+            await response.json();
 
-        document.getElementById("subjectsCount").innerText =
-            data.subjects;
+        document.getElementById(
 
-        document.getElementById("documentsCount").innerText =
-            data.documents;
+            "subjectsCount"
 
-        document.getElementById("chatCount").innerText =
-            data.ai_chats;
+        ).innerText =
 
-        document.getElementById("flashcardCount").innerText =
-            data.flashcards;
+            subjects.length;
 
-        document.getElementById("quizCount").innerText =
-            data.quizzes;
+        document.getElementById(
 
-    } catch (error) {
+            "documentsCount"
 
-        console.error(error);
+        ).innerText =
 
-        localStorage.removeItem("token");
+            subjects.reduce(
 
-        window.location.href = "login.html";
+                (
+
+                    total,
+
+                    subject
+
+                ) =>
+
+                    total +
+
+                    (
+
+                        subject.document_count ||
+
+                        0
+
+                    ),
+
+                0
+
+            );
+
+    }
+
+    catch (error) {
+
+        console.error(
+
+            error
+
+        );
 
     }
 
