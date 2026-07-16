@@ -1,6 +1,6 @@
 const API_URL = "http://127.0.0.1:8000/subjects";
 
-const token = localStorage.getItem("token");
+const token = localStorage.getItem("access_token");
 
 const container = document.getElementById("subjectsContainer");
 

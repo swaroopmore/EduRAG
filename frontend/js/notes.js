@@ -2,7 +2,7 @@ const API_URL =
     "http://127.0.0.1:8000/notes";
 
 const token =
-    localStorage.getItem("token");
+    localStorage.getItem("access_token");
 
 const params =
     new URLSearchParams(

@@ -1,227 +1,290 @@
-/* ============================================
+/* =====================================================
    EduRAG Dashboard
-============================================ */
+   Part 1
+   Constants • Authentication • Initialization
+===================================================== */
 
-const API_BASE =
 
-    "http://127.0.0.1:8000";
+/* =====================================================
+   API Configuration
+===================================================== */
 
-const token =
+const API_BASE = "http://127.0.0.1:8000";
 
-    localStorage.getItem(
-        "token"
-    );
+
+/* =====================================================
+   Authentication
+===================================================== */
+
+const token = localStorage.getItem("access_token");
 
 if (!token) {
 
-    window.location.href =
+    window.location.href = "login.html";
 
+}
+
+
+
+/* =====================================================
+   DOM Elements
+===================================================== */
+
+const userName =
+    document.getElementById("userName");
+
+const greetingText =
+    document.getElementById("greetingText");
+
+const footerYear =
+    document.getElementById("footerYear");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+const dashboardSearch =
+    document.getElementById("dashboardSearch");
+
+
+
+/* =====================================================
+   Dashboard Cards
+===================================================== */
+
+const subjectsCount =
+    document.getElementById("subjectsCount");
+
+const documentsCount =
+    document.getElementById("documentsCount");
+
+const flashcardsCount =
+    document.getElementById("flashcardsCount");
+
+const quizCount =
+    document.getElementById("quizCount");
+
+const notesCount =
+    document.getElementById("notesCount");
+
+const plannerCount =
+    document.getElementById("plannerCount");
+
+const storageUsed =
+    document.getElementById("storageUsed");
+
+
+
+/* =====================================================
+   Continue Learning
+===================================================== */
+
+const continueSubject =
+    document.getElementById("continueSubject");
+
+const continueTime =
+    document.getElementById("continueTime");
+
+const documentCount =
+    document.getElementById("documentCount");
+
+const learningProgress =
+    document.getElementById("learningProgress");
+
+
+
+/* =====================================================
+   Containers
+===================================================== */
+
+const subjectGrid =
+    document.getElementById("subjectGrid");
+
+const documentsContainer =
+    document.getElementById("documentsContainer");
+
+const recentActivity =
+    document.getElementById("recentActivity");
+
+
+
+/* =====================================================
+   Greeting
+===================================================== */
+
+function setGreeting() {
+
+    const hour =
+        new Date().getHours();
+
+    if (hour < 12) {
+
+        greetingText.textContent =
+            "🌅 Good Morning";
+
+    }
+
+    else if (hour < 17) {
+
+        greetingText.textContent =
+            "☀️ Good Afternoon";
+
+    }
+
+    else {
+
+        greetingText.textContent =
+            "🌙 Good Evening";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   Footer
+===================================================== */
+
+function setFooterYear() {
+
+    footerYear.textContent =
+        new Date().getFullYear();
+
+}
+
+
+
+/* =====================================================
+   Logout
+===================================================== */
+
+function logout() {
+
+    localStorage.removeItem(
+        "access_token"
+    );
+
+    window.location.href =
         "login.html";
 
 }
 
-const userName =
+logoutBtn.addEventListener(
 
-    localStorage.getItem(
-        "user_name"
-    ) || "Student";
+    "click",
 
-const profileName =
+    logout
 
-    document.getElementById(
-        "profileName"
-    );
+);
 
-const dashboardName =
 
-    document.getElementById(
-        "userName"
-    );
 
-const avatar =
+/* =====================================================
+   API Helper
+===================================================== */
 
-    document.getElementById(
-        "profileAvatar"
-    );
+async function apiRequest(endpoint) {
 
-profileName.innerText =
+    const response = await fetch(
 
-    userName;
+        `${API_BASE}${endpoint}`,
 
-dashboardName.innerText =
+        {
 
-    userName;
+            headers: {
 
-avatar.innerText =
+                Authorization:
 
-    userName
+                    `Bearer ${token}`
 
-        .split(" ")
+            }
 
-        .map(
-
-            word =>
-
-                word[0]
-
-        )
-
-        .join("");
-
-/* ============================================
-   Greeting
-============================================ */
-
-const greeting =
-
-    document.getElementById(
-
-        "greetingText"
+        }
 
     );
 
-const hour =
+    if (!response.ok) {
 
-    new Date()
+        throw new Error(
 
-    .getHours();
+            `API Error : ${response.status}`
 
-if (
+        );
 
-    hour < 12
+    }
 
-) {
-
-    greeting.innerText =
-
-        " Good Morning";
+    return await response.json();
 
 }
 
-else if (
 
-    hour < 17
 
-) {
-
-    greeting.innerText =
-
-        " Good Afternoon";
-
-}
-
-else {
-
-    greeting.innerText =
-
-        " Good Evening";
-
-}
-let subjects = [];
-
-let documents = [];
-
-let activities = [];
-
-init();
+/* =====================================================
+   Initialization
+===================================================== */
 
 async function init() {
 
     console.log(
 
-        "Dashboard Loaded"
+        "EduRAG Dashboard Loaded"
 
     );
-    await loadDashboard();
-    await loadSubjects();
-      await loadRecentDocuments();
-       loadRecentActivity();
+
+    setGreeting();
+
+    setFooterYear();
+
+    await loadInitialData();
 
 }
 
-/* ============================================
-   Load Dashboard Statistics
-============================================ */
+document.addEventListener(
 
-async function loadStatistics() {
+    "DOMContentLoaded",
+
+    init
+
+);
+/* =====================================================
+   Dashboard Data
+===================================================== */
+
+let dashboardData = {};
+
+let subjects = [];
+
+
+
+/* =====================================================
+   Load Logged-in User
+===================================================== */
+
+async function loadCurrentUser() {
 
     try {
 
-        const response = await fetch(
+        const user = await apiRequest(
 
-            `${API_BASE}/subjects`,
-
-            {
-
-                headers: {
-
-                    Authorization:
-
-                        "Bearer " + token
-
-                }
-
-            }
+            "/auth/me"
 
         );
 
-        if (!response.ok) {
+        userName.textContent =
 
-            throw new Error(
+            user.full_name ||
 
-                "Unable to load subjects."
+            user.name ||
 
-            );
-
-        }
-
-        subjects =
-
-            await response.json();
-
-        document.getElementById(
-
-            "subjectsCount"
-
-        ).innerText =
-
-            subjects.length;
-
-        document.getElementById(
-
-            "documentsCount"
-
-        ).innerText =
-
-            subjects.reduce(
-
-                (
-
-                    total,
-
-                    subject
-
-                ) =>
-
-                    total +
-
-                    (
-
-                        subject.document_count ||
-
-                        0
-
-                    ),
-
-                0
-
-            );
+            "Student";
 
     }
 
     catch (error) {
 
         console.error(
+
+            "Unable to load user.",
 
             error
 
@@ -231,130 +294,247 @@ async function loadStatistics() {
 
 }
 
-/* ============================================
-   Dashboard Statistics
-============================================ */
+
+
+/* =====================================================
+   Load Dashboard Statistics
+===================================================== */
+
 async function loadDashboard() {
 
     try {
 
-        const response = await fetch(
+        dashboardData =
 
-            `${API_BASE}/dashboard`,
+            await apiRequest(
 
-            {
+                "/dashboard"
 
-                headers: {
+            );
 
-                    Authorization:
 
-                        `Bearer ${token}`
 
-                }
+        subjectsCount.textContent =
 
-            }
+            dashboardData.subjects;
+
+
+
+        documentsCount.textContent =
+
+            dashboardData.documents;
+
+
+
+        flashcardsCount.textContent =
+
+            dashboardData.flashcards;
+
+
+
+        quizCount.textContent =
+
+            dashboardData.quizzes;
+
+
+
+        notesCount.textContent =
+
+            dashboardData.notes;
+
+
+
+        plannerCount.textContent =
+
+            dashboardData.study_plans;
+
+
+
+        storageUsed.textContent =
+
+            dashboardData.storage_used +
+
+            " MB";
+
+
+
+        animateStorageBar();
+
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+
+            "Unable to load dashboard.",
+
+            error
 
         );
 
-        if (!response.ok) {
+    }
 
-            throw new Error(
+}
 
-                "Failed to load dashboard."
 
-            );
 
-        }
+/* =====================================================
+   Storage Progress
+===================================================== */
 
-        const data =
+function animateStorageBar() {
 
-            await response.json();
-
-        document.getElementById(
-
-            "subjectsCount"
-
-        ).innerText =
-
-            data.subjects;
-
-        document.getElementById(
-
-            "documentsCount"
-
-        ).innerText =
-
-            data.documents;
-
-        document.getElementById(
-
-            "flashcardsCount"
-
-        ).innerText =
-
-            data.flashcards;
-
-        document.getElementById(
-
-            "quizCount"
-
-        ).innerText =
-
-            data.quizzes;
-
-        document.getElementById(
-
-            "notesCount"
-
-        ).innerText =
-
-            data.notes;
-
-        document.getElementById(
-
-            "plannerCount"
-
-        ).innerText =
-
-            data.study_plans;
-
-        document.getElementById(
-
-            "storageUsed"
-
-        ).innerText =
-
-            data.storage_used + " MB";
-
-        /* Storage Progress */
-
-        const storagePercent =
-
-            Math.min(
-
-                (data.storage_used / 1024) * 100,
-
-                100
-
-            );
+    const bar =
 
         document.getElementById(
 
             "storageProgress"
 
-        ).style.width =
+        );
 
-            storagePercent + "%";
+    if (!bar) return;
 
-        /* Placeholder */
 
-        document.getElementById(
 
-            "chatCount"
+    const storage =
 
-        ).innerText =
+        dashboardData.storage_used || 0;
 
-            "0";
+
+
+    const percent =
+
+        Math.min(
+
+            (storage / 1024) * 100,
+
+            100
+
+        );
+
+
+
+    bar.style.width =
+
+        percent + "%";
+
+}
+
+
+
+/* =====================================================
+   Continue Learning
+===================================================== */
+
+function renderContinueLearning() {
+
+    if (
+
+        subjects.length === 0
+
+    ) {
+
+        continueSubject.textContent =
+
+            "No Subjects Yet";
+
+
+
+        continueTime.textContent =
+
+            "Create your first subject to begin learning.";
+
+
+
+        documentCount.textContent =
+
+            "0 Documents";
+
+
+
+        learningProgress.style.width =
+
+            "0%";
+
+
+
+        return;
+
+    }
+
+
+
+    const latest =
+
+        subjects[0];
+
+
+
+    continueSubject.textContent =
+
+        latest.name;
+
+
+
+    continueTime.textContent =
+
+        latest.description ||
+
+        "Continue learning this subject.";
+
+
+
+    documentCount.textContent =
+
+        "Ready to Study";
+
+
+
+    learningProgress.style.width =
+
+        "25%";
+
+}
+
+
+
+/* =====================================================
+   Load Dashboard
+===================================================== */
+
+async function loadInitialData() {
+
+    await Promise.all([
+
+        loadCurrentUser(),
+
+        loadDashboard(),
+         loadSubjects(),
+         loadRecentDocuments()
+
+    ]);
+
+}
+
+/* =====================================================
+   Load Subjects
+===================================================== */
+
+async function loadSubjects() {
+
+    try {
+
+        subjects = await apiRequest(
+
+            "/subjects"
+
+        );
+
+        renderSubjects();
+
+        renderContinueLearning();
 
     }
 
@@ -362,7 +542,7 @@ async function loadDashboard() {
 
         console.error(
 
-            "Dashboard Error:",
+            "Unable to load subjects.",
 
             error
 
@@ -373,82 +553,28 @@ async function loadDashboard() {
 }
 
 
-/* ============================================
-   Load Subjects
-============================================ */
 
-async function loadSubjects() {
+/* =====================================================
+   Render Subject Cards
+===================================================== */
 
-    try {
+function renderSubjects() {
 
-        const response = await fetch(
+    if (!subjectGrid) return;
 
-            `${API_BASE}/subjects`,
+    subjectGrid.innerHTML = "";
 
-            {
 
-                headers: {
-
-                    Authorization:
-                        `Bearer ${token}`
-
-                }
-
-            }
-
-        );
-
-        if (!response.ok) {
-
-            throw new Error(
-
-                "Failed to load subjects."
-
-            );
-
-        }
-
-        const subjects =
-            await response.json();
-
-        renderSubjects(subjects);
-        renderContinueLearning(subjects);
-
-    }
-
-    catch (error) {
-
-        console.error(error);
-
-    }
-
-}
-
-function renderSubjects(subjects) {
-
-    const container =
-
-        document.getElementById(
-
-            "subjectsContainer"
-
-        );
-
-    container.innerHTML = "";
 
     if (subjects.length === 0) {
 
-        container.innerHTML = `
+        subjectGrid.innerHTML = `
 
             <div class="empty-state">
 
                 <i class="bi bi-book"></i>
 
-                <h3>
-
-                    No Subjects Yet
-
-                </h3>
+                <h3>No Subjects Found</h3>
 
                 <p>
 
@@ -464,27 +590,25 @@ function renderSubjects(subjects) {
 
     }
 
+
+
     subjects.forEach(subject => {
 
-        const card =
+        const card = document.createElement(
 
-            document.createElement("div");
+            "div"
+
+        );
+
+
 
         card.className =
 
             "subject-card";
 
+
+
         card.innerHTML = `
-
-            <div class="subject-top">
-
-                <div class="subject-icon">
-
-                    <i class="bi bi-book"></i>
-
-                </div>
-
-            </div>
 
             <h3>
 
@@ -494,797 +618,834 @@ function renderSubjects(subjects) {
 
             <p>
 
-                ${subject.description ?? "No description"}
+                ${subject.description || "No description available."}
 
             </p>
 
             <button
 
-                class="subject-btn"
+                class="primary-btn open-subject"
 
-                onclick="openSubject('${subject.id}')">
+                data-id="${subject.id}"
 
-                Open
+            >
+
+                Open Subject
 
             </button>
 
         `;
 
-        container.appendChild(card);
+
+
+        subjectGrid.appendChild(
+
+            card
+
+        );
 
     });
 
-}
 
-function openSubject(subjectId) {
 
-    window.location.href =
-
-        `documents.html?subject_id=${subjectId}`;
+    attachSubjectEvents();
 
 }
 
-/* ============================================
-   Recent Documents
-============================================ */
 
-async function loadRecentDocuments() {
 
-    try {
+/* =====================================================
+   Subject Events
+===================================================== */
 
-        const response = await fetch(
+function attachSubjectEvents() {
 
-            `${API_BASE}/documents`,
+    document
 
-            {
+        .querySelectorAll(
 
-                headers: {
-
-                    Authorization:
-
-                        `Bearer ${token}`
-
-                }
-
-            }
-
-        );
-
-        if (!response.ok) {
-
-            throw new Error(
-
-                "Unable to load documents."
-
-            );
-
-        }
-
-        const documents =
-
-            await response.json();
-
-        renderRecentDocuments(documents);
-
-    }
-
-    catch (error) {
-
-        console.error(error);
-
-    }
-
-}
-
-function renderRecentDocuments(documents) {
-
-    const container =
-
-        document.getElementById(
-
-            "recentDocuments"
-
-        );
-
-    container.innerHTML = "";
-
-    if (documents.length === 0) {
-
-        container.innerHTML = `
-
-            <div class="empty-state">
-
-                <i class="bi bi-file-earmark"></i>
-
-                <h3>
-
-                    No Documents Uploaded
-
-                </h3>
-
-                <p>
-
-                    Upload your first PDF to begin learning.
-
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-    documents
-
-        .sort(
-
-            (a, b) =>
-
-                new Date(b.created_at)
-
-                -
-
-                new Date(a.created_at)
+            ".open-subject"
 
         )
 
-        .slice(0, 5)
+        .forEach(button => {
 
-        .forEach(doc => {
+            button.addEventListener(
 
-            const item =
+                "click",
 
-                document.createElement("div");
+                function () {
 
-            item.className =
+                    const subjectId =
 
-                "recent-document";
+                        this.dataset.id;
 
-            item.innerHTML = `
 
-                <div class="doc-left">
 
-                    <i class="bi bi-file-earmark-pdf-fill"></i>
+                    localStorage.setItem(
 
-                    <div>
+                        "current_subject",
 
-                        <h4>
+                        subjectId
 
-                            ${doc.original_filename}
+                    );
 
-                        </h4>
 
-                        <span>
 
-                            ${(doc.file_size / 1024).toFixed(1)} KB
+                    window.location.href =
 
-                        </span>
+                        "documents.html";
 
-                    </div>
+                }
 
-                </div>
-
-                <div class="doc-right">
-
-                    ${new Date(
-
-                        doc.created_at
-
-                    ).toLocaleDateString()}
-
-                </div>
-
-            `;
-
-            container.appendChild(item);
+            );
 
         });
 
 }
 
-/* ============================================
-   Continue Learning
-============================================ */
 
-function renderContinueLearning(subjects) {
 
-    if (!subjects || subjects.length === 0) {
+/* =====================================================
+   Subject Search
+===================================================== */
 
-        document.getElementById(
+if (dashboardSearch) {
 
-            "continueSubject"
+    dashboardSearch.addEventListener(
 
-        ).innerText =
+        "input",
 
-            "No Subject Available";
+        function () {
 
-        document.getElementById(
+            const keyword =
 
-            "continueTime"
+                this.value
 
-        ).innerText =
+                .trim()
 
-            "Create your first subject to begin learning.";
+                .toLowerCase();
 
-        document.getElementById(
 
-            "documentCount"
 
-        ).innerText =
+            const cards =
 
-            "0 Documents";
+                document.querySelectorAll(
 
-        document.getElementById(
+                    ".subject-card"
 
-            "learningProgress"
+                );
 
-        ).style.width =
 
-            "0%";
+
+            cards.forEach(card => {
+
+                const title =
+
+                    card.querySelector("h3")
+
+                        .textContent
+
+                        .toLowerCase();
+
+
+
+                if (
+
+                    title.includes(keyword)
+
+                ) {
+
+                    card.style.display =
+
+                        "block";
+
+                }
+
+                else {
+
+                    card.style.display =
+
+                        "none";
+
+                }
+
+            });
+
+        }
+
+    );
+
+}
+
+
+
+/* =====================================================
+   Continue Learning Button
+===================================================== */
+
+const continueBtn =
+
+    document.getElementById(
+
+        "continueBtn"
+
+    );
+
+
+
+if (continueBtn) {
+
+    continueBtn.addEventListener(
+
+        "click",
+
+        () => {
+
+            if (
+
+                subjects.length === 0
+
+            ) {
+
+                window.location.href =
+
+                    "subjects.html";
+
+                return;
+
+            }
+
+
+
+            localStorage.setItem(
+
+                "current_subject",
+
+                subjects[0].id
+
+            );
+
+
+
+            window.location.href =
+
+                "documents.html";
+
+        }
+
+    );
+
+}
+
+/* =====================================================
+   Load Recent Documents
+===================================================== */
+
+async function loadRecentDocuments() {
+
+    try {
+
+        const documents = await apiRequest(
+
+            "/documents"
+
+        );
+
+        renderRecentDocuments(
+
+            documents
+
+        );
+
+        renderRecentActivity(
+
+            documents
+
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+
+            "Unable to load documents.",
+
+            error
+
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   Render Documents
+===================================================== */
+
+function renderRecentDocuments(
+
+    documents
+
+) {
+
+    if (!documentsContainer) return;
+
+    documentsContainer.innerHTML = "";
+
+
+
+    if (documents.length === 0) {
+
+        documentsContainer.innerHTML = `
+
+            <tr>
+
+                <td colspan="5">
+
+                    No documents uploaded.
+
+                </td>
+
+            </tr>
+
+        `;
 
         return;
 
     }
 
-    const latest = subjects[0];
 
-    document.getElementById(
 
-        "continueSubject"
+    documents
 
-    ).innerText =
+        .slice(0,5)
 
-        latest.name;
+        .forEach(document => {
 
-    document.getElementById(
+            const row =
 
-        "continueTime"
+                document.createElement("tr");
 
-    ).innerText =
 
-        latest.description ||
 
-        "Continue learning this subject with AI.";
+            row.innerHTML = `
 
-    document.getElementById(
+                <td>
 
-        "documentCount"
+                    <i class="bi bi-file-earmark-pdf-fill"></i>
 
-    ).innerText =
+                    ${document.original_filename}
 
-        "Ready to Study";
+                </td>
 
-    document.getElementById(
+                <td>
 
-        "continueBtn"
+                    ${document.file_type}
 
-    ).dataset.subjectId =
+                </td>
 
-        latest.id;
+                <td>
 
-    setTimeout(
+                    ${formatFileSize(
 
-        () => {
+                        document.file_size
 
-            document.getElementById(
+                    )}
 
-                "learningProgress"
+                </td>
 
-            ).style.width =
+                <td>
 
-                "20%";
+                    ${formatDate(
 
-        },
+                        document.created_at
 
-        300
+                    )}
 
-    );
+                </td>
 
-}
+                <td>
 
-/* ============================================
-   Recent Activity
-============================================ */
+                    <button
 
-function loadRecentActivity() {
+                        class="secondary"
 
-    const container =
+                    >
 
-        document.getElementById(
+                        View
 
-            "activityContainer"
+                    </button>
 
-        );
+                </td>
 
-    container.innerHTML =
+            `;
 
-        "";
 
-    const activities = [
 
-        {
+            documentsContainer.appendChild(
 
-            icon:
-
-                "bi-book",
-
-            title:
-
-                "Subject Created",
-
-            text:
-
-                "Created a new learning subject."
-
-        },
-
-        {
-
-            icon:
-
-                "bi-file-earmark-pdf",
-
-            title:
-
-                "Document Uploaded",
-
-            text:
-
-                "Uploaded a new PDF."
-
-        },
-
-        {
-
-            icon:
-
-                "bi-stars",
-
-            title:
-
-                "AI Ready",
-
-            text:
-
-                "Start chatting with your documents."
-
-        }
-
-    ];
-
-    activities.forEach(activity => {
-
-        const item =
-
-            document.createElement(
-
-                "div"
+                row
 
             );
 
-        item.className =
+        });
 
-            "activity-item";
+}
 
-        item.innerHTML = `
 
-            <div class="activity-icon">
 
-                <i class="bi ${activity.icon}"></i>
+/* =====================================================
+   Recent Activity
+===================================================== */
 
-            </div>
+function renderRecentActivity(
 
-            <div class="activity-info">
+    documents
 
-                <h4>
+) {
 
-                    ${activity.title}
+    if (!recentActivity) return;
 
-                </h4>
+    recentActivity.innerHTML = "";
 
-                <p>
 
-                    ${activity.text}
 
-                </p>
+    if (documents.length === 0) {
 
-            </div>
+        recentActivity.innerHTML = `
+
+            <p>
+
+                No recent activity.
+
+            </p>
 
         `;
 
-        container.appendChild(
+        return;
 
-            item
+    }
 
-        );
 
-    });
+
+    documents
+
+        .slice(0,5)
+
+        .forEach(document => {
+
+            const item =
+
+                document.createElement(
+
+                    "div"
+
+                );
+
+
+
+            item.className =
+
+                "activity-item";
+
+
+
+            item.innerHTML = `
+
+                <div class="activity-icon">
+
+                    <i class="bi bi-upload"></i>
+
+                </div>
+
+                <div class="activity-content">
+
+                    <h4>
+
+                        Uploaded
+
+                        ${document.original_filename}
+
+                    </h4>
+
+                    <p>
+
+                        ${formatDate(
+
+                            document.created_at
+
+                        )}
+
+                    </p>
+
+                </div>
+
+            `;
+
+
+
+            recentActivity.appendChild(
+
+                item
+
+            );
+
+        });
 
 }
 
-/* ============================================
-   Navigation Buttons
-============================================ */
 
-document
 
-    .getElementById(
+/* =====================================================
+   Helpers
+===================================================== */
 
-        "newSubjectBtn"
+function formatFileSize(
 
-    )
+    bytes
 
-    .addEventListener(
+) {
 
-        "click",
+    if (bytes < 1024)
 
-        () => {
+        return bytes + " B";
 
-            window.location.href =
 
-                "subjects.html";
+
+    if (bytes < 1024 * 1024)
+
+        return (
+
+            (bytes / 1024)
+
+            .toFixed(1)
+
+            + " KB"
+
+        );
+
+
+
+    return (
+
+        (bytes /
+
+        (1024 * 1024))
+
+        .toFixed(2)
+
+        + " MB"
+
+    );
+
+}
+
+
+
+function formatDate(
+
+    date
+
+) {
+
+    return new Date(
+
+        date
+
+    ).toLocaleDateString(
+
+        "en-IN",
+
+        {
+
+            day:"numeric",
+
+            month:"short",
+
+            year:"numeric"
 
         }
 
     );
 
+}
 
-document
+/* =====================================================
+   Quick Actions
+===================================================== */
 
-    .getElementById(
+const quickChat =
+    document.getElementById("quickChat");
 
-        "uploadBtn"
+const quickFlashcards =
+    document.getElementById("quickFlashcards");
 
-    )
+const quickQuiz =
+    document.getElementById("quickQuiz");
 
-    .addEventListener(
+const quickNotes =
+    document.getElementById("quickNotes");
 
-        "click",
+const quickPlanner =
+    document.getElementById("quickPlanner");
 
-        () => {
+const uploadBtn =
+    document.getElementById("uploadBtn");
 
-            window.location.href =
+const newSubjectBtn =
+    document.getElementById("newSubjectBtn");
 
-                "documents.html";
+const chatBtn =
+    document.getElementById("chatBtn");
 
-        }
+
+
+/* =====================================================
+   Navigation Helpers
+===================================================== */
+
+function navigate(page) {
+
+    window.location.href = page;
+
+}
+
+
+
+/* =====================================================
+   Register Events
+===================================================== */
+
+function registerEvents() {
+
+    if (quickChat)
+
+        quickChat.addEventListener(
+
+            "click",
+
+            () => navigate("chat.html")
+
+        );
+
+
+
+    if (chatBtn)
+
+        chatBtn.addEventListener(
+
+            "click",
+
+            () => navigate("chat.html")
+
+        );
+
+
+
+    if (quickFlashcards)
+
+        quickFlashcards.addEventListener(
+
+            "click",
+
+            () => navigate("flashcards.html")
+
+        );
+
+
+
+    if (quickQuiz)
+
+        quickQuiz.addEventListener(
+
+            "click",
+
+            () => navigate("quizzes.html")
+
+        );
+
+
+
+    if (quickNotes)
+
+        quickNotes.addEventListener(
+
+            "click",
+
+            () => navigate("notes.html")
+
+        );
+
+
+
+    if (quickPlanner)
+
+        quickPlanner.addEventListener(
+
+            "click",
+
+            () => navigate("studyplanner.html")
+
+        );
+
+
+
+    if (uploadBtn)
+
+        uploadBtn.addEventListener(
+
+            "click",
+
+            () => navigate("documents.html")
+
+        );
+
+
+
+    if (newSubjectBtn)
+
+        newSubjectBtn.addEventListener(
+
+            "click",
+
+            () => navigate("subjects.html")
+
+        );
+
+}
+
+
+
+/* =====================================================
+   Notification Placeholder
+===================================================== */
+
+function loadNotifications() {
+
+    console.log(
+
+        "Notification module ready."
 
     );
 
-
-document
-
-    .getElementById(
-
-        "chatBtn"
-
-    )
-
-    .addEventListener(
-
-        "click",
-
-        () => {
-
-            window.location.href =
-
-                "chat.html";
-
-        }
-
-    );
+}
 
 
-document
 
-    .getElementById(
+/* =====================================================
+   Loading
+===================================================== */
 
-        "continueBtn"
+function showLoading() {
 
-    )
+    document.body.style.cursor =
 
-    .addEventListener(
+        "wait";
 
-        "click",
+}
 
-        () => {
 
-            window.location.href =
 
-                "documents.html";
+function hideLoading() {
 
-        }
+    document.body.style.cursor =
+
+        "default";
+
+}
+
+
+
+/* =====================================================
+   Global Error Handler
+===================================================== */
+
+function handleError(
+
+    error
+
+) {
+
+    console.error(
+
+        error
 
     );
 
-    /* ============================================
-   Quick Access
-============================================ */
+}
 
-document
 
-    .getElementById(
 
-        "quickChat"
+/* =====================================================
+   Dashboard Initialization
+===================================================== */
 
-    )
+async function init() {
 
-    .onclick = () =>
+    try {
 
-        window.location.href =
+        showLoading();
 
-            "chat.html";
+        console.log(
 
+            "EduRAG Dashboard Initialized"
 
-document
+        );
 
-    .getElementById(
 
-        "quickFlashcards"
 
-    )
+        setGreeting();
 
-    .onclick = () =>
+        setFooterYear();
 
-        window.location.href =
 
-            "flashcards.html";
 
+        await loadInitialData();
 
-document
 
-    .getElementById(
 
-        "quickQuiz"
+        loadNotifications();
 
-    )
 
-    .onclick = () =>
 
-        window.location.href =
+        registerEvents();
 
-            "quizes.html";
 
 
-document
+    }
 
-    .getElementById(
+    catch (error) {
 
-        "quickNotes"
+        handleError(
 
-    )
+            error
 
-    .onclick = () =>
+        );
 
-        window.location.href =
+    }
 
-            "notes.html";
+    finally {
 
+        hideLoading();
 
-document
+    }
 
-    .getElementById(
+}
 
-        "quickPlanner"
 
-    )
 
-    .onclick = () =>
+/* =====================================================
+   Start Dashboard
+===================================================== */
 
-        window.location.href =
+document.addEventListener(
 
-            "studyplanner.html";
+    "DOMContentLoaded",
 
-            /* ============================================
-   Logout
-============================================ */
+    init
 
-document
-
-    .getElementById(
-
-        "logoutBtn"
-
-    )
-
-    .addEventListener(
-
-        "click",
-
-        () => {
-
-            localStorage.removeItem(
-
-                "token"
-
-            );
-
-            localStorage.removeItem(
-
-                "user_name"
-
-            );
-
-            window.location.href =
-
-                "login.html";
-
-        }
-
-    );
-
-    /* ============================================
-   Daily Motivation
-============================================ */
-
-const quotes = [
-
-    "Success is the sum of small efforts repeated every day.",
-
-    "Consistency beats motivation.",
-
-    "Learn something today your future self will thank you for.",
-
-    "Small progress every day adds up to big results.",
-
-    "Discipline creates opportunities."
-
-];
-
-document
-
-    .getElementById(
-
-        "dailyQuote"
-
-    )
-
-    .innerText =
-
-        quotes[
-
-            Math.floor(
-
-                Math.random()
-
-                * quotes.length
-
-            )
-
-        ];
-
-//         /* ============================================
-//    Theme Toggle
-// ============================================ */
-
-// // const themeToggle =
-
-// //     document.getElementById(
-
-// //         "themeToggle"
-
-// //     );
-
-// const themeIcon =
-
-//     document.getElementById(
-
-//         "themeIcon"
-
-//     );
-
-// themeToggle.addEventListener(
-
-//     "click",
-
-//     () => {
-
-//         document.body.classList.toggle(
-
-//             "dark"
-
-//         );
-
-//         if (
-
-//             document.body.classList.contains(
-
-//                 "dark"
-
-//             )
-
-//         ) {
-
-//             themeIcon.className =
-
-//                 "bi bi-sun";
-
-//         }
-
-//         else {
-
-//             themeIcon.className =
-
-//                 "bi bi-moon";
-
-//         }
-
-//     }
-
-// );
-
-/* ============================================
-   Search Subjects
-============================================ */
-
-// document
-
-//     .getElementById(
-
-//         "dashboardSearch"
-
-//     )
-
-//     .addEventListener(
-
-//         "input",
-
-//         function () {
-
-//             const value =
-
-//                 this.value
-
-//                 .toLowerCase();
-
-//             const cards =
-
-//                 document.querySelectorAll(
-
-//                     ".subject-card"
-
-//                 );
-
-//             cards.forEach(
-
-//                 card => {
-
-//                     const title =
-
-//                         card
-
-//                         .querySelector(
-
-//                             "h3"
-
-//                         )
-
-//                         .innerText
-
-//                         .toLowerCase();
-
-//                     card.style.display =
-
-//                         title.includes(
-
-//                             value
-
-//                         )
-
-//                         ?
-
-//                         "block"
-
-//                         :
-
-//                         "none";
-
-//                 }
-
-//             );
-
-//         }
-
-//     );
+);

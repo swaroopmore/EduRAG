@@ -39,7 +39,7 @@ async function login(event) {
 
         }
 
-        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("access_token", data.access_token);
 
         window.location.href = "dashboard.html";
 
