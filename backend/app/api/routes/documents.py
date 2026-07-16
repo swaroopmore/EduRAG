@@ -62,3 +62,21 @@ def get_documents(
     )
 
     return service.get_documents(subject_id)
+
+
+@router.get(
+    "",
+    response_model=list[DocumentResponse],
+)
+def get_all_documents(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+
+    service = DocumentService(
+        DocumentRepository(db)
+    )
+
+    return service.get_all_documents(
+        current_user.id
+    )

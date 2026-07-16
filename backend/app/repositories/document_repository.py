@@ -3,6 +3,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 
 from app.models.document import Document
+from app.models.subject import Subject
 
 
 class DocumentRepository:
@@ -32,3 +33,35 @@ class DocumentRepository:
             .order_by(Document.created_at.desc())
             .all()
         )
+    
+
+    def get_all_documents(
+    self,
+    user_id: UUID,
+):
+
+         return (
+
+        self.db.query(
+            Document
+        )
+
+        .join(
+            Subject
+        )
+
+        .filter(
+
+            Subject.user_id == user_id
+
+        )
+
+        .order_by(
+
+            Document.created_at.desc()
+
+        )
+
+        .all()
+
+    )

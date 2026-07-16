@@ -68,40 +68,55 @@ avatar.innerText =
 
         .join("");
 
-const greetingText =
+/* ============================================
+   Greeting
+============================================ */
+
+const greeting =
 
     document.getElementById(
+
         "greetingText"
+
     );
 
 const hour =
 
-    new Date().getHours();
+    new Date()
 
-if (hour < 12) {
+    .getHours();
 
-    greetingText.innerHTML =
+if (
 
-        "Good Morning 👋";
+    hour < 12
+
+) {
+
+    greeting.innerText =
+
+        " Good Morning";
 
 }
 
-else if (hour < 17) {
+else if (
 
-    greetingText.innerHTML =
+    hour < 17
 
-        "Good Afternoon 👋";
+) {
+
+    greeting.innerText =
+
+        " Good Afternoon";
 
 }
 
 else {
 
-    greetingText.innerHTML =
+    greeting.innerText =
 
-        "Good Evening 👋";
+        " Good Evening";
 
 }
-
 let subjects = [];
 
 let documents = [];
@@ -1140,62 +1155,136 @@ document
 
         ];
 
-        /* ============================================
-   Theme Toggle
+//         /* ============================================
+//    Theme Toggle
+// ============================================ */
+
+// // const themeToggle =
+
+// //     document.getElementById(
+
+// //         "themeToggle"
+
+// //     );
+
+// const themeIcon =
+
+//     document.getElementById(
+
+//         "themeIcon"
+
+//     );
+
+// themeToggle.addEventListener(
+
+//     "click",
+
+//     () => {
+
+//         document.body.classList.toggle(
+
+//             "dark"
+
+//         );
+
+//         if (
+
+//             document.body.classList.contains(
+
+//                 "dark"
+
+//             )
+
+//         ) {
+
+//             themeIcon.className =
+
+//                 "bi bi-sun";
+
+//         }
+
+//         else {
+
+//             themeIcon.className =
+
+//                 "bi bi-moon";
+
+//         }
+
+//     }
+
+// );
+
+/* ============================================
+   Search Subjects
 ============================================ */
 
-const themeToggle =
+// document
 
-    document.getElementById(
+//     .getElementById(
 
-        "themeToggle"
+//         "dashboardSearch"
 
-    );
+//     )
 
-const themeIcon =
+//     .addEventListener(
 
-    document.getElementById(
+//         "input",
 
-        "themeIcon"
+//         function () {
 
-    );
+//             const value =
 
-themeToggle.addEventListener(
+//                 this.value
 
-    "click",
+//                 .toLowerCase();
 
-    () => {
+//             const cards =
 
-        document.body.classList.toggle(
+//                 document.querySelectorAll(
 
-            "dark"
+//                     ".subject-card"
 
-        );
+//                 );
 
-        if (
+//             cards.forEach(
 
-            document.body.classList.contains(
+//                 card => {
 
-                "dark"
+//                     const title =
 
-            )
+//                         card
 
-        ) {
+//                         .querySelector(
 
-            themeIcon.className =
+//                             "h3"
 
-                "bi bi-sun";
+//                         )
 
-        }
+//                         .innerText
 
-        else {
+//                         .toLowerCase();
 
-            themeIcon.className =
+//                     card.style.display =
 
-                "bi bi-moon";
+//                         title.includes(
 
-        }
+//                             value
 
-    }
+//                         )
 
-);
+//                         ?
+
+//                         "block"
+
+//                         :
+
+//                         "none";
+
+//                 }
+
+//             );
+
+//         }
+
+//     );

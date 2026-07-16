@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -8,33 +7,34 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0">
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>
+    <title>EduRAG | Dashboard</title>
 
-        EduRAG | Dashboard
-
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="../css/dashboard.css">
+    <!-- CSS -->
 
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        href="../css/dashboard.css"
+    >
+
+    <!-- Bootstrap Icons -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
 
 </head>
 
 <body>
 
-<div class="dashboard-layout">
+<div class="dashboard">
 
-    <!-- ========================= -->
-
-    <!-- SIDEBAR -->
-
-    <!-- ========================= -->
+    <!-- ===========================
+            SIDEBAR
+    ============================ -->
 
     <aside class="sidebar">
 
@@ -42,11 +42,7 @@
 
             <i class="bi bi-mortarboard-fill"></i>
 
-            <span>
-
-                EduRAG
-
-            </span>
+            <span>EduRAG</span>
 
         </div>
 
@@ -54,7 +50,8 @@
 
             <a
                 href="dashboard.html"
-                class="active">
+                class="active"
+            >
 
                 <i class="bi bi-grid"></i>
 
@@ -62,8 +59,7 @@
 
             </a>
 
-            <a
-                href="subjects.html">
+            <a href="subjects.html">
 
                 <i class="bi bi-book"></i>
 
@@ -71,8 +67,7 @@
 
             </a>
 
-            <a
-                href="documents.html">
+            <a href="documents.html">
 
                 <i class="bi bi-file-earmark-text"></i>
 
@@ -80,17 +75,15 @@
 
             </a>
 
-            <a
-                href="chat.html">
+            <a href="chat.html">
 
-                <i class="bi bi-chat-dots"></i>
+                <i class="bi bi-robot"></i>
 
                 AI Chat
 
             </a>
 
-            <a
-                href="flashcards.html">
+            <a href="flashcards.html">
 
                 <i class="bi bi-layers"></i>
 
@@ -98,8 +91,7 @@
 
             </a>
 
-            <a
-                href="quizes.html">
+            <a href="quizzes.html">
 
                 <i class="bi bi-patch-question"></i>
 
@@ -107,8 +99,7 @@
 
             </a>
 
-            <a
-                href="notes.html">
+            <a href="notes.html">
 
                 <i class="bi bi-journal-text"></i>
 
@@ -116,18 +107,13 @@
 
             </a>
 
-            <a
-                href="studyplanner.html">
+            <a href="studyplanner.html">
 
-                <i class="bi bi-calendar-week"></i>
+                <i class="bi bi-calendar-check"></i>
 
                 Study Planner
 
             </a>
-
-        </nav>
-
-        <div class="sidebar-bottom">
 
             <a href="settings.html">
 
@@ -137,99 +123,87 @@
 
             </a>
 
-            <a
-                href="#"
-                id="logoutBtn">
+        </nav>
 
-                <i class="bi bi-box-arrow-right"></i>
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+        >
 
-                Logout
+            <i class="bi bi-box-arrow-right"></i>
 
-            </a>
+            Logout
 
-        </div>
+        </button>
 
     </aside>
 
-    <!-- ========================= -->
+    <!-- ===========================
+            MAIN CONTENT
+    ============================ -->
 
-    <!-- MAIN CONTENT -->
+    <main class="content">
 
-    <!-- ========================= -->
-
-    <main class="main-content">
-
-        <!-- ========================= -->
-
-        <!-- TOP BAR -->
-
-        <!-- ========================= -->
+        <!-- HEADER -->
 
         <header class="topbar">
 
-            <div class="search-box">
+            <div class="topbar-left">
 
-                <i class="bi bi-search"></i>
+                <div class="search-box">
 
-                <input
+                    <i class="bi bi-search"></i>
 
-                    type="text"
+                    <input
 
-                    placeholder="Search anything..."
+                        id="dashboardSearch"
 
-                >
+                        type="text"
+
+                        placeholder="Search subjects..."
+
+                    >
+
+                </div>
 
             </div>
 
-            <div class="top-right">
+            <div class="topbar-right">
 
                 <button
-                    class="icon-btn">
+                    class="icon-btn"
+                >
 
                     <i class="bi bi-bell"></i>
 
                 </button>
 
-                <button
-
-    class="icon-btn"
-
-    id="themeToggle">
-
-    <i
-
-        class="bi bi-moon"
-
-        id="themeIcon">
-
-    </i>
-
-</button>
-
                 <div class="profile">
 
                     <div
                         class="avatar"
-                        id="profileAvatar">
+                        id="userAvatar"
+                    >
 
-                        SM
+                        S
 
                     </div>
 
                     <div>
 
                         <h4
-                            id="profileName">
+                            id="userName"
+                        >
 
-                            Swaroop More
+                            Student
 
                         </h4>
 
-                        <span>
+                        <p>
 
                             AI Learner
 
-                        </span>
+                        </p>
 
                     </div>
 
@@ -239,49 +213,35 @@
 
         </header>
 
-        <!-- ========================= -->
+        <!-- HERO -->
 
-        <!-- HERO SECTION -->
+        <section class="hero">
 
-        <!-- ========================= -->
+            <div class="hero-content">
 
-        <section class="hero-section">
-
-            <div class="hero-left">
-
-                <span
+                <h1
                     id="greetingText"
-                    class="greeting">
+                >
 
-                    Good Evening 👋
-
-                </span>
-
-                <h1>
-
-                    Welcome back,
-
-                    <span
-                        id="userName">
-
-                        Swaroop
-
-                    </span>
+                    Welcome Back
 
                 </h1>
 
                 <p>
 
-                    Continue your AI-powered learning journey with EduRAG.
-                    Pick up where you left off and let AI help you learn faster.
+                    Continue learning with your AI-powered study workspace.
 
                 </p>
 
                 <div class="hero-buttons">
 
                     <button
+
                         id="newSubjectBtn"
-                        class="primary-btn">
+
+                        class="primary-btn"
+
+                    >
 
                         <i class="bi bi-plus-circle"></i>
 
@@ -290,18 +250,26 @@
                     </button>
 
                     <button
+
                         id="uploadBtn"
-                        class="secondary-btn">
+
+                        class="secondary-btn"
+
+                    >
 
                         <i class="bi bi-upload"></i>
 
-                        Upload Document
+                        Upload PDF
 
                     </button>
 
                     <button
+
                         id="chatBtn"
-                        class="secondary-btn">
+
+                        class="secondary-btn"
+
+                    >
 
                         <i class="bi bi-stars"></i>
 
@@ -313,13 +281,13 @@
 
             </div>
 
-            <div class="hero-right">
+            <div class="hero-image">
 
                 <img
 
                     src="../assets/dashboard-hero.svg"
 
-                    alt="Dashboard Illustration"
+                    alt="Dashboard"
 
                 >
 
@@ -327,612 +295,384 @@
 
         </section>
 
+                <!-- ===========================
+                DASHBOARD STATS
+        ============================ -->
 
-      <!-- ========================= -->
+        <section class="stats">
 
-        <!-- DASHBOARD STATS -->
+            <div class="card">
 
-        <!-- ========================= -->
-
-        <section class="stats-grid">
-
-            <div class="stat-card">
-
-                <div class="stat-icon blue">
+                <div class="card-icon">
 
                     <i class="bi bi-book"></i>
 
                 </div>
 
-                <div>
+                <h3>
 
-                    <h2 id="subjectsCount">
+                    Subjects
 
-                        0
+                </h3>
 
-                    </h2>
+                <h2
 
-                    <p>
+                    id="subjectsCount"
 
-                        Subjects
+                >
 
-                    </p>
+                    0
 
-                </div>
+                </h2>
 
             </div>
 
-            <div class="stat-card">
+            <div class="card">
 
-                <div class="stat-icon green">
+                <div class="card-icon">
 
                     <i class="bi bi-file-earmark-text"></i>
 
                 </div>
 
-                <div>
+                <h3>
 
-                    <h2 id="documentsCount">
+                    Documents
 
-                        0
+                </h3>
 
-                    </h2>
+                <h2
 
-                    <p>
+                    id="documentsCount"
 
-                        Documents
+                >
 
-                    </p>
+                    0
 
-                </div>
-
-            </div>
-
-            <div class="stat-card">
-
-                <div class="stat-icon purple">
-
-                    <i class="bi bi-chat-dots"></i>
-
-                </div>
-
-                <div>
-
-                    <h2 id="chatCount">
-
-                        0
-
-                    </h2>
-
-                    <p>
-
-                        AI Chats
-
-                    </p>
-
-                </div>
+                </h2>
 
             </div>
 
-            <div class="stat-card">
+            <div class="card">
 
-                <div class="stat-icon orange">
+                <div class="card-icon">
 
                     <i class="bi bi-layers"></i>
 
                 </div>
 
-                <div>
+                <h3>
 
-                    <h2 id="flashcardsCount">
+                    Flashcards
 
-                        0
+                </h3>
 
-                    </h2>
+                <h2
 
-                    <p>
+                    id="flashcardsCount"
 
-                        Flashcards
+                >
 
-                    </p>
+                    0
 
-                </div>
+                </h2>
 
             </div>
 
-            <div class="stat-card">
+            <div class="card">
 
-                <div class="stat-icon red">
+                <div class="card-icon">
 
                     <i class="bi bi-patch-question"></i>
 
                 </div>
 
-                <div>
+                <h3>
 
-                    <h2 id="quizCount">
+                    Quizzes
 
-                        0
+                </h3>
 
-                    </h2>
+                <h2
 
-                    <p>
+                    id="quizCount"
 
-                        Quizzes
+                >
 
-                    </p>
+                    0
 
-                </div>
+                </h2>
 
             </div>
 
-            <div class="stat-card">
+            <div class="card">
 
-                <div class="stat-icon cyan">
+                <div class="card-icon">
 
                     <i class="bi bi-journal-text"></i>
 
                 </div>
 
-                <div>
+                <h3>
 
-                    <h2 id="notesCount">
+                    Notes
 
-                        0
+                </h3>
 
-                    </h2>
+                <h2
 
-                    <p>
+                    id="notesCount"
 
-                        Notes
+                >
 
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="stat-card">
-
-                <div class="stat-icon pink">
-
-                    <i class="bi bi-calendar-week"></i>
-
-                </div>
-
-                <div>
-
-                    <h2 id="plannerCount">
-
-                        0
-
-                    </h2>
-
-                    <p>
-
-                        Study Plans
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- ========================= -->
-
-        <!-- CONTENT GRID -->
-
-        <!-- ========================= -->
-
-        <section class="dashboard-grid">
-
-            <!-- LEFT SIDE -->
-
-            <div class="left-column">
-
-                <!-- Continue Learning -->
-
-                <div class="dashboard-card">
-
-                    <div class="card-header">
-
-                        <h2>
-
-                            Continue Learning
-
-                        </h2>
-
-                        <a href="#">
-
-                            View All
-
-                        </a>
-
-                    </div>
-
-                    <div
-                        class="continue-card"
-                        id="continueLearningCard">
-
-                        <div class="continue-image">
-
-                            CN
-
-                        </div>
-
-                        <div class="continue-info">
-
-                            <h3
-                                id="continueSubject">
-
-                                No Subject Selected
-
-                            </h3>
-
-                            <p
-                                id="continueTime">
-
-                                Upload a document to begin learning.
-
-                            </p>
-
-                            <div class="progress-bar">
-
-                                <div
-                                    class="progress-fill"
-                                    id="learningProgress">
-
-                                </div>
-
-                            </div>
-
-                            <div class="continue-footer">
-
-                                <span
-                                    id="documentCount">
-
-                                    0 Documents
-
-                                </span>
-
-                                <button
-                                    id="continueBtn">
-
-                                    Continue
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <!-- Recent Subjects -->
-
-                <div class="dashboard-card">
-
-                    <div class="card-header">
-
-                        <h2>
-
-                            Your Subjects
-
-                        </h2>
-
-                        <a href="subjects.html">
-
-                            View All
-
-                        </a>
-
-                    </div>
-
-                    <div
-                        id="subjectsContainer"
-                        class="subjects-grid">
-
-                        <!-- Subject Cards Render Here -->
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- RIGHT SIDE -->
-
-            <div class="right-column">
-
-                <!-- Recent Activity -->
-
-                <div class="dashboard-card">
-
-                    <div class="card-header">
-
-                        <h2>
-
-                            Recent Activity
-
-                        </h2>
-
-                    </div>
-
-                    <div
-                        id="activityContainer">
-
-                        <!-- Activity -->
-
-                    </div>
-
-                </div>
-
-                <!-- Quick Access -->
-
-                <div class="dashboard-card">
-
-                    <div class="card-header">
-
-                        <h2>
-
-                            Quick Access
-
-                        </h2>
-
-                    </div>
-
-                    <div class="quick-grid">
-
-                        <div
-                            class="quick-card"
-                            id="quickChat">
-
-                            <i class="bi bi-chat-dots"></i>
-
-                            <h4>
-
-                                AI Chat
-
-                            </h4>
-
-                            <p>
-
-                                Ask anything
-
-                            </p>
-
-                        </div>
-
-                        <div
-                            class="quick-card"
-                            id="quickFlashcards">
-
-                            <i class="bi bi-layers"></i>
-
-                            <h4>
-
-                                Flashcards
-
-                            </h4>
-
-                            <p>
-
-                                Revise quickly
-
-                            </p>
-
-                        </div>
-
-                        <div
-                            class="quick-card"
-                            id="quickQuiz">
-
-                            <i class="bi bi-patch-question"></i>
-
-                            <h4>
-
-                                Quiz
-
-                            </h4>
-
-                            <p>
-
-                                Test yourself
-
-                            </p>
-
-                        </div>
-
-                        <div
-                            class="quick-card"
-                            id="quickNotes">
-
-                            <i class="bi bi-journal-text"></i>
-
-                            <h4>
-
-                                Notes
-
-                            </h4>
-
-                            <p>
-
-                                AI Notes
-
-                            </p>
-
-                        </div>
-
-                        <div
-                            class="quick-card"
-                            id="quickPlanner">
-
-                            <i class="bi bi-calendar-week"></i>
-
-                            <h4>
-
-                                Study Planner
-
-                            </h4>
-
-                            <p>
-
-                                Daily plan
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-                
-                <!-- Daily Motivation -->
-
-                <div class="dashboard-card">
-
-                    <div class="card-header">
-
-                        <h2>
-
-                            Daily Motivation
-
-                        </h2>
-
-                    </div>
-
-                    <div class="motivation-card">
-
-                        <i class="bi bi-quote"></i>
-
-                        <p id="dailyQuote">
-
-                            "Success is the sum of small efforts,
-                            repeated day in and day out."
-
-                        </p>
-
-                        <span>
-
-                            — Robert Collier
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <!-- Learning Streak -->
-
-                <div class="dashboard-card">
-
-                    <div class="card-header">
-
-                        <h2>
-
-                            Learning Streak
-
-                        </h2>
-
-                    </div>
-
-                    <div class="streak-card">
-
-                        <div class="streak-number">
-
-                            🔥
-
-                            <h1 id="streakDays">
-
-                                0
-
-                            </h1>
-
-                        </div>
-
-                        <p>
-
-                            Keep learning every day to
-                            increase your streak.
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-                <!-- Storage -->
-
-                <div class="dashboard-card">
-
-                    <div class="card-header">
-
-                        <h2>
-
-                            Storage Usage
-
-                        </h2>
-
-                    </div>
-
-                    <div class="storage-card">
-
-                        <div class="progress-bar">
-
-                            <div
-
-                                class="progress-fill"
-
-                                id="storageProgress"
-
-                                style="width:0%;">
-
-                            </div>
-
-                        </div>
-
-                        <div class="storage-info">
-
-                            <span
-                                id="storageUsed">
-
-                                0 MB
-
-                            </span>
-
-                            <span>
-
-                                of 1 GB Used
-
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Recent Documents -->
-
-        <section class="dashboard-card">
-
-            <div class="card-header">
-
-                <h2>
-
-                    Recently Uploaded Documents
+                    0
 
                 </h2>
 
-                <a href="documents.html">
+            </div>
+
+            <div class="card">
+
+                <div class="card-icon">
+
+                    <i class="bi bi-calendar-check"></i>
+
+                </div>
+
+                <h3>
+
+                    Study Plans
+
+                </h3>
+
+                <h2
+
+                    id="plannerCount"
+
+                >
+
+                    0
+
+                </h2>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ===========================
+                MAIN GRID
+        ============================ -->
+
+        <section class="dashboard-grid">
+
+
+
+            <!-- Continue Learning -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        Continue Learning
+
+                    </h2>
+
+                </div>
+
+                <h3
+
+                    id="continueSubject"
+
+                >
+
+                    No Subject Selected
+
+                </h3>
+
+                <p
+
+                    id="continueTime"
+
+                >
+
+                    Create your first subject.
+
+                </p>
+
+                <p
+
+                    id="documentCount"
+
+                >
+
+                    0 Documents
+
+                </p>
+
+                <div class="progress-bar">
+
+                    <div
+
+                        id="learningProgress"
+
+                        class="progress-fill"
+
+                    >
+
+                    </div>
+
+                </div>
+
+                <button
+
+                    id="continueBtn"
+
+                    class="primary-btn"
+
+                >
+
+                    Continue
+
+                </button>
+
+            </div>
+
+
+
+            <!-- Storage -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        Storage
+
+                    </h2>
+
+                </div>
+
+                <h1
+
+                    id="storageUsed"
+
+                >
+
+                    0 MB
+
+                </h1>
+
+                <div class="progress-bar">
+
+                    <div
+
+                        id="storageProgress"
+
+                        class="progress-fill"
+
+                    >
+
+                    </div>
+
+                </div>
+
+                <p>
+
+                    Storage used by uploaded documents.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- Daily Motivation -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        Daily Motivation
+
+                    </h2>
+
+                </div>
+
+                <blockquote
+
+                    id="dailyQuote"
+
+                >
+
+                    Success is the sum of small efforts repeated every day.
+
+                </blockquote>
+
+            </div>
+
+
+
+            <!-- AI Assistant -->
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        AI Assistant
+
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    Need help understanding your study material?
+
+                </p>
+
+                <button
+
+                    id="quickChat"
+
+                    class="primary-btn"
+
+                >
+
+                    Ask EduRAG AI
+
+                </button>
+
+            </div>
+
+        </section>
+
+                <!-- ===========================
+                SUBJECTS
+        ============================ -->
+
+        <section class="subjects-section">
+
+            <div class="section-header">
+
+                <h2>
+
+                    Your Subjects
+
+                </h2>
+
+                <a
+                    href="subjects.html"
+                    class="view-all"
+                >
 
                     View All
 
@@ -942,37 +682,254 @@
 
             <div
 
-                id="recentDocuments"
+                id="subjectGrid"
 
-                class="recent-documents">
+                class="subject-grid"
 
-                <!-- JS Will Render Documents -->
+            >
+
+                <!-- Subject Cards from JS -->
 
             </div>
 
         </section>
 
-        <!-- Footer -->
+
+
+        <!-- ===========================
+                RECENT DOCUMENTS
+        ============================ -->
+
+        <section class="documents-section">
+
+            <div class="section-header">
+
+                <h2>
+
+                    Recent Documents
+
+                </h2>
+
+                <a
+                    href="documents.html"
+                    class="view-all"
+                >
+
+                    View All
+
+                </a>
+
+            </div>
+
+            <div class="dashboard-card">
+
+                <table class="documents-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+
+                                File
+
+                            </th>
+
+                            <th>
+
+                                Type
+
+                            </th>
+
+                            <th>
+
+                                Size
+
+                            </th>
+
+                            <th>
+
+                                Uploaded
+
+                            </th>
+
+                            <th>
+
+                                Actions
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody
+
+                        id="documentsContainer"
+
+                    >
+
+                        <!-- Documents from JS -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ===========================
+                RECENT ACTIVITY
+        ============================ -->
+
+        <section class="activity-section">
+
+            <div class="section-header">
+
+                <h2>
+
+                    Recent Activity
+
+                </h2>
+
+            </div>
+
+            <div
+
+                id="recentActivity"
+
+                class="dashboard-card"
+
+            >
+
+                <!-- Activity loaded here -->
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ===========================
+                QUICK ACCESS
+        ============================ -->
+
+        <section class="quick-actions">
+
+            <div class="section-header">
+
+                <h2>
+
+                    Quick Access
+
+                </h2>
+
+            </div>
+
+            <div class="action-grid">
+
+                <button
+
+                    id="quickChat"
+
+                >
+
+                    <i class="bi bi-robot"></i>
+
+                    AI Chat
+
+                </button>
+
+                <button
+
+                    id="quickFlashcards"
+
+                >
+
+                    <i class="bi bi-layers"></i>
+
+                    Flashcards
+
+                </button>
+
+                <button
+
+                    id="quickQuiz"
+
+                >
+
+                    <i class="bi bi-patch-question"></i>
+
+                    Quiz
+
+                </button>
+
+                <button
+
+                    id="quickNotes"
+
+                >
+
+                    <i class="bi bi-journal-text"></i>
+
+                    Notes
+
+                </button>
+
+                <button
+
+                    id="quickPlanner"
+
+                >
+
+                    <i class="bi bi-calendar-check"></i>
+
+                    Study Planner
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ===========================
+                FOOTER
+        ============================ -->
 
         <footer class="dashboard-footer">
 
             <p>
 
-                EduRAG © 2026
+                ©
+
+                <span
+
+                    id="footerYear"
+
+                >
+
+                </span>
+
+                EduRAG
+
+                • AI Powered Learning Platform
 
             </p>
-
-            <span>
-
-                AI-Powered Learning Platform
-
-            </span>
 
         </footer>
 
     </main>
 
 </div>
+
+
+
+<!-- Dashboard JS -->
 
 <script src="../js/dashboard.js"></script>
 

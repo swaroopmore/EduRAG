@@ -60,3 +60,13 @@ class DocumentService:
         return self.repository.get_documents_by_subject(
             subject_id
         )
+    
+
+    def get_all_documents(
+    self,
+    user_id: UUID,
+):
+
+        return self.repository.get_all_documents(
+        user_id
+    )
