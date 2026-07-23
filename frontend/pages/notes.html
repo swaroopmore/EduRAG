@@ -1,77 +1,385 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduRAG • AI Notes</title>
-<link rel="stylesheet" href="../css/notes.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>EduRAG • AI Study Notes</title>
+
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/notes.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 </head>
+
 <body>
 
-<div class="page">
+<div class="page-container">
 
-<header class="topbar">
-<div>
-<h1 id="subjectTitle">AI Notes</h1>
-<p>Well-structured notes generated from your study material.</p>
-</div>
+    <!-- ================================================= -->
+    <!-- HERO -->
+    <!-- ================================================= -->
 
-<button id="generateBtn" class="primary-btn">
-<i class="bi bi-stars"></i>
-Generate Notes
-</button>
-</header>
+    <section class="hero">
 
-<section class="stats-grid">
-<div class="stat-card">
-<h3>Total Notes</h3>
-<h2 id="totalNotes">0</h2>
-</div>
+        <div class="hero-content">
 
-<div class="stat-card">
-<h3>Sections</h3>
-<h2 id="totalSections">0</h2>
-</div>
+            <h1>
 
-<div class="stat-card">
-<h3>Reading Time</h3>
-<h2 id="readingTime">0 min</h2>
-</div>
-</section>
+                <i class="bi bi-journal-richtext"></i>
 
-<section class="toolbar">
-<input id="searchInput" type="text" placeholder="Search notes...">
-</section>
+                AI Study Notes
 
-<div class="content-layout">
+            </h1>
 
-<main>
+            <h2 id="subjectTitle">
 
-<div id="notesContainer">
+                Java Fundamentals
 
-<div class="empty-state">
-<i class="bi bi-journal-richtext"></i>
-<h2>No Notes Available</h2>
-<p>Click <strong>Generate Notes</strong> to create AI study notes.</p>
-</div>
+            </h2>
 
-</div>
+            <p>
 
-</main>
+                AI-generated structured study notes from your uploaded documents.
 
-<aside class="toc">
-<h3>Contents</h3>
-<div id="tocContainer">
-<p>No sections yet.</p>
-</div>
-</aside>
+            </p>
 
-</div>
+        </div>
+
+        <div class="hero-actions">
+
+            <button
+                id="generateBtn"
+                class="primary-btn">
+
+                <i class="bi bi-stars"></i>
+
+                Generate Notes
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- STATISTICS -->
+    <!-- ================================================= -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <i class="bi bi-file-earmark-text"></i>
+
+            <h2 id="totalNotes">
+
+                0
+
+            </h2>
+
+            <p>
+
+                Total Notes
+
+            </p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="bi bi-collection"></i>
+
+            <h2 id="sectionCount">
+
+                0
+
+            </h2>
+
+            <p>
+
+                Sections
+
+            </p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="bi bi-clock-history"></i>
+
+            <h2 id="readingTime">
+
+                1 min
+
+            </h2>
+
+            <p>
+
+                Reading Time
+
+            </p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="bi bi-tags"></i>
+
+            <h2 id="keywordCount">
+
+                0
+
+            </h2>
+
+            <p>
+
+                Keywords
+
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- SEARCH + ACTIONS -->
+    <!-- ================================================= -->
+
+    <section class="toolbar">
+
+        <input
+
+            id="searchNotes"
+
+            type="text"
+
+            placeholder="Search notes...">
+
+        <div class="toolbar-buttons">
+
+            <button
+                id="copyBtn"
+                class="secondary-btn">
+
+                <i class="bi bi-copy"></i>
+
+                Copy
+
+            </button>
+
+            <button
+                id="downloadBtn"
+                class="secondary-btn">
+
+                <i class="bi bi-download"></i>
+
+                Download PDF
+
+            </button>
+
+            <button
+                id="regenerateBtn"
+                class="secondary-btn">
+
+                <i class="bi bi-arrow-repeat"></i>
+
+                Regenerate
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- MAIN CONTENT -->
+    <!-- ================================================= -->
+
+    <section class="notes-layout">
+
+        <!-- LEFT -->
+
+        <div
+            id="notesContainer"
+            class="notes-container">
+
+            <div class="empty-state">
+
+                <i class="bi bi-journal-richtext"></i>
+
+                <h2>
+
+                    No Notes Available
+
+                </h2>
+
+                <p>
+
+                    Generate AI-powered study notes from your uploaded documents.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <aside class="toc-card">
+
+            <h3>
+
+                <i class="bi bi-list-ul"></i>
+
+                Table of Contents
+
+            </h3>
+
+            <div id="tocContainer">
+
+                <div class="toc-empty">
+
+                    No sections yet.
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- READING PROGRESS -->
+    <!-- ================================================= -->
+
+    <section class="progress-section">
+
+        <div class="progress-header">
+
+            <span>
+
+                Reading Progress
+
+            </span>
+
+            <span id="progressText">
+
+                0%
+
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                id="progressFill"
+                class="progress-fill">
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- QUICK ACTIONS -->
+    <!-- ================================================= -->
+
+    <section class="quick-actions">
+
+        <div
+            id="copyNotesCard"
+            class="action-card">
+
+            <i class="bi bi-copy"></i>
+
+            <h3>
+
+                Copy Notes
+
+            </h3>
+
+            <p>
+
+                Copy all notes to clipboard.
+
+            </p>
+
+        </div>
+
+        <div
+            id="downloadPdfCard"
+            class="action-card">
+
+            <i class="bi bi-file-earmark-pdf"></i>
+
+            <h3>
+
+                Download PDF
+
+            </h3>
+
+            <p>
+
+                Export notes as PDF.
+
+            </p>
+
+        </div>
+
+        <div
+            id="regenerateCard"
+            class="action-card">
+
+            <i class="bi bi-arrow-repeat"></i>
+
+            <h3>
+
+                Regenerate
+
+            </h3>
+
+            <p>
+
+                Generate fresh AI notes.
+
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- FOOTER -->
+    <!-- ================================================= -->
+
+    <footer class="page-footer">
+
+        <a
+            href="documents.html"
+            class="back-btn">
+
+            <i class="bi bi-arrow-left-circle"></i>
+
+            Back to Documents
+
+        </a>
+
+    </footer>
 
 </div>
 
 <script src="../js/notes.js"></script>
 
 </body>
+
 </html>
