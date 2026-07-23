@@ -7,7 +7,9 @@ const fileInput = document.getElementById("fileInput");
 
 const params = new URLSearchParams(window.location.search);
 
-const subjectId = params.get("subject_id");
+const subjectId =
+    params.get("subject_id") ||
+    localStorage.getItem("current_subject_id");
 
 console.log("Subject ID:", subjectId);
 

@@ -93,8 +93,8 @@ function renderSubjects(subjects) {
 
     card.addEventListener("click", () => {
 
-        localStorage.setItem("subject_id", subject.id);
-        localStorage.setItem("subject_name", subject.name);
+        localStorage.setItem("current_subject_id", subject.id);
+        localStorage.setItem("current_subject_name", subject.name);
 
         window.location.href =
             "documents.html?subject_id=" + subject.id;
