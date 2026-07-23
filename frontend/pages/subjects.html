@@ -1,109 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduRAG | Subjects</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="../css/subjects.css">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EduRAG | Subjects</title>
+
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/subjects.css">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 </head>
 
 <body>
 
 <div class="dashboard">
 
-<aside class="sidebar">
+    <!-- ================= Sidebar ================= -->
 
-<div class="logo">
-<i class="bi bi-mortarboard-fill"></i>
-<span>EduRAG</span>
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="bi bi-mortarboard-fill"></i>
+
+            <span>EduRAG</span>
+
+        </div>
+
+        <nav class="nav-links">
+
+            <a href="dashboard.html" class="nav-item">
+                <i class="bi bi-grid"></i>
+                Dashboard
+            </a>
+
+            <a href="subjects.html" class="nav-item active">
+                <i class="bi bi-book"></i>
+                Subjects
+            </a>
+
+            <a href="#" class="nav-item">
+                <i class="bi bi-file-earmark-text"></i>
+                Documents
+            </a>
+
+            <a href="#" class="nav-item">
+                <i class="bi bi-chat-dots"></i>
+                Ask AI
+            </a>
+
+            <a href="#" class="nav-item">
+                <i class="bi bi-card-text"></i>
+                Flashcards
+            </a>
+
+            <a href="#" class="nav-item">
+                <i class="bi bi-patch-question"></i>
+                Quiz
+            </a>
+
+            <a href="#" class="nav-item">
+                <i class="bi bi-journal-text"></i>
+                Notes
+            </a>
+
+            <a href="#" class="nav-item">
+                <i class="bi bi-calendar-check"></i>
+                Study Planner
+            </a>
+
+        </nav>
+
+        <button class="logout-btn">
+
+            <i class="bi bi-box-arrow-right"></i>
+
+            Logout
+
+        </button>
+
+    </aside>
+
+    <!-- ================= Main Content ================= -->
+
+    <main class="content">
+
+        <!-- Topbar -->
+
+        <header class="topbar">
+
+            <div class="search-box">
+
+                <i class="bi bi-search"></i>
+
+                <input type="text"
+                    placeholder="Search subjects...">
+
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="notification-btn">
+
+                    <i class="bi bi-bell"></i>
+
+                </button>
+
+                <div class="profile">
+
+                    <div class="avatar">
+
+                        SM
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- Hero -->
+
+        <section class="hero">
+
+            <div>
+
+                <h1>
+
+                    📚 Subjects
+
+                </h1>
+
+                <p>
+
+                    Organize all your study materials into subjects.
+
+                </p>
+
+            </div>
+
+            <button
+                id="addSubjectBtn"
+                class="hero-btn">
+
+                <i class="bi bi-plus-lg"></i>
+
+                New Subject
+
+            </button>
+
+        </section>
+
+        <!-- Statistics -->
+
+        <section class="stats-grid">
+
+            <div class="card">
+
+                <div class="card-icon">
+
+                    <i class="bi bi-book"></i>
+
+                </div>
+
+                <h3>Total Subjects</h3>
+
+                <h2 id="totalSubjects">
+
+                    0
+
+                </h2>
+
+            </div>
+
+        </section>
+
+        <!-- Subject Grid -->
+
+        <section
+            id="subjectsContainer"
+            class="subjects-grid">
+
+        </section>
+
+    </main>
+
 </div>
 
-<nav>
-<a href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a>
-<a class="active" href="subjects.html"><i class="bi bi-book"></i> Subjects</a>
-<a href="documents.html"><i class="bi bi-file-earmark-text"></i> Documents</a>
-<a href="chat.html"><i class="bi bi-chat-dots"></i> AI Chat</a>
-<a href="flashcards.html"><i class="bi bi-stack"></i> Flashcards</a>
-<a href="quiz.html"><i class="bi bi-patch-question"></i> Quiz</a>
-<a href="planner.html"><i class="bi bi-calendar-week"></i> Study Planner</a>
-<a href="notes.html"><i class="bi bi-journal-text"></i> Notes</a>
-</nav>
+<!-- ================= Modal ================= -->
 
-<div class="bottom-links">
-<a href="#"><i class="bi bi-gear"></i> Settings</a>
-<a href="login.html"><i class="bi bi-box-arrow-right"></i> Logout</a>
-</div>
+<div
+    id="subjectModal"
+    class="modal hidden">
 
-</aside>
+    <div class="modal-content">
 
-<main class="content">
+        <div class="modal-header">
 
-<header class="topbar">
+            <h2>
 
-<div class="search">
-<i class="bi bi-search"></i>
-<input type="text" id="searchSubject" placeholder="Search subjects...">
-</div>
+                Create New Subject
 
-<button id="addSubjectBtn" class="btn-primary">
-<i class="bi bi-plus-lg"></i>
-New Subject
-</button>
+            </h2>
 
-</header>
+            <button
+                id="closeModal">
 
-<section class="page-header">
-<h1>📚 Subjects</h1>
-<p>Manage all your learning subjects.</p>
-</section>
+                <i class="bi bi-x-lg"></i>
 
-<div id="subjectsContainer" class="subjects-grid">
-<!-- Subjects loaded dynamically -->
-</div>
+            </button>
 
-<section class="summary">
+        </div>
 
-<div class="summary-card">
-<h4>Total Subjects</h4>
-<h2 id="totalSubjects">0</h2>
-</div>
+        <div class="form-group">
 
-</section>
+            <label>
 
-</main>
+                Subject Name
 
-</div>
+            </label>
 
-<div id="subjectModal" class="modal hidden">
+            <input
+                id="subjectName"
+                type="text"
+                placeholder="e.g. Python Programming">
 
-<div class="modal-content">
+        </div>
 
-<h2>Create Subject</h2>
+        <div class="form-group">
 
-<input
-type="text"
-id="subjectName"
-placeholder="Subject Name">
+            <label>
 
-<textarea
-id="subjectDescription"
-placeholder="Description"></textarea>
+                Description
 
-<div class="modal-buttons">
-<button id="saveSubject" class="new-btn">Create</button>
-<button id="closeModal">Cancel</button>
-</div>
+            </label>
 
-</div>
+            <textarea
+                id="subjectDescription"
+                rows="4"
+                placeholder="Enter description..."></textarea>
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                id="saveSubject"
+                class="hero-btn">
+
+                Create Subject
+
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 
 <script src="../js/subjects.js"></script>
 
 </body>
+
 </html>

@@ -72,22 +72,31 @@ function renderSubjects(subjects) {
 
     card.className = "subject-card";
 
+   
     card.innerHTML = `
+<div class="icon">
+    <i class="bi bi-book"></i>
+</div>
 
-        <div class="icon purple">
-            <i class="bi bi-book"></i>
-        </div>
+<h3>${subject.name}</h3>
 
-        <h3>${subject.name}</h3>
+<p>${subject.description ?? "No description available."}</p>
 
-        <p>${subject.description ?? ""}</p>
+<small>
+Created: ${new Date(subject.created_at).toLocaleDateString()}
+</small>
 
-        <small>
-            Created:
-            ${new Date(subject.created_at).toLocaleDateString()}
-        </small>
+<div class="subject-footer">
 
-    `;
+    <span>
+        <i class="bi bi-file-earmark-text"></i>
+        Open Workspace
+    </span>
+
+    <i class="bi bi-arrow-right-circle-fill"></i>
+
+</div>
+`;
 
     card.style.cursor = "pointer";
 
