@@ -7,6 +7,13 @@ const params = new URLSearchParams(window.location.search);
 const subjectId = params.get("subject_id");
 
 const subjectName = localStorage.getItem("current_subject_name");
+const totalCards = document.getElementById("totalCards");
+const currentCard = document.getElementById("currentCard");
+const masteredCards = document.getElementById("masteredCards");
+const progressPercent = document.getElementById("progressPercent");
+
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
 
 console.log(subjectId);
 console.log(window.location.href);
@@ -16,6 +23,7 @@ let flashcards = [];
 let currentIndex = 0;
 
 let showingAnswer = false;
+let mastered = new Set();
 
 
 
@@ -74,23 +82,32 @@ async function loadFlashcards() {
         console.log("FlashCards Receieved :",flashcards);
         console.log("Count",flashcards.length);
 
-        if (flashcards.length === 0) {
+   if (flashcards.length === 0) {
 
-            document.getElementById("flashcard").innerHTML = `
+    document.getElementById("flashcard").innerHTML = `
 
-                <div class="empty-state">
+        <div class="empty-state">
 
-                    <h3>No Flashcards Found</h3>
+            <i class="bi bi-journal-richtext"></i>
 
-                    <p>Generate flashcards to start studying.</p>
+            <h2>No Flashcards Yet</h2>
 
-                </div>
+            <p>
 
-            `;
+                Generate AI-powered flashcards
+                from your uploaded documents.
 
-            return;
+            </p>
 
-        }
+        </div>
+
+    `;
+
+    updateStatistics();
+
+    return;
+
+}
 
         currentIndex = 0;
 
@@ -118,17 +135,28 @@ function renderFlashcard() {
 
         <div class="card-face question">
 
-            <h3>Question</h3>
+    <span class="card-label">
 
-            <p>${flashcard.question}</p>
+        Question
 
-        </div>
+    </span>
+
+    <h2>
+
+        ${flashcard.question}
+
+    </h2>
+
+    <small>
+
+        Click anywhere to reveal answer
+
+    </small>
+
+</div>
 
     `;
 
-    document.getElementById("progress").innerText =
-
-        `${currentIndex + 1} / ${flashcards.length}`;
 
     document.getElementById("previousBtn").disabled =
 
@@ -137,6 +165,8 @@ function renderFlashcard() {
     document.getElementById("nextBtn").disabled =
 
         currentIndex === flashcards.length - 1;
+
+        updateStatistics();
 
 }
 
@@ -172,13 +202,21 @@ function flipFlashcard() {
 
         document.getElementById("flashcard").innerHTML = `
 
-            <div class="card-face answer">
+           <div class="card-face answer">
 
-                <h3>Answer</h3>
+    <span class="card-label">
 
-                <p>${flashcard.answer}</p>
+        Answer
 
-            </div>
+    </span>
+
+    <h2>
+
+        ${flashcard.answer}
+
+    </h2>
+
+</div>
 
         `;
 
@@ -205,6 +243,8 @@ document
     }
 
     if (currentIndex < flashcards.length - 1) {
+
+        mastered.add(currentIndex);
 
         currentIndex++;
 
@@ -376,6 +416,7 @@ document
     currentIndex = 0;
 
     renderFlashcard();
+    updateStatistics();
 
 }
 
@@ -419,3 +460,38 @@ document
     }
 
 );
+
+document
+    .getElementById("flashcard")
+    .addEventListener(
+        "click",
+        flipFlashcard
+    );
+
+function updateStatistics() {
+
+    totalCards.textContent = flashcards.length;
+
+    currentCard.textContent =
+        flashcards.length === 0
+        ? "0 / 0"
+        : `${currentIndex + 1} / ${flashcards.length}`;
+
+    masteredCards.textContent =
+        mastered.size;
+
+    const percent =
+        flashcards.length === 0
+        ? 0
+        : Math.round(((currentIndex + 1) / flashcards.length) * 100);
+
+    progressPercent.textContent =
+        percent + "%";
+
+    progressFill.style.width =
+        percent + "%";
+
+    progressText.textContent =
+        percent + "%";
+
+}
