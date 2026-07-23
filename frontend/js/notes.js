@@ -14,7 +14,7 @@ const subjectId =
 
 const subjectName =
     localStorage.getItem(
-        "subject_name"
+        "current_subject_name"
     );
 
 document.getElementById(
@@ -132,14 +132,10 @@ async function loadNotes() {
 
 function updateStatistics() {
 
-    document.getElementById(
-        "totalNotes"
-    ).innerText =
+    document.getElementById("totalNotes").innerText =
         notes.length;
 
-    document.getElementById(
-        "totalSections"
-    ).innerText =
+    document.getElementById("sectionCount").innerText =
         notes.length;
 
     let words = 0;
@@ -152,15 +148,14 @@ function updateStatistics() {
 
     });
 
-    const minutes = Math.max(
-        1,
-        Math.ceil(words / 200)
-    );
+    const minutes =
+        Math.max(1, Math.ceil(words / 200));
 
-    document.getElementById(
-        "readingTime"
-    ).innerText =
+    document.getElementById("readingTime").innerText =
         `${minutes} min`;
+
+    document.getElementById("keywordCount").innerText =
+        words;
 
 }
 
@@ -394,7 +389,7 @@ function renderTableOfContents() {
 document
 
     .getElementById(
-        "searchInput"
+        "searchNotes"
     )
 
     .addEventListener(
@@ -452,3 +447,73 @@ document
         generateNotes
 
     );
+
+
+    document
+.getElementById("copyBtn")
+.addEventListener("click", () => {
+
+    const text = notes
+        .map(note =>
+            `${note.title}\n\n${note.content}`)
+        .join("\n\n");
+
+    navigator.clipboard.writeText(text);
+
+    alert("Notes copied successfully.");
+
+});
+
+document
+.getElementById("regenerateBtn")
+.addEventListener(
+    "click",
+    generateNotes
+);
+
+document
+.getElementById("regenerateCard")
+.addEventListener(
+    "click",
+    generateNotes
+);
+
+document
+.getElementById("copyNotesCard")
+.addEventListener("click", () => {
+
+    document
+        .getElementById("copyBtn")
+        .click();
+
+});
+
+document
+.getElementById("downloadPdfCard")
+.addEventListener("click", () => {
+
+    alert("PDF download coming soon.");
+
+});
+
+    window.addEventListener("scroll", () => {
+
+    const scrollTop =
+        window.scrollY;
+
+    const docHeight =
+        document.documentElement.scrollHeight -
+        window.innerHeight;
+
+    const progress =
+        docHeight === 0
+        ? 0
+        : Math.round((scrollTop / docHeight) * 100);
+
+    document.getElementById("progressFill").style.width =
+        progress + "%";
+
+    document.getElementById("progressText").innerText =
+        progress + "%";
+
+});
