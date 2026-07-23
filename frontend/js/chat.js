@@ -336,53 +336,59 @@ function addAIMessage(answer, citations = []) {
 
     messageDiv.className = "ai-message";
 
-    let citationsHTML = "";
+   let citationsHTML = "";
 
-    if (citations.length > 0) {
+if (citations.length > 0) {
 
-        citationsHTML = `
+    citationsHTML = `
 
-            <div class="citations">
+        <div class="citations">
 
-                <h4>
+            <div class="citation-title">
 
-                    <i class="bi bi-journal-text"></i>
+                <i class="bi bi-journal-richtext"></i>
 
-                    Sources
-
-                </h4>
-
-                ${citations.map(citation => `
-
-                    <div class="citation">
-
-                        <strong>
-
-                            ${citation.document}
-
-                        </strong>
-
-                        <p>
-
-                            Page ${citation.page}
-
-                        </p>
-
-                        <small>
-
-                            ${citation.snippet}
-
-                        </small>
-
-                    </div>
-
-                `).join("")}
+                Sources Used
 
             </div>
 
-        `;
+            ${citations.map(citation => `
 
-    }
+                <div class="citation-card">
+
+                    <div class="citation-header">
+
+                        <div class="citation-icon">
+
+                            <i class="bi bi-file-earmark-pdf-fill"></i>
+
+                        </div>
+
+                        <div class="citation-info">
+
+                            <h5>${citation.document}</h5>
+
+                            <span>Page ${citation.page}</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="citation-snippet">
+
+                        ${citation.snippet}
+
+                    </div>
+
+                </div>
+
+            `).join("")}
+
+        </div>
+
+    `;
+
+}
 
     messageDiv.innerHTML = `
 
