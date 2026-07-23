@@ -97,110 +97,97 @@ async function loadDocuments() {
 
 function renderDocuments(documents) {
 
-    const container =
-        document.getElementById("documentsContainer");
+    const container = document.getElementById("documentsContainer");
 
     container.innerHTML = "";
 
     let pdfCount = 0;
     let totalSize = 0;
 
+    if (documents.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="bi bi-folder2-open"></i>
+
+                <h2>No Documents Found</h2>
+
+                <p>Upload your first PDF to start learning with AI.</p>
+
+            </div>
+
+        `;
+
+    }
+
     documents.forEach(doc => {
 
         if (doc.file_type.toLowerCase() === "pdf") {
+
             pdfCount++;
+
         }
 
         totalSize += doc.file_size;
 
-        const row = document.createElement("tr");
+        const card = document.createElement("div");
 
-        row.innerHTML = `
+        card.className = "document-card";
 
-            <td>
+        card.innerHTML = `
+
+            <div class="document-icon">
 
                 <i class="bi bi-file-earmark-pdf-fill"></i>
 
-                ${doc.original_filename}
+            </div>
 
-            </td>
+            <h3>${doc.original_filename}</h3>
 
-            <td>
+            <div class="document-meta">
 
-                ${doc.file_type.toUpperCase()}
+                <p><strong>Type:</strong> ${doc.file_type.toUpperCase()}</p>
 
-            </td>
+                <p><strong>Size:</strong> ${(doc.file_size / 1024).toFixed(1)} KB</p>
 
-            <td>
+                <p><strong>Uploaded:</strong> ${new Date(doc.created_at).toLocaleDateString()}</p>
 
-                ${(doc.file_size / 1024).toFixed(1)} KB
+            </div>
 
-            </td>
+            <div class="document-actions">
 
-            <td>
-
-                ${new Date(doc.created_at).toLocaleDateString()}
-
-            </td>
-
-            <td>
-
-                <button
-                    class="primary"
-                    onclick="openChat()">
-
+                <button onclick="openChat()">
                     AI Chat
-
                 </button>
 
-                <button
-                    class="secondary"
-                    onclick="openFlashcards()">
-
+                <button onclick="openFlashcards()">
                     Flashcards
-
                 </button>
 
-                <button
-                    class="secondary"
-                    onclick="openQuiz()">
-
+                <button onclick="openQuiz()">
                     Quiz
-
                 </button>
 
-                <button
-                    class="secondary"
-                    onclick="openNotes()">
-
+                <button onclick="openNotes()">
                     Notes
-
                 </button>
 
-                <button
-                    class="secondary"
-                    onclick="openStudyPlanner()">
-
-                    Study Planner
-
+                <button onclick="openStudyPlanner()">
+                    Planner
                 </button>
 
-            </td>
+            </div>
 
         `;
 
-        container.appendChild(row);
+        container.appendChild(card);
 
     });
 
-    document.getElementById("totalDocuments").innerText =
+    document.getElementById("documentCount").innerText =
         documents.length;
-
-    document.getElementById("pdfCount").innerText =
-        pdfCount;
-
-    document.getElementById("totalSize").innerText =
-        (totalSize / (1024 * 1024)).toFixed(2) + " MB";
 
 }
 

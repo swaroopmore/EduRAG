@@ -5,32 +5,23 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>EduRAG | Documents</title>
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
-
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-          rel="stylesheet">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/documents.css">
 
     <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <link rel="stylesheet"
-          href="../css/documents.css">
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
 
 <body>
 
 <div class="dashboard">
+
+    <!-- ================= Sidebar ================= -->
 
     <aside class="sidebar">
 
@@ -42,295 +33,147 @@
 
         </div>
 
-        <nav>
+        <nav class="nav-links">
 
-            <a href="dashboard.html">
-
-                <i class="bi bi-house"></i>
-
+            <a href="dashboard.html" class="nav-item">
+                <i class="bi bi-grid"></i>
                 Dashboard
-
             </a>
 
-            <a href="subjects.html">
-
+            <a href="subjects.html" class="nav-item">
                 <i class="bi bi-book"></i>
-
                 Subjects
-
             </a>
 
-            <a class="active"
-               href="documents.html">
-
+            <a href="#" class="nav-item active">
                 <i class="bi bi-file-earmark-text"></i>
-
                 Documents
-
             </a>
 
-            <a href="chat.html">
-
+            <a href="#" class="nav-item">
                 <i class="bi bi-chat-dots"></i>
-
-                AI Chat
-
+                Ask AI
             </a>
 
-            <a href="flashcards.html">
-
-                <i class="bi bi-stack"></i>
-
+            <a href="#" class="nav-item">
+                <i class="bi bi-card-text"></i>
                 Flashcards
-
             </a>
 
-            <a href="quizes.html">
-
+            <a href="#" class="nav-item">
                 <i class="bi bi-patch-question"></i>
-
                 Quiz
-
             </a>
 
-            <a href="planner.html">
-
-                <i class="bi bi-calendar-week"></i>
-
-                Study Planner
-
-            </a>
-
-            <a href="notes.html">
-
+            <a href="#" class="nav-item">
                 <i class="bi bi-journal-text"></i>
-
                 Notes
+            </a>
 
+            <a href="#" class="nav-item">
+                <i class="bi bi-calendar-check"></i>
+                Study Planner
             </a>
 
         </nav>
 
-        <div class="bottom-links">
+        <button class="logout-btn">
 
-            <a href="#">
+            <i class="bi bi-box-arrow-right"></i>
 
-                <i class="bi bi-gear"></i>
+            Logout
 
-                Settings
-
-            </a>
-
-            <a href="login.html">
-
-                <i class="bi bi-box-arrow-right"></i>
-
-                Logout
-
-            </a>
-
-        </div>
+        </button>
 
     </aside>
 
+    <!-- ================= Content ================= -->
+
     <main class="content">
 
-                <header class="topbar">
+        <!-- Topbar -->
 
-            <div class="search">
+        <header class="topbar">
+
+            <div class="search-box">
 
                 <i class="bi bi-search"></i>
 
                 <input
                     type="text"
-                    placeholder="Search documents..."
-                >
+                    placeholder="Search documents...">
 
             </div>
 
-            <div class="actions">
+            <div class="topbar-right">
 
-                <button class="secondary">
+                <button class="notification-btn">
 
-                    <i class="bi bi-folder-plus"></i>
-
-                    New Folder
+                    <i class="bi bi-bell"></i>
 
                 </button>
 
-                <button
-                    class="primary"
-                    id="uploadBtn"
-                >
+                <div class="profile">
 
-                    <i class="bi bi-cloud-upload"></i>
+                    <div class="avatar">
 
-                    Upload Files
+                        SM
 
-                </button>
+                    </div>
+
+                </div>
 
             </div>
 
         </header>
 
+        <!-- Hero -->
 
-        <section class="page-header">
+        <section class="hero">
 
             <div>
 
                 <h1 id="subjectTitle">
 
-                    📄 Loading...
+                    📄 Documents
 
                 </h1>
 
                 <p>
 
-                    Upload, manage and organize your study materials.
+                    Manage all documents for this subject.
 
                 </p>
 
             </div>
 
-        </section>
+            <button
+                id="uploadBtn"
+                class="hero-btn">
 
+                <i class="bi bi-upload"></i>
 
-        <section class="upload-box">
+                Upload PDF
 
-            <div class="upload-icon">
-
-                <i class="bi bi-cloud-arrow-up-fill"></i>
-
-            </div>
-
-            <h2>
-
-                Drag & Drop your files here
-
-            </h2>
-
-            <p>
-
-                or click the Upload Files button
-
-            </p>
-
-            <span>
-
-                Supported formats:
-                PDF • DOCX • PPTX • TXT
-
-            </span>
+            </button>
 
         </section>
 
+        <!-- Statistics -->
 
-        <section class="toolbar">
+        <section class="stats-grid">
 
-            <input
-                type="text"
-                placeholder="Search uploaded documents..."
-            >
+            <div class="card">
 
-            <select>
+                <div class="card-icon">
 
-                <option>
+                    <i class="bi bi-file-earmark-text"></i>
 
-                    All Documents
+                </div>
 
-                </option>
+                <h3>Total Documents</h3>
 
-            </select>
-
-            <select>
-
-                <option>
-
-                    Recently Uploaded
-
-                </option>
-
-            </select>
-
-        </section>
-
-
-        <section class="documents-section">
-
-            <table class="docs-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th>Document</th>
-
-                        <th>Type</th>
-
-                        <th>Size</th>
-
-                        <th>Uploaded</th>
-
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="documentsContainer">
-
-                    <!-- Documents will load dynamically -->
-
-                </tbody>
-
-            </table>
-
-        </section>
-
-
-                <section class="stats">
-
-            <div class="stat">
-
-                <h4>Total Documents</h4>
-
-                <h2 id="totalDocuments">
-
-                    0
-
-                </h2>
-
-            </div>
-
-            <div class="stat">
-
-                <h4>PDF Files</h4>
-
-                <h2 id="pdfCount">
-
-                    0
-
-                </h2>
-
-            </div>
-
-            <div class="stat">
-
-                <h4>Total Size</h4>
-
-                <h2 id="totalSize">
-
-                    0 MB
-
-                </h2>
-
-            </div>
-
-            <div class="stat">
-
-                <h4>AI Ready</h4>
-
-                <h2 id="indexedDocuments">
+                <h2 id="documentCount">
 
                     0
 
@@ -340,52 +183,25 @@
 
         </section>
 
+        <!-- Document Grid -->
 
-        <input
-            type="file"
-            id="fileInput"
-            hidden
-            accept=".pdf,.doc,.docx,.ppt,.pptx,.txt"
-        >
+        <section
+            id="documentsContainer"
+            class="documents-grid">
+
+        </section>
 
     </main>
 
 </div>
 
+<!-- Hidden File Input -->
 
-<!-- Upload Progress Modal -->
+<input
+    type="file"
+    id="fileInput"
+    hidden>
 
-<div
-    id="uploadModal"
-    class="modal hidden"
->
-
-    <div class="modal-content">
-
-        <h2>
-
-            Uploading Document...
-
-        </h2>
-
-        <div class="progress-bar">
-
-            <div
-                id="progressFill"
-                class="progress-fill"
-            ></div>
-
-        </div>
-
-        <p id="progressText">
-
-            Please wait...
-
-        </p>
-
-    </div>
-
-</div>
 <script src="../js/documents.js"></script>
 
 </body>
