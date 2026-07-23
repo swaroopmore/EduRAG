@@ -30,7 +30,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     document.getElementById("subjectTitle").innerText =
-        "📄 " + localStorage.getItem("subject_name");
+        "📄 " + localStorage.getItem("current_subject_name");
 
     loadDocuments();
 

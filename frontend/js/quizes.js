@@ -3,6 +3,32 @@ const API_URL =
 
 const token =
     localStorage.getItem("access_token");
+    const totalQuestions =
+    document.getElementById("totalQuestions");
+
+const currentQuestion =
+    document.getElementById("currentQuestion");
+
+const scoreCard =
+    document.getElementById("score");
+
+const accuracyCard =
+    document.getElementById("accuracy");
+
+const progressFill =
+    document.getElementById("progressFill");
+
+const progressText =
+    document.getElementById("progressText");
+
+const resultModal =
+    document.getElementById("resultModal");
+
+const finalScore =
+    document.getElementById("finalScore");
+
+const finalAccuracy =
+    document.getElementById("finalAccuracy");
 
 const params =
     new URLSearchParams(
@@ -14,7 +40,7 @@ const subjectId =
 
 const subjectName =
     localStorage.getItem(
-        "subject_name"
+        "current_subject_name"
     );
 
 document.getElementById(
@@ -84,7 +110,7 @@ async function loadQuiz() {
         if (quizzes.length === 0) {
 
             document.getElementById(
-                "quizContainer"
+                "quizCard"
             ).innerHTML = `
 
                 <div class="empty-state">
@@ -129,66 +155,67 @@ function renderQuestion() {
     const selectedAnswer =
         answers[currentIndex] || "";
 
-    document.getElementById(
-        "quizContainer"
-    ).innerHTML = `
+document.getElementById("quizCard").innerHTML = `
 
-        <h2 class="question-title">
+<div class="question-number">
 
-            Q${currentIndex + 1}. ${quiz.question}
+Question ${currentIndex+1}
 
-        </h2>
+</div>
 
-        <div class="options">
+<h2 class="question">
 
-            <div
-                class="option ${selectedAnswer === "A" ? "selected" : ""}"
-                onclick="selectAnswer('A')">
+${quiz.question}
 
-                <strong>A.</strong>
+</h2>
 
-                ${quiz.option_a}
+<div class="options">
 
-            </div>
+<div class="option ${selectedAnswer==="A"?"selected":""}"
 
-            <div
-                class="option ${selectedAnswer === "B" ? "selected" : ""}"
-                onclick="selectAnswer('B')">
+onclick="selectAnswer('A')">
 
-                <strong>B.</strong>
+<strong>A.</strong>
 
-                ${quiz.option_b}
+${quiz.option_a}
 
-            </div>
+</div>
 
-            <div
-                class="option ${selectedAnswer === "C" ? "selected" : ""}"
-                onclick="selectAnswer('C')">
+<div class="option ${selectedAnswer==="B"?"selected":""}"
 
-                <strong>C.</strong>
+onclick="selectAnswer('B')">
 
-                ${quiz.option_c}
+<strong>B.</strong>
 
-            </div>
+${quiz.option_b}
 
-            <div
-                class="option ${selectedAnswer === "D" ? "selected" : ""}"
-                onclick="selectAnswer('D')">
+</div>
 
-                <strong>D.</strong>
+<div class="option ${selectedAnswer==="C"?"selected":""}"
 
-                ${quiz.option_d}
+onclick="selectAnswer('C')">
 
-            </div>
+<strong>C.</strong>
 
-        </div>
+${quiz.option_c}
 
-    `;
+</div>
 
-    document.getElementById(
-        "progress"
-    ).innerText =
-        `${currentIndex + 1} / ${quizzes.length}`;
+<div class="option ${selectedAnswer==="D"?"selected":""}"
+
+onclick="selectAnswer('D')">
+
+<strong>D.</strong>
+
+${quiz.option_d}
+
+</div>
+
+</div>
+
+`;
+
+     updateStatistics();
 
     document.getElementById(
         "previousBtn"
@@ -199,6 +226,8 @@ function renderQuestion() {
         "nextBtn"
     ).disabled =
         currentIndex === quizzes.length - 1;
+
+      
 
 }
 
@@ -277,7 +306,7 @@ async function generateQuiz() {
             '<i class="bi bi-arrow-repeat spin"></i> Generating...';
 
         document.getElementById(
-            "quizContainer"
+            "quizCard"
         ).innerHTML = `
 
             <div class="loading-card">
@@ -369,67 +398,53 @@ document
 
     let score = 0;
 
-    quizzes.forEach(
+    quizzes.forEach((quiz, index) => {
 
-        (quiz, index) => {
+        if (answers[index] === quiz.correct_answer) {
 
-            if (
-
-                answers[index] ===
-
-                quiz.correct_answer
-
-            ) {
-
-                score++;
-
-            }
+            score++;
 
         }
 
-    );
+    });
 
-    const percentage = Math.round(
+    const percent = quizzes.length === 0
+        ? 0
+        : Math.round((score / quizzes.length) * 100);
 
-        (score / quizzes.length) * 100
+    scoreCard.innerText = score;
 
-    );
+    accuracyCard.innerText = `${percent}%`;
 
-    document.getElementById(
+    finalScore.innerText = `${score} / ${quizzes.length}`;
 
-        "quizContainer"
+    finalAccuracy.innerText = `Accuracy : ${percent}%`;
 
-    ).style.display = "none";
+    resultModal.classList.remove("hidden");
 
-    document.getElementById(
-
-        "resultSection"
-
-    ).style.display = "block";
-
-    document.getElementById(
-
-        "score"
-
-    ).innerText =
-
-        `${score} / ${quizzes.length}`;
-
-    document.getElementById(
-
-        "percentage"
-
-    ).innerText =
-
-        `${percentage}%`;
-
-    document.getElementById(
-
-        "submitBtn"
-
-    ).disabled = true;
+    document.getElementById("submitBtn").disabled = true;
 
 }
+
+
+// Restart Quiz Button
+document
+    .getElementById("restartBtn")
+    .addEventListener("click", () => {
+
+        answers = {};
+
+        currentIndex = 0;
+
+        resultModal.classList.add("hidden");
+
+        document.getElementById("submitBtn").disabled = false;
+
+        renderQuestion();
+
+    });
+
+
 function renderReview() {
 
     const container =
@@ -564,18 +579,68 @@ document
 
     );
 
-document
 
-    .getElementById(
 
-        "retryBtn"
-
-    )
-
+    document
+    .getElementById("restartBtn")
     .addEventListener(
-
         "click",
+        () => {
 
-        retryQuiz
+            answers = {};
 
+            currentIndex = 0;
+
+            resultModal.classList.add("hidden");
+
+            renderQuestion();
+
+        }
     );
+
+    function updateStatistics(){
+
+    totalQuestions.innerText =
+        quizzes.length;
+
+    currentQuestion.innerText =
+        quizzes.length===0
+        ? "0 / 0"
+        : `${currentIndex+1} / ${quizzes.length}`;
+
+    let score=0;
+
+    quizzes.forEach((quiz,index)=>{
+
+        if(
+            answers[index]===quiz.correct_answer
+        ){
+
+            score++;
+
+        }
+
+    });
+
+    scoreCard.innerText=score;
+
+    const percent=
+        quizzes.length===0
+        ?0
+        :Math.round((score/quizzes.length)*100);
+
+    accuracyCard.innerText=
+        percent+"%";
+
+    const progress=
+        quizzes.length===0
+        ?0
+        :Math.round(((currentIndex+1)/quizzes.length)*100);
+
+    progressFill.style.width=
+        progress+"%";
+
+    progressText.innerText=
+        progress+"%";
+
+}
