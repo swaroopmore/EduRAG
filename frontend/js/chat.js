@@ -294,9 +294,13 @@ function showThinking() {
 
         </div>
 
-        <div class="chat-bubble">
+        <div class="chat-bubble thinking-bubble">
 
-            Thinking...
+            <span class="typing-dot"></span>
+
+            <span class="typing-dot"></span>
+
+            <span class="typing-dot"></span>
 
         </div>
 
