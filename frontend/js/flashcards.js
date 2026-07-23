@@ -82,9 +82,9 @@ async function loadFlashcards() {
         console.log("FlashCards Receieved :",flashcards);
         console.log("Count",flashcards.length);
 
-   if (flashcards.length === 0) {
+ if (flashcards.length === 0) {
 
-    document.getElementById("flashcard").innerHTML = `
+    document.getElementById("cardFront").innerHTML = `
 
         <div class="empty-state">
 
@@ -102,6 +102,8 @@ async function loadFlashcards() {
         </div>
 
     `;
+
+    document.getElementById("cardBack").innerHTML = "";
 
     updateStatistics();
 
@@ -124,105 +126,73 @@ async function loadFlashcards() {
     }
 
 }
-
-function renderFlashcard() {
+function renderFlashcard(){
 
     const flashcard = flashcards[currentIndex];
 
     showingAnswer = false;
 
-    document.getElementById("flashcard").innerHTML = `
+    document
+        .getElementById("flashcard")
+        .classList
+        .remove("flipped");
 
-        <div class="card-face question">
+    document.getElementById("cardFront").innerHTML=`
 
-    <span class="card-label">
+        <span class="card-label">
 
-        Question
+            Question
 
-    </span>
+        </span>
 
-    <h2>
+        <h2>
 
-        ${flashcard.question}
+            ${flashcard.question}
 
-    </h2>
+        </h2>
 
-    <small>
+        <small>
 
-        Click anywhere to reveal answer
+            Click to reveal answer
 
-    </small>
-
-</div>
+        </small>
 
     `;
 
+    document.getElementById("cardBack").innerHTML=`
 
-    document.getElementById("previousBtn").disabled =
+        <span class="card-label">
 
-        currentIndex === 0;
+            Answer
 
-    document.getElementById("nextBtn").disabled =
+        </span>
 
-        currentIndex === flashcards.length - 1;
+        <h2>
 
-        updateStatistics();
+            ${flashcard.answer}
+
+        </h2>
+
+    `;
+
+    updateStatistics();
 
 }
 
-function flipFlashcard() {
+function flipFlashcard(){
 
-    if (flashcards.length === 0) {
+    if(flashcards.length===0){
 
         return;
 
     }
 
-    const flashcard = flashcards[currentIndex];
+    showingAnswer=!showingAnswer;
 
-    if (showingAnswer) {
-
-        document.getElementById("flashcard").innerHTML = `
-
-            <div class="card-face question">
-
-                <h3>Question</h3>
-
-                <p>${flashcard.question}</p>
-
-            </div>
-
-        `;
-
-        showingAnswer = false;
-
-    }
-
-    else {
-
-        document.getElementById("flashcard").innerHTML = `
-
-           <div class="card-face answer">
-
-    <span class="card-label">
-
-        Answer
-
-    </span>
-
-    <h2>
-
-        ${flashcard.answer}
-
-    </h2>
-
-</div>
-
-        `;
-
-        showingAnswer = true;
-
-    }
+    document
+        .getElementById("flashcard")
+        .classList
+        .toggle("flipped");
 
 }
 
@@ -300,17 +270,14 @@ document
 
             '<i class="bi bi-arrow-repeat spin"></i> Generating...';
 
-        document.getElementById("flashcard").innerHTML = `
+      document.getElementById("cardFront").innerHTML = `
+<div class="loading-card">
+    <h3>Generating Flashcards...</h3>
+    <p>This may take a few seconds.</p>
+</div>
+`;
 
-            <div class="loading-card">
-
-                <h3>Generating Flashcards...</h3>
-
-                <p>This may take a few seconds.</p>
-
-            </div>
-
-        `;
+document.getElementById("cardBack").innerHTML = "";
 
         const response = await fetch(
 
