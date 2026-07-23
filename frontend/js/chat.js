@@ -1,3 +1,8 @@
+// ======================================================
+// EduRAG AI Chat
+// chat.js (Part 1)
+// ======================================================
+
 const API_URL = "http://127.0.0.1:8000/chat/ask";
 
 const token = localStorage.getItem("access_token");
@@ -10,6 +15,10 @@ const subjectId =
 const subjectName =
     localStorage.getItem("subject_name");
 
+// ======================================================
+// Elements
+// ======================================================
+
 const chatMessages =
     document.getElementById("chatMessages");
 
@@ -21,6 +30,13 @@ const sendBtn =
 
 const newChatBtn =
     document.getElementById("newChatBtn");
+
+const promptChips =
+    document.querySelectorAll(".prompt-chip");
+
+// ======================================================
+// Initialization
+// ======================================================
 
 window.addEventListener("DOMContentLoaded", () => {
 
@@ -45,17 +61,22 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("subjectTitle").innerText =
         "🤖 " + subjectName;
 
-});
-
-sendBtn.addEventListener("click", () => {
-
-    sendMessage();
+    questionInput.focus();
 
 });
+
+// ======================================================
+// Events
+// ======================================================
+
+sendBtn.addEventListener("click", sendMessage);
 
 questionInput.addEventListener("keydown", (event) => {
 
-    if (event.key === "Enter" && !event.shiftKey) {
+    if (
+        event.key === "Enter" &&
+        !event.shiftKey
+    ) {
 
         event.preventDefault();
 
@@ -65,9 +86,73 @@ questionInput.addEventListener("keydown", (event) => {
 
 });
 
-function sendMessage() {
+// ======================================================
+// Prompt Chips
+// ======================================================
 
-    const question = questionInput.value.trim();
+promptChips.forEach(chip => {
+
+    chip.addEventListener("click", () => {
+
+        questionInput.value =
+            chip.innerText;
+
+        questionInput.focus();
+
+    });
+
+});
+
+// ======================================================
+// New Chat
+// ======================================================
+
+newChatBtn.addEventListener("click", () => {
+
+    chatMessages.innerHTML = `
+
+        <div class="ai-message">
+
+            <div class="chat-avatar">
+
+                🤖
+
+            </div>
+
+            <div class="chat-bubble">
+
+                <h3>
+
+                    New Chat Started
+
+                </h3>
+
+                <p>
+
+                    Ask anything about your uploaded documents.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
+
+    questionInput.value = "";
+
+    questionInput.focus();
+
+});
+
+// ======================================================
+// Send Message
+// ======================================================
+
+async function sendMessage() {
+
+    const question =
+        questionInput.value.trim();
 
     if (question === "") {
 
@@ -83,7 +168,83 @@ function sendMessage() {
 
     showThinking();
 
+    disableChat();
+
+    try {
+
+        const response =
+            await fetch(API_URL, {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type": "application/json",
+
+                    "Authorization":
+                        "Bearer " + token
+
+                },
+
+                body: JSON.stringify({
+
+                    question: question,
+
+                    subject_id: subjectId
+
+                })
+
+            });
+
+        if (!response.ok) {
+
+            const error =
+                await response.text();
+
+            throw new Error(error);
+
+        }
+
+        const data =
+            await response.json();
+
+        removeThinking();
+
+        addAIMessage(
+
+            data.answer,
+
+            data.citations
+
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        removeThinking();
+
+        addAIMessage(
+
+            "❌ Unable to contact EduRAG AI."
+
+        );
+
+    }
+
+    finally {
+
+        enableChat();
+
+    }
+
 }
+
+// ======================================================
+// User Message
+// ======================================================
 
 function addUserMessage(message) {
 
@@ -93,15 +254,15 @@ function addUserMessage(message) {
 
     messageDiv.innerHTML = `
 
-        <div class="bubble">
+        <div class="chat-avatar">
 
-            ${message}
+            👤
 
         </div>
 
-        <div class="avatar">
+        <div class="chat-bubble">
 
-            👤
+            ${message.replace(/\n/g, "<br>")}
 
         </div>
 
@@ -113,6 +274,10 @@ function addUserMessage(message) {
 
 }
 
+// ======================================================
+// Thinking Indicator
+// ======================================================
+
 function showThinking() {
 
     const thinking = document.createElement("div");
@@ -123,13 +288,13 @@ function showThinking() {
 
     thinking.innerHTML = `
 
-        <div class="avatar">
+        <div class="chat-avatar">
 
             🤖
 
         </div>
 
-        <div class="bubble">
+        <div class="chat-bubble">
 
             Thinking...
 
@@ -145,7 +310,8 @@ function showThinking() {
 
 function removeThinking() {
 
-    const thinking = document.getElementById("thinking");
+    const thinking =
+        document.getElementById("thinking");
 
     if (thinking) {
 
@@ -155,95 +321,14 @@ function removeThinking() {
 
 }
 
-function scrollToBottom() {
-
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-}
-
-async function sendMessage() {
-
-    const question = questionInput.value.trim();
-
-    if (question === "") {
-
-        return;
-
-    }
-
-    addUserMessage(question);
-
-    questionInput.value = "";
-
-    questionInput.focus();
-
-    showThinking();
-
-    try {
-
-        const response = await fetch(
-
-            API_URL,
-
-            {
-
-                method: "POST",
-
-                headers: {
-
-                    "Content-Type": "application/json",
-
-                    "Authorization": "Bearer " + token
-
-                },
-
-                body: JSON.stringify({
-
-                    question: question,
-
-                    subject_id: subjectId
-
-                })
-
-            }
-
-        );
-
-        if (!response.ok) {
-
-            const error = await response.text();
-
-            throw new Error(error);
-
-        }
-
-        const data = await response.json();
-
-        removeThinking();
-
-        addAIMessage(data.answer,data.citations);
-
-    }
-
-    catch (error) {
-
-        removeThinking();
-
-        console.error(error);
-
-        addAIMessage(
-
-            "❌ Unable to get response from AI."
-
-        );
-
-    }
-
-}
+// ======================================================
+// AI Message
+// ======================================================
 
 function addAIMessage(answer, citations = []) {
 
-    const messageDiv = document.createElement("div");
+    const messageDiv =
+        document.createElement("div");
 
     messageDiv.className = "ai-message";
 
@@ -255,21 +340,35 @@ function addAIMessage(answer, citations = []) {
 
             <div class="citations">
 
-                <h4>Sources</h4>
+                <h4>
+
+                    <i class="bi bi-journal-text"></i>
+
+                    Sources
+
+                </h4>
 
                 ${citations.map(citation => `
 
                     <div class="citation">
 
-                        <strong>${citation.document}</strong>
+                        <strong>
 
-                        <br>
+                            ${citation.document}
 
-                        Page ${citation.page}
+                        </strong>
 
-                        <br>
+                        <p>
 
-                        <small>${citation.snippet}</small>
+                            Page ${citation.page}
+
+                        </p>
+
+                        <small>
+
+                            ${citation.snippet}
+
+                        </small>
 
                     </div>
 
@@ -283,15 +382,19 @@ function addAIMessage(answer, citations = []) {
 
     messageDiv.innerHTML = `
 
-        <div class="avatar">
+        <div class="chat-avatar">
 
             🤖
 
         </div>
 
-        <div class="bubble">
+        <div class="chat-bubble">
 
-            ${answer.replace(/\n/g, "<br>")}
+            <div class="answer">
+
+                ${answer.replace(/\n/g,"<br>")}
+
+            </div>
 
             ${citationsHTML}
 
@@ -302,5 +405,62 @@ function addAIMessage(answer, citations = []) {
     chatMessages.appendChild(messageDiv);
 
     scrollToBottom();
+
+}
+
+// ======================================================
+// Auto Scroll
+// ======================================================
+
+function scrollToBottom() {
+
+    chatMessages.scrollTo({
+
+        top: chatMessages.scrollHeight,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+// ======================================================
+// Utility
+// ======================================================
+
+function disableChat() {
+
+    sendBtn.disabled = true;
+
+    questionInput.disabled = true;
+
+}
+
+function enableChat() {
+
+    sendBtn.disabled = false;
+
+    questionInput.disabled = false;
+
+    questionInput.focus();
+
+}
+
+// ======================================================
+// Logout
+// ======================================================
+
+const logoutBtn =
+    document.querySelector(".logout-btn");
+
+if (logoutBtn) {
+
+    logoutBtn.addEventListener("click", () => {
+
+        localStorage.removeItem("access_token");
+
+        window.location.href = "login.html";
+
+    });
 
 }
