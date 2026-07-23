@@ -1,50 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduRAG • Flashcards</title>
-<link rel="stylesheet" href="../css/flashcards.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduRAG • AI Flashcards</title>
+
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/flashcards.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body>
-<div class="page">
-<header class="topbar">
-<div>
-<h1 id="subjectTitle">🧠 Flashcards</h1>
-<p>Study smarter with AI-generated flashcards.</p>
-</div>
-<div class="actions">
-<button id="generateBtn" class="primary"><i class="bi bi-stars"></i> Generate Flashcards</button>
-<button id="shuffleBtn" class="secondary"><i class="bi bi-shuffle"></i> Shuffle</button>
-</div>
-</header>
 
-<section class="progress-section">
-<span id="progress">0 / 0</span>
-</section>
+<div class="page-container">
 
-<main class="flashcard-wrapper">
-<div id="flashcard" class="flashcard">
-<div class="empty-state">
-<i class="bi bi-journal-richtext"></i>
-<h2>No Flashcards Yet</h2>
-<p>Click <strong>Generate Flashcards</strong> to create study cards from your uploaded documents.</p>
-</div>
-</div>
-</main>
+    <!-- Hero -->
 
-<section class="controls">
-<button id="previousBtn" class="secondary"><i class="bi bi-arrow-left"></i> Previous</button>
-<button id="flipBtn" class="primary"><i class="bi bi-arrow-repeat"></i> Flip Card</button>
-<button id="nextBtn" class="secondary">Next <i class="bi bi-arrow-right"></i></button>
-</section>
+    <section class="hero">
 
-<footer class="footer">
-<a href="documents.html" class="back-link"><i class="bi bi-arrow-left-circle"></i> Back to Documents</a>
-</footer>
+        <div class="hero-content">
+
+            <h1>
+                <i class="bi bi-journal-richtext"></i>
+                AI Flashcards
+            </h1>
+
+            <p id="subjectTitle">
+                Research Paper
+            </p>
+
+            <span>
+                Master your uploaded documents using AI-powered flashcards.
+            </span>
+
+        </div>
+
+        <div class="hero-actions">
+
+            <button id="generateBtn" class="primary-btn">
+                <i class="bi bi-stars"></i>
+                Generate Flashcards
+            </button>
+
+            <button id="shuffleBtn" class="secondary-btn">
+                <i class="bi bi-shuffle"></i>
+                Shuffle
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- Statistics -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <i class="bi bi-journal-text"></i>
+
+            <h2 id="totalCards">
+                0
+            </h2>
+
+            <p>Total Cards</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="bi bi-collection"></i>
+
+            <h2 id="currentCard">
+                0 / 0
+            </h2>
+
+            <p>Current Card</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="bi bi-check-circle"></i>
+
+            <h2 id="masteredCards">
+                0
+            </h2>
+
+            <p>Mastered</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="bi bi-graph-up-arrow"></i>
+
+            <h2 id="progressPercent">
+                0%
+            </h2>
+
+            <p>Progress</p>
+
+        </div>
+
+    </section>
+
+    <!-- Flashcard -->
+
+    <section class="flashcard-section">
+
+        <div id="flashcard" class="flashcard">
+
+            <div class="empty-state">
+
+                <i class="bi bi-journal-richtext"></i>
+
+                <h2>No Flashcards Yet</h2>
+
+                <p>
+                    Generate AI flashcards from your uploaded documents to start learning.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Progress -->
+
+    <section class="progress-wrapper">
+
+        <div class="progress-bar">
+
+            <div id="progressFill"></div>
+
+        </div>
+
+        <span id="progressText">
+
+            0%
+
+        </span>
+
+    </section>
+
+    <!-- Navigation -->
+
+    <section class="controls">
+
+        <button id="previousBtn" class="secondary-btn">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Previous
+
+        </button>
+
+        <button id="flipBtn" class="primary-btn">
+
+            <i class="bi bi-arrow-repeat"></i>
+
+            Flip Card
+
+        </button>
+
+        <button id="nextBtn" class="secondary-btn">
+
+            Next
+
+            <i class="bi bi-arrow-right"></i>
+
+        </button>
+
+    </section>
+
+    <!-- Footer -->
+
+    <footer>
+
+        <a href="documents.html" class="back-link">
+
+            <i class="bi bi-arrow-left-circle"></i>
+
+            Back to Documents
+
+        </a>
+
+    </footer>
+
 </div>
 
 <script src="../js/flashcards.js"></script>
+
 </body>
 </html>

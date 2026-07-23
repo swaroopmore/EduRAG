@@ -6,7 +6,7 @@ const params = new URLSearchParams(window.location.search);
 
 const subjectId = params.get("subject_id");
 
-const subjectName = localStorage.getItem("subject_name");
+const subjectName = localStorage.getItem("current_subject_name");
 
 console.log(subjectId);
 console.log(window.location.href);
