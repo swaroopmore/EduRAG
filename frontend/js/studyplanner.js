@@ -3,7 +3,7 @@ const API_URL =
 
 const token =
     localStorage.getItem(
-        "token"
+        "access_token"
     );
 
 const params =
@@ -95,7 +95,7 @@ async function loadStudyPlan() {
 
             document.getElementById(
 
-                "timelineContainer"
+                "plannerContainer"
 
             ).innerHTML = `
 
@@ -223,7 +223,7 @@ function updateStatistics() {
 
     document.getElementById(
 
-        "totalDuration"
+        "studyHours"
 
     ).innerText =
 
@@ -231,78 +231,80 @@ function updateStatistics() {
 
     document.getElementById(
 
-        "summaryDuration"
+        "summaryHours"
 
     ).innerText =
 
         `${hours} hrs`;
 
 }
-
 function renderTimeline() {
 
     const container =
         document.getElementById(
-            "timelineContainer"
+            "plannerContainer"
         );
 
     container.innerHTML = "";
 
-    studyPlans.forEach(
+    studyPlans.forEach((plan) => {
 
-        (plan, index) => {
+        container.innerHTML += `
 
-            container.innerHTML += `
+        <div class="day-card">
 
-                <div class="timeline-card">
+            <h2>
 
-                    <div class="day">
+                Day ${plan.day}
 
-                        Day ${plan.day}
+            </h2>
 
-                    </div>
+            <div class="session-card">
 
-                    <h2>
+                <div class="session-title">
 
-                        ${plan.title}
-
-                    </h2>
-
-                    <p>
-
-                        ${plan.description}
-
-                    </p>
-
-                    <div class="badges">
-
-                        <span class="badge">
-
-                            <i class="bi bi-clock"></i>
-
-                            ${plan.time}
-
-                        </span>
-
-                        <span class="badge">
-
-                            <i class="bi bi-hourglass-split"></i>
-
-                            ${plan.duration}
-
-                        </span>
-
-                    </div>
+                    ${plan.title}
 
                 </div>
 
-            `;
+                <p>
 
-        }
+                    ${plan.description}
 
-    );
+                </p>
+
+                <div class="badges">
+
+                    <span class="badge">
+
+                        <i class="bi bi-clock"></i>
+
+                        ${plan.time}
+
+                    </span>
+
+                    <span class="badge">
+
+                        <i class="bi bi-hourglass-split"></i>
+
+                        ${plan.duration}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
 
 }
+    
+
+
 
 async function generateStudyPlan() {
 
@@ -310,7 +312,7 @@ async function generateStudyPlan() {
 
         const button =
             document.getElementById(
-                "generateBtn"
+                "generatePlannerBtn"
             );
 
         button.disabled = true;
@@ -319,7 +321,7 @@ async function generateStudyPlan() {
             '<i class="bi bi-arrow-repeat spin"></i> Generating...';
 
         document.getElementById(
-            "timelineContainer"
+            "plannerContainer"
         ).innerHTML = `
 
             <div class="loading-card">
@@ -385,7 +387,7 @@ async function generateStudyPlan() {
 
         const button =
             document.getElementById(
-                "generateBtn"
+                "generatePlannerBtn"
             );
 
         button.disabled = false;
@@ -400,7 +402,7 @@ async function generateStudyPlan() {
 document
 
     .getElementById(
-        "generateBtn"
+        "generatePlannerBtn"
     )
 
     .addEventListener(

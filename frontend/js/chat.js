@@ -13,7 +13,7 @@ const subjectId =
     params.get("subject_id");
 
 const subjectName =
-    localStorage.getItem("subject_name");
+    localStorage.getItem("current_subject_name");
 
 // ======================================================
 // Elements
