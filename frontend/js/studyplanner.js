@@ -1,5 +1,5 @@
 const API_URL =
-    "http://127.0.0.1:8000/study-plans";
+    `"${BASE_URL}/study-plans"`;
 
 const token =
     localStorage.getItem(

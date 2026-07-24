@@ -1,39 +1,51 @@
+# ==========================
 # Python
+# ==========================
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-*.egg-info/
+*.so
 
-# Virtual Environment
+# Virtual Environments
 .venv/
 venv/
+env/
 
 # Environment Variables
 .env
+
+# Logs
+*.log
 
 # IDE
 .vscode/
 .idea/
 
-# OS Files
+# macOS / Windows
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-
-# Python cache
+# Pytest / MyPy
 .pytest_cache/
 .mypy_cache/
 
-# ChromaDB
-backend/vector_db/
+# Coverage
+.coverage
+htmlcov/
 
-# Uploaded Files
-backend/uploads/
+# Build
+build/
+dist/
+*.egg-info/
 
-# Alembic cache
+# Uploads
+uploads/
+
+# Chroma Vector DB
+vector_db/
+
+# Alembic Cache
 alembic/__pycache__/
 
 # Node

@@ -23,11 +23,6 @@ class QueryRewriter:
 
         rewritten_question = rewritten_question.strip()
 
-        print("\n" + "=" * 60)
-        print("QUERY REWRITER")
-        print("=" * 60)
-        print(f"Original Question : {question}")
-        print(f"Rewritten Question: {rewritten_question}")
-        print("=" * 60 + "\n")
+        
 
         return rewritten_question

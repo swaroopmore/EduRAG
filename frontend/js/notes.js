@@ -1,5 +1,5 @@
 const API_URL =
-    "http://127.0.0.1:8000/notes";
+    `"${BASE_URL}/notes"`;
 
 const token =
     localStorage.getItem("access_token");

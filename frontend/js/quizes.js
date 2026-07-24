@@ -1,5 +1,5 @@
 const API_URL =
-    "http://127.0.0.1:8000/quiz";
+    `"${BASE_URL}/quiz"`;
 
 const token =
     localStorage.getItem("access_token");

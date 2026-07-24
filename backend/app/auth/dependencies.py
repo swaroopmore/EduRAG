@@ -23,19 +23,17 @@ def get_current_user(
             algorithms=[settings.ALGORITHM],
         )
 
-        print("=" * 50)
-        print(payload)
+        
 
         user_id = payload.get("sub")
 
-        print("USER ID:", user_id)
+        
 
         repository = UserRepository(db)
 
         user = repository.get_by_id(user_id)
 
-        print("USER:", user)
-        print("=" * 50)
+       
 
         if user is None:
             raise HTTPException(
