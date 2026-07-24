@@ -1,65 +1,412 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduRAG • Study Planner</title>
-<link rel="stylesheet" href="../css/stydyplanner.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>EduRAG | AI Study Planner</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link
+        rel="stylesheet"
+        href="../css/sidebar.css">
+
+    <link
+        rel="stylesheet"
+        href="../css/stydyplanner.css">
+
 </head>
+
 <body>
-<div class="page">
-<header class="hero">
-<div>
-<h1 id="subjectTitle">Study Planner</h1>
-<p>Create an AI-generated day-by-day study schedule from your uploaded documents.</p>
-</div>
-<button id="generateBtn" class="primary-btn"><i class="bi bi-stars"></i> Generate Study Plan</button>
-</header>
 
-<section class="stats">
-<div class="stat-card"><h3>Total Days</h3><h2 id="totalDays">0</h2></div>
-<div class="stat-card"><h3>Total Sessions</h3><h2 id="totalSessions">0</h2></div>
-<div class="stat-card"><h3>Total Study Time</h3><h2 id="totalDuration">0 hrs</h2></div>
-</section>
+    <!-- ===============================
+         SIDEBAR
+    ================================ -->
 
-<div class="planner-layout">
-<main>
-<div id="timelineContainer">
-<div class="empty-state">
-<i class="bi bi-calendar-week"></i>
-<h2>No Study Plan Yet</h2>
-<p>Click <strong>Generate Study Plan</strong> to build a personalized learning schedule.</p>
-</div>
-</div>
-</main>
+    <div id="sidebar-container"></div>
 
-<aside class="sidebar">
-<div class="summary-card">
-<h3>Planner Summary</h3>
-<p><strong>Subject</strong></p>
-<p id="summarySubject">-</p>
-<hr>
-<p><strong>Total Days</strong></p>
-<p id="summaryDays">0</p>
-<p><strong>Total Sessions</strong></p>
-<p id="summarySessions">0</p>
-<p><strong>Total Duration</strong></p>
-<p id="summaryDuration">0 hrs</p>
-</div>
+    <!-- ===============================
+         MAIN PAGE
+    ================================ -->
 
-<div class="tips-card">
-<h3>Study Tips</h3>
-<ul>
-<li>Follow the plan consistently.</li>
-<li>Take short breaks.</li>
-<li>Revise daily.</li>
-<li>Complete one day before the next.</li>
-</ul>
-</div>
-</aside>
-</div>
-</div>
-<script src="../js/studyplanner.js"></script>
+    <main class="page-container">
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <h1>
+
+                    <i class="bi bi-calendar-week"></i>
+
+                    AI Study Planner
+
+                </h1>
+
+                <h2 id="subjectTitle">
+
+                    Loading...
+
+                </h2>
+
+                <p>
+
+                    Create a personalized AI-powered study roadmap from your uploaded documents.
+
+                </p>
+
+            </div>
+
+            <button
+                id="generatePlannerBtn"
+                class="primary-btn">
+
+                <i class="bi bi-stars"></i>
+
+                Generate Study Plan
+
+            </button>
+
+        </section>
+
+        <!-- STATS -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <i class="bi bi-calendar3"></i>
+
+                <h2 id="totalDays">0</h2>
+
+                <p>Total Days</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <i class="bi bi-journal-check"></i>
+
+                <h2 id="totalSessions">0</h2>
+
+                <p>Total Sessions</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <i class="bi bi-clock-history"></i>
+
+                <h2 id="studyHours">0 hrs</h2>
+
+                <p>Study Hours</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <i class="bi bi-bullseye"></i>
+
+                <h2 id="completionGoal">0%</h2>
+
+                <p>Completion Goal</p>
+
+            </div>
+
+        </section>
+
+        <!-- PROGRESS -->
+
+        <section class="progress-card">
+
+            <div class="progress-header">
+
+                <span>
+
+                    Overall Progress
+
+                </span>
+
+                <span id="progressPercent">
+
+                    0%
+
+                </span>
+
+            </div>
+
+            <div class="progress-bar">
+
+                <div
+                    id="progressFill"
+                    class="progress-fill">
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- MAIN -->
+
+        <section class="planner-layout">
+
+            <!-- LEFT -->
+
+            <div
+                id="plannerContainer"
+                class="planner-container">
+
+                <div class="empty-state">
+
+                    <i class="bi bi-calendar2-week"></i>
+
+                    <h2>
+
+                        No Study Plan Yet
+
+                    </h2>
+
+                    <p>
+
+                        Generate your AI study planner to organize your learning journey.
+
+                    </p>
+
+                    <button
+                        id="generateEmptyBtn"
+                        class="primary-btn">
+
+                        Generate Study Plan
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <aside class="planner-sidebar">
+
+                <div class="summary-card">
+
+                    <h3>
+
+                        <i class="bi bi-bar-chart"></i>
+
+                        Planner Summary
+
+                    </h3>
+
+                    <div id="plannerSummary">
+
+                        <div class="summary-item">
+
+                            <span>Subject</span>
+
+                            <strong id="summarySubject">-</strong>
+
+                        </div>
+
+                        <div class="summary-item">
+
+                            <span>Total Days</span>
+
+                            <strong id="summaryDays">0</strong>
+
+                        </div>
+
+                        <div class="summary-item">
+
+                            <span>Total Sessions</span>
+
+                            <strong id="summarySessions">0</strong>
+
+                        </div>
+
+                        <div class="summary-item">
+
+                            <span>Study Hours</span>
+
+                            <strong id="summaryHours">0 hrs</strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="tips-card">
+
+                    <h3>
+
+                        <i class="bi bi-lightbulb"></i>
+
+                        Study Tips
+
+                    </h3>
+
+                    <div id="studyTips">
+
+                        <div class="tip">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            <span>
+
+                                Study consistently every day.
+
+                            </span>
+
+                        </div>
+
+                        <div class="tip">
+
+                            <i class="bi bi-cup-hot-fill"></i>
+
+                            <span>
+
+                                Take short breaks between sessions.
+
+                            </span>
+
+                        </div>
+
+                        <div class="tip">
+
+                            <i class="bi bi-arrow-repeat"></i>
+
+                            <span>
+
+                                Revise previous topics daily.
+
+                            </span>
+
+                        </div>
+
+                        <div class="tip">
+
+                            <i class="bi bi-trophy-fill"></i>
+
+                            <span>
+
+                                Finish today's goal before tomorrow.
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+        <!-- ACTIONS -->
+
+        <section class="planner-actions">
+
+            <div
+                id="downloadCard"
+                class="action-card">
+
+                <i class="bi bi-file-earmark-pdf"></i>
+
+                <h3>
+
+                    Export PDF
+
+                </h3>
+
+                <p>
+
+                    Download your study planner.
+
+                </p>
+
+            </div>
+
+            <div
+                id="calendarCard"
+                class="action-card">
+
+                <i class="bi bi-calendar-event"></i>
+
+                <h3>
+
+                    Calendar
+
+                </h3>
+
+                <p>
+
+                    Sync your schedule.
+
+                </p>
+
+            </div>
+
+            <div
+                id="regenerateCard"
+                class="action-card">
+
+                <i class="bi bi-arrow-repeat"></i>
+
+                <h3>
+
+                    Regenerate
+
+                </h3>
+
+                <p>
+
+                    Create a new AI planner.
+
+                </p>
+
+            </div>
+
+            <div
+                id="completeCard"
+                class="action-card">
+
+                <i class="bi bi-check-circle"></i>
+
+                <h3>
+
+                    Mark Complete
+
+                </h3>
+
+                <p>
+
+                    Finish today's study goal.
+
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="../js/sidebar.js"></script>
+
+    <script src="../js/studyplanner.js"></script>
+
 </body>
+
 </html>

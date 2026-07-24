@@ -18,7 +18,7 @@ const subjectId =
 
 const subjectName =
     localStorage.getItem(
-        "subject_name"
+        "current_subject_name"
     );
 
 document.getElementById(
