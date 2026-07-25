@@ -1,1 +1,1 @@
-const API_URL = "https://edurag-production-e7e9.up.railway.app";
+const BASE_URL = "https://edurag-production-e7e9.up.railway.app";
