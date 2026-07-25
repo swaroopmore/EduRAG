@@ -1,2 +1,1 @@
-const BASE_URL =
-    "http://127.0.0.1:8000";
+const API_URL = "https://edurag-production-e7e9.up.railway.app";
