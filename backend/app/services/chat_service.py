@@ -20,8 +20,16 @@ class ChatService:
         self.llm = GeminiService()
         self.query_rewriter = QueryRewriter()
 
-        # Database-backed conversation memory
         self.memory = MemoryService(db)
+
+    def clean_text(self, text):
+        if text is None:
+            return ""
+        return (
+            text.replace("\x00", "")
+                .replace("\u0000", "")
+                .strip()
+        )
 
     def ask(
         self,
@@ -87,7 +95,7 @@ class ChatService:
         )
 
         context = "\n\n".join(
-            doc.page_content
+            self.clean_text(doc.page_content)
             for doc in docs
         )
 
@@ -105,7 +113,9 @@ class ChatService:
         # Generate Answer
         # ----------------------------------
 
-        answer = self.llm.generate(prompt)
+        answer = self.clean_text(
+            self.llm.generate(prompt)
+        )
 
         # ----------------------------------
         # Build Citations
@@ -119,7 +129,7 @@ class ChatService:
                 {
                     "document": doc.metadata.get("filename"),
                     "page": doc.metadata.get("page", 0) + 1,
-                    "snippet": doc.page_content[:250],
+                    "snippet": self.clean_text(doc.page_content[:250]),
                 }
             )
 
@@ -130,7 +140,7 @@ class ChatService:
         chat = ChatHistory(
             user_id=user_id,
             subject_id=subject_id,
-            question=question,
+            question=self.clean_text(question),
             normalized_question=normalized,
             answer=answer,
             citations=citations,
