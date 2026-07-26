@@ -13,12 +13,32 @@ class ChromaService:
             embedding_function=EmbeddingService().get(),
         )
 
+        try:
+            print(f"✅ Chroma Collection Count: {self.db._collection.count()}")
+        except Exception as e:
+            print(f"Chroma Count Error: {e}")
+
+    # ------------------------------------
+    # Add Documents
+    # ------------------------------------
+
     def add_documents(
         self,
         documents,
     ):
 
+        print(f"Adding {len(documents)} documents to Chroma...")
+
         self.db.add_documents(documents)
+
+        try:
+            print(f"Collection Count After Insert: {self.db._collection.count()}")
+        except Exception as e:
+            print(e)
+
+    # ------------------------------------
+    # Similarity Search
+    # ------------------------------------
 
     def search(
         self,
@@ -28,7 +48,12 @@ class ChromaService:
         k=20,
     ):
 
-        return self.db.similarity_search(
+        print("\n========== CHROMA SEARCH ==========")
+        print("Query:", query)
+        print("User:", user_id)
+        print("Subject:", subject_id)
+
+        results = self.db.similarity_search(
             query=query,
             k=k,
             filter={
@@ -38,6 +63,14 @@ class ChromaService:
                 ]
             },
         )
+
+        print(f"Retrieved {len(results)} chunks")
+
+        return results
+
+    # ------------------------------------
+    # Load All Documents
+    # ------------------------------------
 
     def get_all_documents(
         self,
@@ -52,15 +85,17 @@ class ChromaService:
                     {"subject_id": str(subject_id)},
                 ]
             },
-            include=["metadatas", "documents"],
+            include=["documents", "metadatas"],
         )
 
         documents = []
 
-        for content, metadata in zip(
-            result["documents"],
-            result["metadatas"],
-        ):
+        docs = result.get("documents", [])
+        metas = result.get("metadatas", [])
+
+        print(f"Loaded {len(docs)} chunks from Chroma")
+
+        for content, metadata in zip(docs, metas):
 
             metadata = metadata or {}
 
