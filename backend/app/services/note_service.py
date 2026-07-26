@@ -16,9 +16,7 @@ class NoteService:
     ):
 
         self.repository = repository
-
         self.retriever = Retriever()
-
         self.llm = GeminiService()
 
     def generate(
@@ -33,6 +31,15 @@ class NoteService:
             subject_id=subject_id,
         )
 
+        print(f"Retrieved {len(docs)} documents")
+
+        # No documents found
+        if not docs:
+            return {
+                "generated": 0,
+                "message": "No documents found for this subject."
+            }
+
         context = "\n\n".join(
             doc.page_content
             for doc in docs
@@ -46,9 +53,22 @@ class NoteService:
             prompt,
         )
 
-        notes = NoteParser.parse(
-            response,
-        )
+        print("Gemini Response:")
+        print(response)
+
+        if not response or not response.strip():
+            raise Exception(
+                "Gemini returned an empty response."
+            )
+
+        try:
+            notes = NoteParser.parse(
+                response,
+            )
+        except Exception as e:
+            print("Failed to parse notes:", e)
+            print(response)
+            raise
 
         self.repository.delete_by_subject(
             subject_id,
@@ -61,28 +81,23 @@ class NoteService:
             note_objects.append(
 
                 Note(
-
-                    title=note["title"],
-
-                    content=note["content"],
-
+                    title=note.get("title", ""),
+                    content=note.get("content", ""),
                     user_id=user_id,
-
                     subject_id=subject_id,
-
                 )
 
             )
 
-        self.repository.create_many(
-            note_objects,
-        )
+        if note_objects:
+
+            self.repository.create_many(
+                note_objects,
+            )
 
         return {
 
-            "generated": len(
-                note_objects
-            )
+            "generated": len(note_objects)
 
         }
 

@@ -14,6 +14,10 @@ Rules:
 - Use paragraphs instead of one-line answers.
 - Do not invent information.
 - Return ONLY valid JSON.
+-Do not wrap the JSON inside markdown.
+- Do NOT use json
+- Do not include explanations before or after the JSON.
+- if the context is empty,return: []
 
 Format:
 
