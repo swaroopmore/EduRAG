@@ -1,11 +1,8 @@
-const API_URL = `"${BASE_URL}/auth/register"`;
-
 const form = document.getElementById("registerForm");
 
 form.addEventListener("submit", register);
 
 async function register(event) {
-
     event.preventDefault();
 
     const full_name = document.getElementById("fullName").value.trim();
@@ -19,27 +16,22 @@ async function register(event) {
     }
 
     try {
-
-        const response = await fetch(API_URL, {
-
+        const response = await fetch(`${BASE_URL}/auth/register`, {
             method: "POST",
-
             headers: {
                 "Content-Type": "application/json"
             },
-
             body: JSON.stringify({
                 full_name,
                 email,
                 password
             })
-
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-            alert(data.detail);
+            alert(data.detail || "Registration failed");
             return;
         }
 
@@ -48,11 +40,7 @@ async function register(event) {
         window.location.href = "login.html";
 
     } catch (error) {
-
-        console.error(error);
-
+        console.error("Registration Error:", error);
         alert("Unable to connect to server.");
-
     }
-
 }
