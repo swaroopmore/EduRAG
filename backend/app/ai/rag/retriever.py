@@ -4,7 +4,6 @@ from app.ai.vectorstore.chroma_service import ChromaService
 class Retriever:
 
     def __init__(self):
-
         self.vectorstore = ChromaService()
 
     def retrieve(
@@ -14,7 +13,7 @@ class Retriever:
         subject_id,
     ):
 
-        return self.vectorstore.similarity_search(
+        return self.vectorstore.search(
             query=question,
             user_id=user_id,
             subject_id=subject_id,
