@@ -1,5 +1,5 @@
 const API_URL =
-    `"${BASE_URL}/quiz"`;
+    `${BASE_URL}/quiz`;
 
 const token =
     localStorage.getItem("access_token");
