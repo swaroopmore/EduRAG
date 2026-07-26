@@ -1,4 +1,4 @@
-const API_URL = `"${BASE_URL}/documents"`;
+const API_URL = `${BASE_URL}/documents`;
 
 const token = localStorage.getItem("access_token")
 

@@ -1,5 +1,5 @@
 const API_URL =
-    `"${BASE_URL}/study-plans"`;
+    `${BASE_URL}/study-plans`;
 
 const token =
     localStorage.getItem(

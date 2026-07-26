@@ -1,5 +1,5 @@
 const API_URL =
-    `"${BASE_URL}/notes"`;
+    `${BASE_URL}/notes`;
 
 const token =
     localStorage.getItem("access_token");

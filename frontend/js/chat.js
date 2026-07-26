@@ -3,7 +3,7 @@
 // chat.js (Part 1)
 // ======================================================
 
-const API_URL = `"${BASE_URL}/chat/ask"`;
+const API_URL = `${BASE_URL}/chat/ask`;
 
 const token = localStorage.getItem("access_token");
 
