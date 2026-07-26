@@ -25,9 +25,6 @@ class BM25Service:
             index=index,
         )
 
-        print(
-            f"✅ BM25 Index Built ({len(documents)} chunks)"
-        )
 
     def search(
         self,
