@@ -1,0 +1,21 @@
+# HTTPS reverse proxy for the EduRAG API. Caddy obtains and renews the certificate itself.
+{$API_DOMAIN} {
+	# Streaming chat (Server-Sent Events): send each token immediately, never buffer.
+	reverse_proxy backend:8000 {
+		flush_interval -1
+		transport http {
+			read_timeout 180s
+		}
+	}
+
+	# Uploads are limited by the app (MAX_UPLOAD_MB); this is just a hard ceiling.
+	request_body {
+		max_size 40MB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		-Server
+	}
+}

@@ -1,6 +1,9 @@
 /* API client: one place for base URL, auth header, errors, uploads and streaming. */
 import { API_URL } from "../config.js";
 
+// ngrok's free tunnel shows an HTML warning page to browsers unless this header is sent. Harmless elsewhere.
+const TUNNEL_HEADERS = /\.ngrok(-free)?\.(app|dev|io)$/i.test(new URL(API_URL, "http://x").hostname) ? { "ngrok-skip-browser-warning": "1" } : {};
+
 const TOKEN_KEY = "access_token"; // same key the previous frontend used, so existing sessions survive
 
 export const token = {
@@ -84,7 +87,7 @@ export async function request(method, path, { json, query, signal, auth = true, 
     else signal.addEventListener("abort", () => controller.abort(signal.reason), { once: true });
   }
 
-  const headers = { Accept: "application/json" };
+  const headers = { Accept: "application/json", ...TUNNEL_HEADERS };
   if (json !== undefined) headers["Content-Type"] = "application/json";
   if (auth && currentToken()) headers.Authorization = `Bearer ${currentToken()}`;
 
@@ -127,6 +130,7 @@ export function upload(path, file, { onProgress, signal } = {}) {
     xhr.open("POST", API_URL + path);
     if (currentToken()) xhr.setRequestHeader("Authorization", `Bearer ${currentToken()}`);
     xhr.setRequestHeader("Accept", "application/json");
+    for (const [k, v] of Object.entries(TUNNEL_HEADERS)) xhr.setRequestHeader(k, v);
     xhr.timeout = 10 * 60 * 1000;
 
     xhr.upload.onprogress = (event) => {
@@ -167,7 +171,7 @@ export async function stream(path, json, { onEvent, signal } = {}) {
   try {
     response = await fetch(buildUrl(path), {
       method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "text/event-stream", Authorization: `Bearer ${currentToken()}` },
+      headers: { "Content-Type": "application/json", Accept: "text/event-stream", Authorization: `Bearer ${currentToken()}`, ...TUNNEL_HEADERS },
       body: JSON.stringify(json),
       signal,
     });
