@@ -1,8 +1,15 @@
 .venv/
+venv/
 __pycache__/
 *.pyc
 .env
+.env.*
+!.env.example
 .git
 .gitignore
 .pytest_cache/
 .mypy_cache/
+tests/
+uploads/
+vector_db/
+*.log

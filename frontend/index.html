@@ -1,47 +1,142 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduRAG | AI Learning Companion</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EduRAG — Study from your own material with AI</title>
+<meta name="description" content="Upload your notes, textbooks and slides. EduRAG answers questions from them with sources, then turns them into notes, flashcards, quizzes and a study plan.">
+<meta name="theme-color" content="#f5f6fb">
+<meta property="og:type" content="website">
+<meta property="og:title" content="EduRAG — Study from your own material with AI">
+<meta property="og:description" content="Ask questions and get answers grounded in your own documents, with sources. Generate notes, flashcards, quizzes and study plans.">
+<meta property="og:image" content="icons/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<script src="js/theme-init.js"></script>
+<link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.min.css">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/landing.css">
 </head>
 <body>
-<nav class="navbar">
-<div class="logo"><i class="bi bi-mortarboard-fill"></i><span>EduRAG</span></div>
-<ul class="nav-links"><li><a href="#features">Features</a></li><li><a href="#how-it-works">How It Works</a></li></ul>
-<div class="nav-buttons"><a href="pages/login.html" class="btn-outline">Login</a><a href="pages/register.html" class="btn-primary">Register</a></div>
-</nav>
-<section class="hero">
-<div class="hero-left">
-<span class="badge"> Your AI Learning Companion</span>
-<h1>Learn Smarter.<br><span>Not Harder.</span></h1>
-<p>EduRAG transforms your study materials into intelligent conversations, summaries, quizzes and flashcards.</p>
-<div class="hero-buttons">
-<a href="pages/register.html" class="btn-primary big"><i class="bi bi-rocket-takeoff"></i> Get Started - It's Free</a>
-<a href="pages/login.html" class="btn-outline big"><i class="bi bi-box-arrow-in-right"></i> Login</a>
-</div>
-</div>
-<div class="hero-right"><img src="assets/images/student.svg" alt="Student Illustration"></div>
-</section>
-<section id="features"><h2>Powerful Features</h2>
-<div class="features-grid">
-<div class="feature-card"><i class="bi bi-chat-dots-fill"></i><h3>AI Chat</h3><p>Ask questions from your notes.</p></div>
-<div class="feature-card"><i class="bi bi-file-earmark-text-fill"></i><h3>Summaries</h3><p>Instant chapter summaries.</p></div>
-<div class="feature-card"><i class="bi bi-stack"></i><h3>Flashcards</h3><p>Generate revision flashcards.</p></div>
-<div class="feature-card"><i class="bi bi-patch-question-fill"></i><h3>Quizzes</h3><p>Test yourself instantly.</p></div>
-</div></section>
-<section id="how-it-works"><h2>How It Works</h2>
-<div class="steps">
-<div class="step"><h3>1. Upload</h3><p>Upload PDFs.</p></div>
-<div class="step"><h3>2. AI Processes</h3><p>Indexes documents.</p></div>
-<div class="step"><h3>3. Ask</h3><p>Chat with notes.</p></div>
-<div class="step"><h3>4. Learn</h3><p>Get quizzes & flashcards.</p></div>
-</div></section>
-<section class="cta"><h2>Ready to transform the way you learn?</h2><a href="pages/register.html" class="btn-primary big">Get Started</a></section>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="l-nav" id="nav">
+  <div class="l-container l-nav-inner">
+    <a class="brand" href="index.html" aria-label="EduRAG home"><span class="brand-mark"><i class="bi bi-mortarboard-fill" aria-hidden="true"></i></span>EduRAG</a>
+    <nav class="l-links" id="l-links" aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#trust">Privacy</a>
+    </nav>
+    <div class="l-actions">
+      <button type="button" class="btn btn-ghost btn-icon" data-theme-toggle aria-label="Toggle dark mode"><i class="bi bi-circle-half" aria-hidden="true"></i></button>
+      <a class="btn btn-ghost l-signin" href="pages/login.html" data-auth-hide>Sign in</a>
+      <a class="btn btn-primary" href="pages/register.html" data-auth-cta>Get started</a>
+      <button type="button" class="btn btn-ghost btn-icon l-burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="l-links"><i class="bi bi-list" style="font-size:1.4rem" aria-hidden="true"></i></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="l-hero">
+    <div class="l-container l-hero-grid">
+      <div class="l-hero-copy">
+        <span class="badge badge-primary"><i class="bi bi-stars" aria-hidden="true"></i>AI study companion</span>
+        <h1>Study from <span class="grad">your own material.</span></h1>
+        <p class="l-lede">Upload your notes, textbooks and slides. EduRAG answers your questions from them — with sources you can check — and turns them into notes, flashcards, quizzes and a study plan.</p>
+        <div class="l-cta">
+          <a class="btn btn-primary btn-lg" href="pages/register.html" data-auth-cta><i class="bi bi-rocket-takeoff" aria-hidden="true"></i>Get started free</a>
+          <a class="btn btn-lg" href="#how">See how it works</a>
+        </div>
+        <ul class="l-ticks">
+          <li><i class="bi bi-check2-circle" aria-hidden="true"></i>PDF, Word, PowerPoint &amp; text</li>
+          <li><i class="bi bi-check2-circle" aria-hidden="true"></i>Answers cite the page they came from</li>
+          <li><i class="bi bi-check2-circle" aria-hidden="true"></i>Light &amp; dark, works on your phone</li>
+        </ul>
+      </div>
+      <div class="l-hero-art" aria-hidden="true">
+        <svg viewBox="0 0 520 460" role="img" focusable="false">
+          <defs>
+            <linearGradient id="gl" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="520" y2="460"><stop offset="0" stop-color="#5b5df0"/><stop offset=".55" stop-color="#8b5cf6"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b5df0"/><stop offset=".55" stop-color="#8b5cf6"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+            <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#8b5cf6" stop-opacity=".45"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></radialGradient>
+          </defs>
+          <circle cx="260" cy="230" r="210" fill="url(#glow)"/>
+          <g class="art-links" fill="none" stroke="url(#gl)" stroke-width="2" stroke-linecap="round" opacity=".7">
+            <path d="M90 90 C 160 120, 200 170, 240 215"/><path d="M70 230 C 130 230, 190 230, 236 230"/><path d="M100 380 C 160 340, 200 290, 240 248"/>
+            <path d="M280 215 C 330 160, 380 120, 440 96"/><path d="M284 232 C 340 232, 390 232, 450 232"/><path d="M280 250 C 330 300, 380 350, 430 372"/>
+          </g>
+          <g class="art-pulse" fill="url(#g1)"><circle r="4"><animateMotion dur="3.2s" repeatCount="indefinite" path="M90 90 C 160 120, 200 170, 240 215"/></circle><circle r="4"><animateMotion dur="2.8s" repeatCount="indefinite" path="M70 230 C 130 230, 190 230, 236 230"/></circle><circle r="4"><animateMotion dur="3.6s" repeatCount="indefinite" path="M100 380 C 160 340, 200 290, 240 248"/></circle></g>
+          <g class="art-doc" stroke="var(--border-strong)" stroke-width="1.5"><rect x="46" y="58" width="88" height="64" rx="14" fill="var(--surface)"/><rect x="26" y="198" width="88" height="64" rx="14" fill="var(--surface)"/><rect x="58" y="348" width="88" height="64" rx="14" fill="var(--surface)"/></g>
+          <g fill="none" stroke="var(--text-faint)" stroke-width="3" stroke-linecap="round"><path d="M62 82h40M62 96h56M62 110h30"/><path d="M42 222h40M42 236h56M42 250h30"/><path d="M74 372h40M74 386h56M74 400h30"/></g>
+          <g><rect x="232" y="196" width="60" height="68" rx="20" fill="url(#g1)"/><text x="262" y="238" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="22" fill="#fff">AI</text></g>
+          <g stroke="var(--border-strong)" stroke-width="1.5"><rect x="420" y="66" width="86" height="60" rx="14" fill="var(--surface)"/><rect x="440" y="204" width="66" height="56" rx="14" fill="var(--surface)"/><rect x="410" y="344" width="86" height="60" rx="14" fill="var(--surface)"/></g>
+          <g fill="none" stroke="#5b5df0" stroke-width="3" stroke-linecap="round"><path d="M434 88h58M434 102h38"/><path d="M454 226h38M454 240h22"/><path d="M424 366h58M424 380h38"/></g>
+          <g font-family="Inter,sans-serif" font-weight="700" font-size="11"><rect x="470" y="110" width="24" height="16" rx="8" fill="#5b5df0" opacity=".14"/><text x="482" y="122" text-anchor="middle" fill="#5b5df0">[1]</text><rect x="470" y="388" width="24" height="16" rx="8" fill="#5b5df0" opacity=".14"/><text x="482" y="400" text-anchor="middle" fill="#5b5df0">[2]</text></g>
+        </svg>
+        <p class="art-caption xs faint center">Your documents in, sourced answers out.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="l-section" id="features" aria-labelledby="features-title">
+    <div class="l-container">
+      <div class="l-head"><span class="badge">Features</span><h2 id="features-title">Everything you need to learn from your own documents</h2><p class="muted">One workspace for questions, revision material and progress.</p></div>
+      <div class="l-grid">
+        <article class="card l-feature"><span class="f-icon"><i class="bi bi-chat-square-text" aria-hidden="true"></i></span><h3>Chat with your documents</h3><p class="muted">Ask in plain language. Answers come only from what you uploaded, with numbered sources and page references.</p></article>
+        <article class="card l-feature"><span class="f-icon"><i class="bi bi-folder2-open" aria-hidden="true"></i></span><h3>A live document library</h3><p class="muted">Upload PDFs, Word, PowerPoint or text and watch each one move from uploaded to reading to indexed to ready.</p></article>
+        <article class="card l-feature"><span class="f-icon"><i class="bi bi-journal-text" aria-hidden="true"></i></span><h3>Revision notes</h3><p class="muted">Structured, searchable notes with keywords. Copy or download them as Markdown.</p></article>
+        <article class="card l-feature"><span class="f-icon"><i class="bi bi-stack" aria-hidden="true"></i></span><h3>Flashcards</h3><p class="muted">Flip, shuffle and mark cards as mastered. Keyboard and swipe friendly.</p></article>
+        <article class="card l-feature"><span class="f-icon"><i class="bi bi-patch-question" aria-hidden="true"></i></span><h3>Quizzes that grade themselves</h3><p class="muted">Multiple-choice tests with explanations after you submit — never before.</p></article>
+        <article class="card l-feature"><span class="f-icon"><i class="bi bi-calendar2-check" aria-hidden="true"></i></span><h3>Study planner</h3><p class="muted">A day-by-day plan for as many days as you have. Tick off sessions as you go.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="l-section l-alt" id="how" aria-labelledby="how-title">
+    <div class="l-container">
+      <div class="l-head"><span class="badge">How it works</span><h2 id="how-title">From files to fluency in four steps</h2></div>
+      <ol class="l-steps">
+        <li class="card"><span class="step-num">1</span><h3>Create a subject</h3><p class="muted">Group the material for a course or topic.</p></li>
+        <li class="card"><span class="step-num">2</span><h3>Upload documents</h3><p class="muted">EduRAG reads and indexes them in the background.</p></li>
+        <li class="card"><span class="step-num">3</span><h3>Ask questions</h3><p class="muted">Get answers with sources you can open and verify.</p></li>
+        <li class="card"><span class="step-num">4</span><h3>Practise</h3><p class="muted">Generate notes, flashcards, quizzes and a plan.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="l-section" id="trust" aria-labelledby="trust-title">
+    <div class="l-container l-trust">
+      <div class="l-head l-head-left"><span class="badge badge-success"><i class="bi bi-shield-check" aria-hidden="true"></i>Built for trust</span><h2 id="trust-title">Your material stays yours</h2><p class="muted">EduRAG is designed so answers are grounded and your documents are private.</p></div>
+      <ul class="l-trust-list">
+        <li><i class="bi bi-person-lock" aria-hidden="true"></i><div><strong>Private to your account</strong><p class="muted">Every search is limited to your own documents. Nobody else's material is ever used to answer you.</p></div></li>
+        <li><i class="bi bi-patch-check" aria-hidden="true"></i><div><strong>Honest when it doesn't know</strong><p class="muted">If the answer isn't in your documents, EduRAG says so instead of guessing.</p></div></li>
+        <li><i class="bi bi-file-earmark-lock" aria-hidden="true"></i><div><strong>Documents are data, not commands</strong><p class="muted">Text inside your files can't instruct the AI or make it reveal anything.</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="l-section l-final">
+    <div class="l-container">
+      <div class="l-cta-card">
+        <h2>Ready to study smarter?</h2>
+        <p>Create your free account and upload your first document in minutes.</p>
+        <a class="btn btn-lg l-cta-btn" href="pages/register.html" data-auth-cta>Get started free<i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="l-footer">
+  <div class="l-container l-footer-inner">
+    <a class="brand" href="index.html"><span class="brand-mark"><i class="bi bi-mortarboard-fill" aria-hidden="true"></i></span>EduRAG</a>
+    <p class="small muted">AI study companion. Answers can contain mistakes — always check the cited sources.</p>
+  </div>
+</footer>
+<script type="module" src="js/pages/landing.js"></script>
 </body>
 </html>
