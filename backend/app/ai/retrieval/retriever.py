@@ -1,21 +1,21 @@
-from app.ai.retrieval.retriever_service import RetrieverService
+"""Process-wide retriever accessor (models and indexes are shared, data is not)."""
+
+from __future__ import annotations
+
+from functools import lru_cache
+
+from app.ai.retrieval.hybrid_retriever import HybridRetriever, RetrievalResult
+
+__all__ = ["Retriever", "get_retriever", "reset_retriever", "RetrievalResult"]
+
+# ``Retriever`` was the public name in the original code base.
+Retriever = HybridRetriever
 
 
-class Retriever:
+@lru_cache(maxsize=1)
+def get_retriever() -> HybridRetriever:
+    return HybridRetriever()
 
-    def __init__(self):
 
-        self.service = RetrieverService()
-
-    def retrieve(
-        self,
-        question,
-        user_id,
-        subject_id,
-    ):
-
-        return self.service.search(
-            query=question,
-            user_id=user_id,
-            subject_id=subject_id,
-        )
+def reset_retriever() -> None:
+    get_retriever.cache_clear()

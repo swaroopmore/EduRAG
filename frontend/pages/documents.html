@@ -1,211 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>EduRAG | Documents</title>
-
-    <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="stylesheet" href="../css/documents.css">
-
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Documents · EduRAG</title>
+<meta name="description" content="Upload and manage the documents EduRAG studies from.">
+<meta name="theme-color" content="#f5f6fb">
+<meta name="robots" content="noindex">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/icon-192.png">
+<script src="../js/theme-init.js"></script>
+<link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/shell.css">
+<link rel="stylesheet" href="../css/features.css">
 </head>
-
 <body>
-
-<div class="dashboard">
-
-    <!-- ================= Sidebar ================= -->
-
-    <aside class="sidebar">
-
-        <div class="logo">
-
-            <i class="bi bi-mortarboard-fill"></i>
-
-            <span>EduRAG</span>
-
-        </div>
-
-        <nav class="nav-links">
-
-            <a href="dashboard.html" class="nav-item">
-                <i class="bi bi-grid"></i>
-                Dashboard
-            </a>
-
-            <a href="subjects.html" class="nav-item">
-                <i class="bi bi-book"></i>
-                Subjects
-            </a>
-
-            <a href="#" class="nav-item active">
-                <i class="bi bi-file-earmark-text"></i>
-                Documents
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-chat-dots"></i>
-                Ask AI
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-card-text"></i>
-                Flashcards
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-patch-question"></i>
-                Quiz
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-journal-text"></i>
-                Notes
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="bi bi-calendar-check"></i>
-                Study Planner
-            </a>
-
-        </nav>
-
-        <button class="logout-btn">
-
-            <i class="bi bi-box-arrow-right"></i>
-
-            Logout
-
-        </button>
-
-    </aside>
-
-    <!-- ================= Content ================= -->
-
-    <main class="content">
-
-        <!-- Topbar -->
-
-        <header class="topbar">
-
-            <div class="search-box">
-
-                <i class="bi bi-search"></i>
-
-                <input
-                    type="text"
-                    placeholder="Search documents...">
-
-            </div>
-
-            <div class="topbar-right">
-
-                <button class="notification-btn">
-
-                    <i class="bi bi-bell"></i>
-
-                </button>
-
-                <div class="profile">
-
-                    <div class="avatar">
-
-                        SM
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </header>
-
-        <!-- Hero -->
-
-        <section class="hero">
-
-            <div>
-
-                <h1 id="subjectTitle">
-
-                    📄 Documents
-
-                </h1>
-
-                <p>
-
-                    Manage all documents for this subject.
-
-                </p>
-
-            </div>
-
-            <button
-                id="uploadBtn"
-                class="hero-btn">
-
-                <i class="bi bi-upload"></i>
-
-                Upload PDF
-
-            </button>
-
-        </section>
-
-        <!-- Statistics -->
-
-        <section class="stats-grid">
-
-            <div class="card">
-
-                <div class="card-icon">
-
-                    <i class="bi bi-file-earmark-text"></i>
-
-                </div>
-
-                <h3>Total Documents</h3>
-
-                <h2 id="documentCount">
-
-                    0
-
-                </h2>
-
-            </div>
-
-        </section>
-
-        <!-- Document Grid -->
-
-        <section
-            id="documentsContainer"
-            class="documents-grid">
-
-        </section>
-
-    </main>
-
-</div>
-
-<!-- Hidden File Input -->
-
-<input
-    type="file"
-    id="fileInput"
-    hidden>
-
-    <script src="../js/config.js"></script>
-
-<script src="../js/documents.js"></script>
-
+<main id="main">
+  <header class="page-header"><div><h1>Documents</h1><p>Upload PDFs, Word, PowerPoint or text files. EduRAG reads and indexes them so you can study from them.</p></div>
+    <div class="page-actions" id="page-actions"></div></header>
+  <div id="view" aria-live="polite"></div>
+  <noscript><div class="alert alert-warning"><i class="bi bi-exclamation-triangle-fill"></i><div class="alert-body">EduRAG needs JavaScript. Please enable it and reload this page.</div></div></noscript>
+</main>
+<script type="module" src="../js/pages/documents.js"></script>
 </body>
-
 </html>

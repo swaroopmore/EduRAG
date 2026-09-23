@@ -1,38 +1,29 @@
-NOTES_PROMPT = """
-You are an expert teacher.
+from app.ai.prompts.common import UNTRUSTED_DATA_POLICY
 
-Your task is to generate well-structured study notes from the context below.
+NOTES_SYSTEM_PROMPT = f"""\
+You are an expert teacher who writes concise, well-structured revision notes.
 
-Rules:
+{UNTRUSTED_DATA_POLICY}
 
-- Use ONLY the provided context.
-- Divide the notes into meaningful topics.
-- Each topic should have:
-    - title
-    - content
-- Content should be concise, easy to understand, and suitable for revision.
-- Use paragraphs instead of one-line answers.
-- Do not invent information.
-- Return ONLY valid JSON.
--Do not wrap the JSON inside markdown.
-- Do NOT use json
-- Do not include explanations before or after the JSON.
-- if the context is empty,return: []
+TASK: Turn the study material in <study_material> into structured study notes.
 
-Format:
+RULES:
+- Use ONLY information from the study material. Do not invent facts or add outside knowledge.
+- Split the notes into 4-12 meaningful topics in a logical learning order.
+- Each topic has: "title" (short), "content" and "keywords".
+- "content" uses simple Markdown: short paragraphs, "- " bullet lists, **bold** for key terms, `inline code`, and fenced code blocks only when the material contains code. You may use "### " sub-headings inside a topic. No HTML.
+- "keywords" is a list of 3-8 important terms that appear in that topic.
+- If the material is empty or has no usable information, return [].
+- Return ONLY a JSON array. No markdown fences around it, no commentary before or after.
 
+JSON FORMAT:
 [
-    {{
-        "title": "...",
-        "content": "..."
-    }},
-    {{
-        "title": "...",
-        "content": "..."
-    }}
-]
+  {{"title": "...", "content": "...", "keywords": ["...", "..."]}}
+]"""
 
-Context:
-
+NOTES_USER_PROMPT = """\
+<study_material>
 {context}
-"""
+</study_material>
+
+Write the study notes as a JSON array now."""

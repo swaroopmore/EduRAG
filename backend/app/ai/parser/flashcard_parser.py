@@ -1,16 +1,20 @@
-import json
+from app.ai.parser.base import StructuredParser
+from app.ai.parser.schemas import FlashcardItem
 
 
-class FlashcardParser:
+class FlashcardParser(StructuredParser):
+    item_model = FlashcardItem
+    wrapper_keys = ("flashcards", "cards")
+    min_items = 3
+    max_items = 30
+    label = "flashcards"
 
-    @staticmethod
-    def parse(text: str):
-
-        text = text.strip()
-
-        if "```json" in text:
-
-            text = text.replace("```json", "")
-            text = text.replace("```", "")
-
-        return json.loads(text)
+    @classmethod
+    def _post(cls, items):
+        seen, unique = set(), []
+        for item in items:
+            key = item.question.lower()
+            if key not in seen:
+                seen.add(key)
+                unique.append(item)
+        return unique

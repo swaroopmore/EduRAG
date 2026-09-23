@@ -50,3 +50,6 @@ alembic/__pycache__/
 
 # Node
 node_modules/
+# EduRAG upgrade leftovers (safe to delete)
+_to_delete/
+_pre-upgrade-backup.zip
