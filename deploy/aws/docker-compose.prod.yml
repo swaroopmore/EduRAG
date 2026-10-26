@@ -1,0 +1,43 @@
+# Production stack for ONE EC2 server: the API container + Caddy (automatic HTTPS).
+# Postgres lives on Amazon RDS (DATABASE_URL in .env.prod), not in this file.
+#
+#   cd ~/EduRAG/deploy/aws
+#   cp .env.prod.example .env.prod   # then edit it
+#   docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --build
+services:
+  backend:
+    build:
+      context: ../../backend
+    container_name: edurag-backend
+    env_file: .env.prod
+    environment:
+      # Fixed paths inside the container; they are bind-mounted from the EBS disk below.
+      VECTOR_DB_PATH: /app/vector_db
+      UPLOAD_DIR: /app/uploads/documents
+      PORT: "8000"
+    volumes:
+      - /data/edurag/uploads:/app/uploads
+      - /data/edurag/vector_db:/app/vector_db
+    expose:
+      - "8000"          # reachable by Caddy only, never published to the internet
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    container_name: edurag-caddy
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      API_DOMAIN: ${API_DOMAIN:?Set API_DOMAIN in .env.prod}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data        # keeps the TLS certificate between restarts
+      - caddy_config:/config
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

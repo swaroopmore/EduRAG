@@ -1,76 +1,41 @@
-from sentence_transformers import CrossEncoder
+"""Optional cross-encoder reranking.
+
+The model is loaded once.  If it cannot be loaded (offline, out of memory,
+disabled) retrieval silently falls back to reciprocal-rank fusion.
+"""
+
+from __future__ import annotations
+
+from functools import lru_cache
+
+from langchain_core.documents import Document
+
+from app.core.config import settings
+from app.core.logging import get_logger
+
+logger = get_logger("reranker")
 
 
 class Reranker:
+    def __init__(self, model) -> None:
+        self.model = model
 
-    def __init__(self):
-
-       
-
-        self.model = CrossEncoder(
-            "cross-encoder/ms-marco-MiniLM-L-6-v2"
-        )
-
-    def rerank(
-        self,
-        question,
-        documents,
-        top_k=5,
-    ):
-
+    def score(self, question: str, documents: list[Document]) -> list[float]:
         if not documents:
-            
             return []
+        pairs = [(question, doc.page_content) for doc in documents]
+        return [float(s) for s in self.model.predict(pairs)]
 
-        
 
-        # Create Question-Chunk pairs
-        pairs = [
-            (question, doc.page_content)
-            for doc in documents
-        ]
+@lru_cache(maxsize=1)
+def get_reranker() -> Reranker | None:
+    if not settings.RERANKER_ENABLED:
+        return None
+    try:
+        from sentence_transformers import CrossEncoder
 
-        # Predict relevance scores
-        scores = self.model.predict(pairs)
-
-        
-
-        for index, (doc, score) in enumerate(zip(documents, scores), start=1):
-
-            
-
-            filename = doc.metadata.get("filename", "Unknown")
-            page = doc.metadata.get("page", 0) + 1
-
-          
-
-            preview = doc.page_content.replace("\n", " ")
-
-        # Sort documents by score
-        ranked = sorted(
-            zip(documents, scores),
-            key=lambda x: x[1],
-            reverse=True,
-        )
-
-        
-
-        top_documents = []
-
-        for rank, (doc, score) in enumerate(ranked[:top_k], start=1):
-
-            
-
-            filename = doc.metadata.get("filename", "Unknown")
-            page = doc.metadata.get("page", 0) + 1
-
-            
-
-            preview = doc.page_content.replace("\n", " ")
-            
-
-            top_documents.append(doc)
-
-     
-
-        return top_documents
+        logger.info("Loading reranker %s", settings.RERANKER_MODEL)
+        return Reranker(CrossEncoder(settings.RERANKER_MODEL))
+    except Exception as exc:  # noqa: BLE001 - any load failure means "no reranker"
+        logger.warning("Reranker unavailable, using rank fusion only: %s", exc)
+        return None

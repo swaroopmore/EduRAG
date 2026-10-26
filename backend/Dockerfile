@@ -1,34 +1,41 @@
-# Use official Python image
 FROM python:3.12-slim
 
-# Prevent Python from creating .pyc files
-ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    HF_HOME=/app/.cache/huggingface
 
-# Display logs immediately
-ENV PYTHONUNBUFFERED=1
-
-# Working directory inside container
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    build-essential \
+RUN apt-get update && apt-get install -y --no-install-recommends gcc build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first (better Docker caching)
+# Dependencies first so Docker can cache this layer.
 COPY requirements.txt .
+# CPU-only torch first (the default PyPI wheel drags in ~3 GB of CUDA libraries the
+# server never uses); requirements.txt then sees torch as already satisfied.
+RUN pip install --upgrade pip \
+    && pip install torch --index-url https://download.pytorch.org/whl/cpu \
+    && pip install -r requirements.txt
 
-# Install Python packages
-RUN pip install --no-cache-dir --upgrade pip
+# Bake the embedding + reranker models into the image so the first request (and
+# every restart) doesn't depend on downloading them. Non-fatal: the app falls
+# back to downloading at start-up if this step cannot reach Hugging Face.
+ARG EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+ARG RERANKER_MODEL=cross-encoder/ms-marco-MiniLM-L-6-v2
+RUN python -c "from sentence_transformers import SentenceTransformer, CrossEncoder; SentenceTransformer('${EMBEDDING_MODEL}'); CrossEncoder('${RERANKER_MODEL}')" \
+    || echo "WARNING: could not pre-download models (they will be fetched at start-up)"
 
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy project
 COPY . .
 
-# FastAPI port
-EXPOSE 8000
+# Run as an unprivileged user.
+RUN useradd --create-home --uid 1000 app \
+    && mkdir -p /app/uploads /app/vector_db \
+    && chown -R app:app /app
+USER app
 
-# Start FastAPI
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 8000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=90s --retries=3 \
+  CMD python -c "import os,urllib.request; urllib.request.urlopen('http://127.0.0.1:%s/health' % os.environ.get('PORT','8000'), timeout=4)"
+
+CMD ["sh", "scripts/start.sh"]

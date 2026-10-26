@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Student Registration</title>
+</head>
+
+<body>
+
+<h1>Student Registration Form</h1>
+
+<form>
+
+<label for="username" name="name" >Name</label>
+
+<input type="text" id="username" value="Swaroop">
+
+<br><br>
+
+<label>Email</label>
+
+<input type="email" placeholder="Enter Your Email" autocomplete="on" required>
+
+<br><br>
+
+Password
+
+<input type="password" placeholder="Enter Your PAssword" maxlength="5" required>
+
+<br><br>
+
+Age
+
+<input type="number" placeholder="Enter Your Age" value="21" required>
+
+<br><br>
+Country
+<input type="text" value="India" readonly><br><br>
+
+Date of Birth
+
+<input type="date" required>
+
+<br><br>
+
+Resume
+
+<input type="file">
+
+<br><br>
+
+Gender
+
+<input type="radio" name="gender"> Male
+
+<input type="radio" name="gender"> Female
+
+<br><br>
+
+Skills
+
+<input type="checkbox"> HTML
+
+<input type="checkbox"> CSS
+
+<input type="checkbox"> JavaScript
+
+<br><br>
+<input type="text" placeholder="Enter Your Full Name">
+
+<br><br>
+<fieldset><legend>Personal Information</legend>
+<label for="about">Tell Me About Your Self</label>
+<br>
+<textarea id="about" rows="5" cols="40"></textarea><br><br>
+<br>
+<lable for="CourseDetails">Course Details</lable><br>
+<textarea id="CourseDetails" placeholder="Enter CourseDetails" rows="10" cols="100" required></textarea>
+</fieldset>
+<br>
+<br><hr><hr>
+<label for="country">Select Your Favorite Country</label>
+
+<br>
+
+<select id="country" required>
+    <option value="IN">India</option>
+    <option selected value="AUS">Australia</option>
+    <option value="FRA">France</option>
+    <option value="ARG">Argentina</option>
+</select>
+<br><br><hr>
+
+
+<fieldset><legend>Shaddi.com Information</legend>
+<div id="profile">
+    <h1> Swaroop More</h1>
+    <label for="course">Qualification</label>
+    <input type="text"  id="course" placeholder="Mca Graduate" required>
+</div>
+</fieldset>
+
+<fieldset id="spancontainer">
+    <legend>Span Container</legend>
+    <span>Groups only one part of Sentence</span><br>
+    <span>Does not start on New Line</span>
+</fieldset>
+
+<fieldset>
+    <legend>Semantic HTML</legend>
+
+    <header>
+        <h1> MY Porfolio</h1>
+    </header><br>
+
+<main>
+    <section>About Me</section>
+</main>
+
+<footer>
+    Contact me
+</footer>
+
+</fieldset>
+
+
+<input type="submit">
+
+<input type="reset">
+
+
+
+</form>
+
+</body>
+
+</html>

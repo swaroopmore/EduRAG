@@ -1,23 +1,20 @@
-import json
+from app.ai.parser.base import StructuredParser
+from app.ai.parser.schemas import QuizItem
 
 
-class QuizParser:
+class QuizParser(StructuredParser):
+    item_model = QuizItem
+    wrapper_keys = ("quiz", "questions", "mcqs")
+    min_items = 3
+    max_items = 20
+    label = "quiz questions"
 
-    @staticmethod
-    def parse(text: str):
-
-        text = text.strip()
-
-        if "```json" in text:
-
-            text = text.replace(
-                "```json",
-                "",
-            )
-
-            text = text.replace(
-                "```",
-                "",
-            )
-
-        return json.loads(text)
+    @classmethod
+    def _post(cls, items):
+        seen, unique = set(), []
+        for item in items:
+            key = item.question.lower()
+            if key not in seen:
+                seen.add(key)
+                unique.append(item)
+        return unique

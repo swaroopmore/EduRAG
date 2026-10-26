@@ -1,146 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduRAG | Login</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <link rel="stylesheet" href="../css/login.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sign in · EduRAG</title>
+<meta name="description" content="Sign in to your EduRAG learning workspace.">
+<meta name="theme-color" content="#f5f6fb">
+<meta name="robots" content="noindex">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/icon-192.png">
+<script src="../js/theme-init.js"></script>
+<link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/auth.css">
 </head>
 <body>
-
-<div class="blob blob1"></div>
-<div class="blob blob2"></div>
-<div class="blob blob3"></div>
-
-<div class="container">
-
-    <section class="left-panel">
-
-        <div class="logo">
-            <i class="bi bi-mortarboard-fill"></i>
-            <span>EduRAG</span>
+<div class="auth">
+  <aside class="auth-aside" aria-hidden="true">
+    <a class="brand" href="../index.html" tabindex="-1"><span class="brand-mark"><i class="bi bi-mortarboard-fill"></i></span>EduRAG</a>
+    <div class="stack">
+      <h2>Study from <span>your own material.</span></h2>
+      <ul class="auth-points">
+        <li><i class="bi bi-check2-circle"></i><span>Answers grounded in your documents, with page-level sources.</span></li>
+        <li><i class="bi bi-check2-circle"></i><span>Notes, flashcards, quizzes and study plans generated from what you upload.</span></li>
+        <li><i class="bi bi-check2-circle"></i><span>Private by design: your documents are only ever searched for you.</span></li>
+      </ul>
+    </div>
+    <p class="small" style="color:rgb(255 255 255 / .6)">Upload once. Learn everywhere.</p>
+  </aside>
+  <main id="main" class="auth-main">
+      <div class="auth-top">
+        <a class="brand" href="../index.html"><span class="brand-mark"><i class="bi bi-mortarboard-fill"></i></span>EduRAG</a>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost btn-icon" data-theme-toggle aria-label="Toggle dark mode"><i class="bi bi-circle-half"></i></button>
+      </div>
+    <div class="auth-card rise">
+      <h1>Welcome back</h1>
+      <p class="lede">Sign in to pick up where you left off.</p>
+      <form id="login-form" novalidate>
+        <div class="alert alert-danger" id="form-error" role="alert" hidden><i class="bi bi-exclamation-octagon-fill" aria-hidden="true"></i><div class="alert-body"></div></div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input class="input" id="email" name="email" type="email" inputmode="email" autocomplete="email" required autofocus>
         </div>
-
-        <div class="hero">
-
-            <img src="../assets/images/student.svg"
-                 class="student-image"
-                 alt="Student Illustration">
-
-            <h1>
-                Learn Smarter
-                <br>
-                <span>with AI</span>
-            </h1>
-
-            <p>
-                Upload your notes and get AI-powered
-                explanations, summaries,
-                flashcards and quizzes.
-            </p>
-
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-group">
+            <input class="input" id="password" name="password" type="password" autocomplete="current-password" required >
+            <button type="button" class="input-suffix" id="toggle-password" aria-label="Show password" aria-pressed="false"><i class="bi bi-eye" aria-hidden="true"></i></button>
+          </div>
         </div>
-
-    </section>
-
-    <section class="right-panel">
-
-        <div class="login-card">
-
-            <h2>Welcome Back 👋</h2>
-
-            <p class="subtitle">
-                Continue your AI Learning Journey
-            </p>
-
-            <form id="loginForm">
-
-                <label>Email</label>
-
-                <div class="input-box">
-                    <i class="bi bi-envelope"></i>
-
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Enter your email"
-                        required>
-                </div>
-
-                <label>Password</label>
-
-                <div class="input-box">
-
-                    <i class="bi bi-lock"></i>
-
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Enter your password"
-                        required>
-
-                    <button
-                        type="button"
-                        id="togglePassword">
-
-                        <i class="bi bi-eye"></i>
-
-                    </button>
-
-                </div>
-
-                <div class="options">
-
-                    <label class="remember">
-                        <input type="checkbox">
-                        Remember Me
-                    </label>
-
-                    <a href="#">
-                        Forgot Password?
-                    </a>
-
-                </div>
-
-                <button
-                    type="submit"
-                    class="login-btn">
-
-                    Login
-
-                </button>
-
-            </form>
-
-            <div class="divider">
-                <span>OR</span>
-            </div>
-
-            <div class="register">
-
-                Don't have an account?
-
-                <a href="register.html">
-                    Create Account
-                </a>
-
-            </div>
-
-        </div>
-
-    </section>
-
+        <button class="btn btn-primary btn-lg btn-block" id="submit" type="submit">Sign in</button>
+      </form>
+      <p class="auth-alt">New to EduRAG? <a href="register.html">Create an account</a></p>
+    </div>
+  </main>
 </div>
-<script src="../js/config.js"></script>
-<script src="../js/login.js"></script>
-
+<noscript><p class="center" style="padding:2rem">EduRAG needs JavaScript to run. Please enable it and reload.</p></noscript>
+<script type="module" src="../js/pages/login.js"></script>
 </body>
 </html>

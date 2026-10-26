@@ -1,0 +1,129 @@
+body{
+
+    background-color:#e9e3e3;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+
+#main-title{
+
+    position:sticky;
+    top:0;
+    color:#2c3e50;
+
+    font-size:30px;
+
+    text-align:center;
+
+    text-transform:capitalise;
+
+    letter-spacing:2px;
+
+}
+
+.heading{
+
+    color:#555;
+
+    font-size:20px;
+
+    line-height:1.8;
+
+}
+
+.info{
+
+    color:Green;
+    font-size:x-large;
+
+}
+
+#divbox{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background-color: lightblue;
+    color:red;
+    text-align:center;
+    font-size:20px;
+    font-family: cursive;
+    width:300px;
+    height:250px;
+    border:2px dashed black;
+    padding:20px;
+    margin-top:30px;
+}
+
+#Rohit{
+    position:relative;
+    top:30px;
+    left:400px;
+    background-color: aqua;
+    text-align:center;
+    margin:20px;
+    padding:40px;
+    border:dashed red;
+    width:50%;
+    height:60%;
+
+}
+
+#personal{
+    color:rgb(32, 9, 100);
+    text-align: center;
+    font-size:20px;
+    font-family:cursive;
+    border:dashed black;
+
+}
+
+#container{
+    display:flex;
+    flex-direction: row;
+}
+
+button{
+    background-color: steelblue;
+    color:white;
+    padding:12px 20px;
+
+}
+
+
+button:hover{
+    transition: all 0.3s ease-in-out;
+    background-color: darkblue;
+    border:none;
+}
+
+button:active{
+    transform:scale(0.76);
+    transform:rotate(45deg);
+}
+
+#submit:active{
+    transform:scale(0.95);
+}
+
+#name:focus{
+ border:3px solid blue;
+ outline:none;
+
+}
+
+#pseudo::first-letter{
+
+    font-size:40px;
+    color:red;
+
+
+}
+
+#pseudo::first-line{
+ font-weight:bold;
+}
+
+#pseudo::before{
+    content:"Hello";
+}

@@ -1,6 +1,7 @@
-from uuid import UUID
+import uuid
 
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.base import Base
@@ -8,60 +9,38 @@ from app.models.base.timestamp import TimestampMixin
 from app.models.base.uuid import UUIDMixin
 
 
-class Quiz(
-    Base,
-    UUIDMixin,
-    TimestampMixin,
-):
+class Quiz(UUIDMixin, TimestampMixin, Base):
+    """A single multiple-choice question."""
+
     __tablename__ = "quizzes"
 
-    question: Mapped[str] = mapped_column(
-        String,
-        nullable=False,
+    question: Mapped[str] = mapped_column(String, nullable=False)
+    option_a: Mapped[str] = mapped_column(String, nullable=False)
+    option_b: Mapped[str] = mapped_column(String, nullable=False)
+    option_c: Mapped[str] = mapped_column(String, nullable=False)
+    option_d: Mapped[str] = mapped_column(String, nullable=False)
+    correct_answer: Mapped[str] = mapped_column(String, nullable=False)
+    explanation: Mapped[str] = mapped_column(String, nullable=False)
+
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    subject_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("subjects.id", ondelete="CASCADE"), nullable=False, index=True
     )
 
-    option_a: Mapped[str] = mapped_column(
-        String,
-        nullable=False,
-    )
 
-    option_b: Mapped[str] = mapped_column(
-        String,
-        nullable=False,
-    )
+class QuizAttempt(UUIDMixin, TimestampMixin, Base):
+    """A graded quiz submission (server-side graded)."""
 
-    option_c: Mapped[str] = mapped_column(
-        String,
-        nullable=False,
-    )
+    __tablename__ = "quiz_attempts"
 
-    option_d: Mapped[str] = mapped_column(
-        String,
-        nullable=False,
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
     )
-
-    correct_answer: Mapped[str] = mapped_column(
-        String,
-        nullable=False,
+    subject_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("subjects.id", ondelete="CASCADE"), nullable=False, index=True
     )
-
-    explanation: Mapped[str] = mapped_column(
-        String,
-        nullable=False,
-    )
-
-    user_id: Mapped[UUID] = mapped_column(
-        ForeignKey(
-            "users.id",
-            ondelete="CASCADE",
-        ),
-        nullable=False,
-    )
-
-    subject_id: Mapped[UUID] = mapped_column(
-        ForeignKey(
-            "subjects.id",
-            ondelete="CASCADE",
-        ),
-        nullable=False,
-    )
+    score: Mapped[int] = mapped_column(Integer, nullable=False)
+    total: Mapped[int] = mapped_column(Integer, nullable=False)
+    answers: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)

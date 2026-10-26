@@ -1,28 +1,10 @@
-import json
+from app.ai.parser.base import StructuredParser
+from app.ai.parser.schemas import NoteSection
 
 
-class NoteParser:
-
-    @staticmethod
-    def parse(text: str):
-
-        if not text:
-            raise ValueError("Gemini returned an empty response.")
-
-        text = text.strip()
-
-        if text.startswith("```json"):
-            text = text.replace("```json", "", 1)
-
-        if text.endswith("```"):
-            text = text[:-3]
-
-        text = text.strip()
-
-        try:
-            return json.loads(text)
-
-        except json.JSONDecodeError:
-            print("Gemini Response:")
-            print(text)
-            raise
+class NoteParser(StructuredParser):
+    item_model = NoteSection
+    wrapper_keys = ("notes", "sections", "topics")
+    min_items = 1
+    max_items = 30
+    label = "notes"
